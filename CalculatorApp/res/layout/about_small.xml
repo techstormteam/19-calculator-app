@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/functionPad"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/menuicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_action_side_navigation" />
+
+        <View
+            android:id="@+id/adView"
+            android:layout_width="fill_parent"
+            android:layout_height="20dip"
+            android:layout_alignParentTop="true" >
+        </View>
+
+        <ImageView
+            android:id="@+id/heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/adView"
+            android:src="@drawable/about_heading" />
+
+        <ImageView
+            android:layout_marginTop="-10dip"
+            android:id="@+id/copyright_above"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/heading"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/about_copyright_above" />
+
+        <ImageView
+            android:id="@+id/ibrahim_ssa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/copyright_above"
+            android:layout_marginTop="15dip"
+            android:src="@drawable/ibrahim_ssa" />
+
+        <ImageView
+            android:layout_marginTop="15dip"
+            android:id="@+id/copyright_below"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ibrahim_ssa"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/copyright_text_below" />
+
+        <ImageView
+            android:id="@+id/special_thanks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/copyright_below"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dip"
+            android:src="@drawable/special_thanks" />
+
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/plugins_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dip"
+            android:layout_marginTop="15dip"
+            android:text="Version"
+            android:textColor="#ffffff" />
+
+        <LinearLayout
+            android:id="@+id/plugins_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal" 
+            android:paddingBottom="10dip">
+
+            <ImageView
+                android:id="@+id/fb_plugin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fb" />
+
+            <ImageView
+                android:id="@+id/tw_plugin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:src="@drawable/tw" />
+
+            <ImageView
+                android:id="@+id/in_plugin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:src="@drawable/in" />
+        </LinearLayout>
+<RelativeLayout
+       android:id="@+id/rl_upgrade_parent" android:background="@drawable/upgrade_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:id="@+id/rl_upgrade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/upgrade_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/upgrade_bg" />
+
+            <LinearLayout
+                android:id="@+id/ll_upgrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/upgrade_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="12dip"
+                    android:src="@drawable/upgrade_text" />
+
+                <ImageView
+                    android:id="@+id/upgrade_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-14dip"
+                    android:src="@drawable/upgrade_close_btn"
+                     />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+        
+        <com.devspark.sidenavigation.SideNavigationView
+            android:id="@+id/side_navigation_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,53 @@
+<resources>
+
+    <string name="app_name">Smart Calculator</string>
+    <string name="menu_settings">Settings</string>
+    <string name="action_settings">Settings</string>
+    <string name="button0">0</string>
+    <string name="button1">1</string>
+    <string name="button2">2</string>
+    <string name="button3">3</string>
+    <string name="button4">4</string>
+    <string name="button5">5</string>
+    <string name="button6">6</string>
+    <string name="button7">7</string>
+    <string name="button8">8</string>
+    <string name="button9">9</string>
+    <string name="buttonAdd">+</string>
+    <string name="buttonSubtract">-</string>
+    <string name="buttonMultiply">*</string>
+    <string name="buttonDivide">/</string>
+    <string name="buttonToggleSign">+/-</string>
+    <string name="buttonDecimalPoint">.</string>
+    <string name="buttonEquals">=</string>
+    <string name="buttonClear">C</string>
+    <string name="buttonClearMemory">MC</string>
+    <string name="buttonAddToMemory">M+</string>
+    <string name="buttonSubtractFromMemory">M-</string>
+    <string name="buttonRecallMemory">MR</string>
+    <string name="buttonSquareRoot">√</string>
+    <string name="buttonSquared">x²</string>
+    <string name="buttonInvert">1/x</string>
+    <string name="buttonSine">sin</string>
+    <string name="buttonCosine">cos</string>
+    <string name="buttonTangent">tan</string>
+    <string name="buttonPercentage">%</string>
+    <string name="title1">SMART CALCULATOR</string>
+    <string name="title2">BASIC CALCULATOR</string>
+    <string name="title3">CURRENCY CONVERTERS</string>
+    <string name="title4">UNIT CONVERTER</string>
+    <string name="title5">FITNESS CALCULATOR</string>
+    <string name="title6">SETTINGSS</string>
+    <string name="title7">UPGRADE</string>
+    <string name="title8">ABOUT</string>
+    <string name="mode">Mode</string>
+    <string name="mode_left">Left</string>
+    <string name="mode_right">Right</string>
+    <string name="image_desc">Image</string>
+    <string name="ADS_BANNER">ca-app-pub-3323028023041164/1297949669</string>
+<!--     <string name="ADS_INTERSTITIAL">ca-app-pub-3323028023041164/1297949669</string> -->
+    <string name="ADS_INTERSTITIAL">ca-app-pub-7278887713829891/5512567569</string>
+<!-- <string name="ADS">1234</string>  -->
+
+
+</resources>

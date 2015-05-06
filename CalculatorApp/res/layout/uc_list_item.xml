@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/countries_list_pressed"
+    android:orientation="vertical" 
+    android:layout_marginTop="10dip">
+
+    <LinearLayout
+        android:id="@+id/uc_list_hl"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tv_unit"
+            android:layout_width="110dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip" 
+            android:textColor="#ffffff"
+            android:textSize="18dp"/>
+
+        <ImageView
+            android:id="@+id/conversion_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/uc_conversion_arrow" 
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/tv_conversions"
+            android:layout_width="80dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:text="10.0000" 
+            android:textColor="#ffffff"
+            android:textSize="18dp"/>
+
+        <TextView
+            android:id="@+id/tv_symbols"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:text="m" 
+            android:textColor="#ffffff"
+            android:textSize="18dp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/separator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/uc_list_item_separator" />
+
+</LinearLayout>

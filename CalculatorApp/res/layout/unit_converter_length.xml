@@ -1,0 +1,999 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/functionPad"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/menuicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_action_side_navigation" />
+
+        <View
+            android:id="@+id/adView"
+            android:layout_width="fill_parent"
+            android:layout_height="20dip"
+            android:layout_alignParentTop="true" >
+        </View>
+
+        <RelativeLayout
+            android:id="@+id/rl_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/adView"
+            android:layout_marginTop="20dip"
+            android:layout_centerHorizontal="true" >
+
+            <ImageView
+                android:id="@+id/uc_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/uc_heading" />
+
+            <ImageView
+                android:id="@+id/uc_length_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="53dip"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip"
+                android:src="@drawable/uc_length_heading" />
+
+            <ImageView
+                android:id="@+id/uc_empty_view_prev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="53dip"
+                android:layout_toLeftOf="@+id/uc_length_heading"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip"
+                android:src="@drawable/uc_empty_view" />
+
+            <ImageView
+                android:id="@+id/uc_empty_view_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="53dip"
+                android:layout_toRightOf="@+id/uc_length_heading"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip"
+                android:src="@drawable/uc_empty_view" />
+
+            <ImageView
+                android:id="@+id/uc_left_arrow_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="53dip"
+                android:layout_toLeftOf="@+id/uc_length_heading"
+                android:src="@drawable/uc_left_arrow_light" />
+
+            <ImageView
+                android:id="@+id/uc_length_prev_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="53dip"
+                android:layout_toLeftOf="@+id/uc_left_arrow_light"
+                android:paddingRight="20dip"
+                android:src="@drawable/uc_lentgh_temp" />
+
+            <ImageView
+                android:id="@+id/uc_right_arrow_dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="53dip"
+                android:layout_toRightOf="@+id/uc_length_heading"
+                android:src="@drawable/uc_right_arrow_dark" />
+
+            <ImageView
+                android:id="@+id/uc_length_temprature_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="53dip"
+                android:layout_toRightOf="@+id/uc_right_arrow_dark"
+                android:paddingLeft="20dip"
+                android:src="@drawable/uc_lentgh_temp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/uc_length_bullets"
+            android:layout_width="fill_parent"
+            android:layout_height="8dip"
+            android:layout_below="@+id/rl_heading" />
+
+        <RelativeLayout
+            android:id="@+id/rl_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/uc_length_bullets"
+            android:background="@drawable/uc_bg" >
+
+            <EditText
+            android:id="@+id/uc_edittext"
+            android:layout_width="200dip"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/uc_edittext_bg"
+            android:inputType="numberDecimal"
+            android:maxLength="10"
+            android:paddingLeft="10dip"
+            android:textSize="30dp" />
+
+            <ImageView
+                android:id="@+id/uc_guideline"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/uc_edittext"
+                android:layout_marginTop="5dip"
+                android:src="@drawable/uc_guideline" />
+
+            <!-- <ListView -->
+            <!-- android:id="@+id/uc_lv" -->
+            <!-- android:layout_width="fill_parent" -->
+            <!-- android:layout_height="fill_parent" -->
+            <!-- android:layout_below="@+id/uc_guideline" -->
+            <!-- android:layout_marginTop="20dip" -->
+            <!-- android:cacheColorHint="#00000000" -->
+            <!-- android:listSelector="@drawable/list_selector" > -->
+            <!-- </ListView> -->
+
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/uc_guideline" >
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
+                        android:id="@+id/meters_ll"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@drawable/uc_unpressed_item_bg"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dip"
+                            android:layout_marginTop="3dip"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/meters_unit"
+                                android:layout_width="130dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dip"
+                                android:text="Meters"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <ImageView
+                                android:id="@+id/meters_conversion_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="1dip"
+                                android:src="@drawable/uc_conversion_arrow" />
+
+                            <TextView
+                                android:id="@+id/meters_conversions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:layout_marginTop="1dip"
+                                android:text="10.0000"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <TextView
+                                android:id="@+id/meters_symbols"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:text="m"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/meters_separator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_seperator_crop" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/feet_ll"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/meters_ll"
+                        android:background="@drawable/uc_unpressed_item_bg"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dip"
+                            android:layout_marginTop="3dip"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/feet_unit"
+                                android:layout_width="130dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dip"
+                                android:text="Feet"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <ImageView
+                                android:id="@+id/feet_conversion_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="1dip"
+                                android:src="@drawable/uc_conversion_arrow" />
+
+                            <TextView
+                                android:id="@+id/feet_conversions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:layout_marginTop="1dip"
+                                android:text="10.0000"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <TextView
+                                android:id="@+id/feet_symbols"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:text="ft"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/feet_separator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_seperator_crop" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/yards_ll"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/feet_ll"
+                        android:background="@drawable/uc_unpressed_item_bg"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dip"
+                            android:layout_marginTop="3dip"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/yards_unit"
+                                android:layout_width="130dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dip"
+                                android:text="Yards"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <ImageView
+                                android:id="@+id/yards_conversion_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="1dip"
+                                android:src="@drawable/uc_conversion_arrow" />
+
+                            <TextView
+                                android:id="@+id/yards_conversions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:layout_marginTop="1dip"
+                                android:text="10.0000"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <TextView
+                                android:id="@+id/yards_symbols"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:text="yd"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/yards_separator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_seperator_crop" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/inches_ll"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/yards_ll"
+                        android:background="@drawable/uc_unpressed_item_bg"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dip"
+                            android:layout_marginTop="3dip"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/inches_unit"
+                                android:layout_width="130dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dip"
+                                android:text="Inches"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <ImageView
+                                android:id="@+id/inches_conversion_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="1dip"
+                                android:src="@drawable/uc_conversion_arrow" />
+
+                            <TextView
+                                android:id="@+id/inches_conversions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:layout_marginTop="1dip"
+                                android:text="10.0000"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <TextView
+                                android:id="@+id/inches_symbols"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:text="in"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/inches_separator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_seperator_crop" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/kilometers_ll"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/inches_ll"
+                        android:background="@drawable/uc_unpressed_item_bg"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dip"
+                            android:layout_marginTop="3dip"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/kilometers_unit"
+                                android:layout_width="130dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dip"
+                                android:text="Kilometers"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <ImageView
+                                android:id="@+id/kilometers_conversion_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="1dip"
+                                android:src="@drawable/uc_conversion_arrow" />
+
+                            <TextView
+                                android:id="@+id/kilometers_conversions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:layout_marginTop="1dip"
+                                android:text="10.0000"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <TextView
+                                android:id="@+id/kilometers_symbols"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:text="km"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/kilometers_separator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_seperator_crop" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/miles_ll"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/kilometers_ll"
+                        android:background="@drawable/uc_unpressed_item_bg"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dip"
+                            android:layout_marginTop="3dip"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/miles_unit"
+                                android:layout_width="130dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dip"
+                                android:text="Miles"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <ImageView
+                                android:id="@+id/miles_conversion_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="1dip"
+                                android:src="@drawable/uc_conversion_arrow" />
+
+                            <TextView
+                                android:id="@+id/miles_conversions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:layout_marginTop="1dip"
+                                android:text="10.0000"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <TextView
+                                android:id="@+id/miles_symbols"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:text="mi"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/miles_separator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_seperator_crop" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/centimeters_ll"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/miles_ll"
+                        android:background="@drawable/uc_unpressed_item_bg"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dip"
+                            android:layout_marginTop="3dip"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/centimeters_unit"
+                                android:layout_width="130dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dip"
+                                android:text="Centimeters"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <ImageView
+                                android:id="@+id/centimeters_conversion_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="1dip"
+                                android:src="@drawable/uc_conversion_arrow" />
+
+                            <TextView
+                                android:id="@+id/centimeters_conversions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:layout_marginTop="1dip"
+                                android:text="10.0000"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <TextView
+                                android:id="@+id/centimeters_symbols"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:text="cm"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/centimeters_separator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_seperator_crop" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/milimeters_ll"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/centimeters_ll"
+                        android:background="@drawable/uc_unpressed_item_bg"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dip"
+                            android:layout_marginTop="3dip"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/milimeters_unit"
+                                android:layout_width="130dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dip"
+                                android:text="Milimeters"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <ImageView
+                                android:id="@+id/milimeters_conversion_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="1dip"
+                                android:src="@drawable/uc_conversion_arrow" />
+
+                            <TextView
+                                android:id="@+id/milimeters_conversions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:layout_marginTop="1dip"
+                                android:text="10.0000"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <TextView
+                                android:id="@+id/milimeters_symbols"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:text="mm"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/milimeters_separator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_seperator_crop" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/microns_ll"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/milimeters_ll"
+                        android:background="@drawable/uc_unpressed_item_bg"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dip"
+                            android:layout_marginTop="3dip"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/microns_unit"
+                                android:layout_width="130dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dip"
+                                android:text="Microns"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <ImageView
+                                android:id="@+id/microns_conversion_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="1dip"
+                                android:src="@drawable/uc_conversion_arrow" />
+
+                            <TextView
+                                android:id="@+id/microns_conversions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:layout_marginTop="1dip"
+                                android:text="10.0000"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <TextView
+                                android:id="@+id/microns_symbols"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:text="um"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/microns_separator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_seperator_crop" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/nanometers_ll"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/microns_ll"
+                        android:background="@drawable/uc_unpressed_item_bg"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dip"
+                            android:layout_marginTop="3dip"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/nanometers_unit"
+                                android:layout_width="130dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dip"
+                                android:text="Nanometers"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <ImageView
+                                android:id="@+id/nanometers_conversion_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="1dip"
+                                android:src="@drawable/uc_conversion_arrow" />
+
+                            <TextView
+                                android:id="@+id/nanometers_conversions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:layout_marginTop="1dip"
+                                android:text="10.0000"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <TextView
+                                android:id="@+id/nanometers_symbols"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:text="nm"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/nanometers_separator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_seperator_crop" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lightyears_ll"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/nanometers_ll"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dip"
+                            android:layout_marginTop="3dip"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/lightyears_unit"
+                                android:layout_width="130dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dip"
+                                android:text="Light Years"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <ImageView
+                                android:id="@+id/lightyears_conversion_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="1dip"
+                                android:src="@drawable/uc_conversion_arrow" />
+
+                            <TextView
+                                android:id="@+id/lightyears_conversions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:layout_marginTop="1dip"
+                                android:text="10.0000"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+
+                            <TextView
+                                android:id="@+id/lightyears_symbols"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dip"
+                                android:text="ly"
+                                android:textColor="#ffffff"
+                                android:textSize="18dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/lightyears_separator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_seperator_crop" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </ScrollView>
+
+            <ImageView
+                android:id="@+id/uc_slider_btn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:paddingLeft="10dip"
+                android:src="@drawable/uc_slider_btn" />
+
+            <RelativeLayout
+                android:id="@+id/rl_slider_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" >
+
+                <RelativeLayout
+                    android:id="@+id/rl_slider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
+                        android:id="@+id/ll_slider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/uc_slider_length"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_slider_length" />
+
+                        <ImageView
+                            android:id="@+id/uc_slider_temp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_slider_temp" />
+
+                        <ImageView
+                            android:id="@+id/uc_slider_area"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_slider_area" />
+
+                        <ImageView
+                            android:id="@+id/uc_slider_volume"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_slider_volume" />
+
+                        <ImageView
+                            android:id="@+id/uc_slider_weight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_slider_weight" />
+
+                        <ImageView
+                            android:id="@+id/uc_slider_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_slider_time" />
+
+                        <ImageView
+                            android:id="@+id/uc_slider_speed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_slider_speed" />
+
+                        <ImageView
+                            android:id="@+id/uc_slider_datasize"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_slider_datasize" />
+
+                        <ImageView
+                            android:id="@+id/uc_slider_power"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_slider_power" />
+
+                        <ImageView
+                            android:id="@+id/uc_slider_energy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_slider_energy" />
+
+                        <ImageView
+                            android:id="@+id/uc_slider_pressure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_slider_pressure" />
+
+                        <ImageView
+                            android:id="@+id/uc_slider_force"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uc_slider_force" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/uc_slider_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="-2dip"
+                        android:layout_toLeftOf="@+id/ll_slider"
+                        android:paddingLeft="10dip"
+                        android:src="@drawable/uc_slider_btn" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_upgrade_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" 
+            android:visibility="gone"
+           >
+
+            <RelativeLayout
+                android:id="@+id/rl_upgrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/upgrade_bg" >
+
+                <ImageView
+                    android:id="@+id/upgrade_bg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/upgrade_bg" />
+
+                <LinearLayout
+                    android:id="@+id/ll_upgrade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal" >
+
+                    <ImageView
+                        android:id="@+id/upgrade_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="12dip"
+                        android:src="@drawable/upgrade_text" />
+
+                    <ImageView
+                        android:id="@+id/upgrade_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="-14dip"
+                        android:src="@drawable/upgrade_close_btn" />
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <com.devspark.sidenavigation.SideNavigationView
+            android:id="@+id/side_navigation_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+</LinearLayout>

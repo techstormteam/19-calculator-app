@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_relative_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/functionPad"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/menuicon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/ic_action_side_navigation" />
+
+            <View
+                android:id="@+id/adView"
+                android:layout_width="fill_parent"
+                android:layout_height="20dip"
+                android:layout_alignParentTop="true" >
+            </View>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/adView"
+                android:background="@drawable/cc_list_bg" 
+                android:layout_marginTop="20dip">
+
+                <ImageView
+                    android:id="@+id/currency_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/cc_list_heading" />
+
+                <RelativeLayout
+                    android:id="@+id/etSearchRelative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/currency_heading" >
+
+                    <EditText
+                        android:id="@+id/etSearch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dip"
+                        android:layout_marginLeft="10dip"
+                        android:layout_marginTop="20dip"
+                        android:background="@drawable/cc_list_searchbar"
+                        android:hint="Search Currencies"
+                        android:maxLength="15"
+                        android:maxLines="1"
+                        android:paddingLeft="27dip"
+                        android:singleLine="true"
+                        android:textSize="14dp" />
+
+                    <ImageView
+                        android:id="@+id/addCurrency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="10dip"
+                        android:layout_toRightOf="@+id/etSearch"
+                        android:paddingRight="10dip"
+                        android:src="@drawable/slot_5_5" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/headingSeparator"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/etSearchRelative"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/cc_list_heading_separator" />
+
+                <ListView
+                    android:id="@+id/lv"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_below="@+id/headingSeparator"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dip"
+                    android:cacheColorHint="#00000000" >
+                </ListView>
+
+                <RelativeLayout
+                    android:id="@+id/rl_upgrade_parent"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" >
+
+                    <RelativeLayout
+                        android:id="@+id/rl_upgrade"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/upgrade_bg" >
+
+                        <ImageView
+                            android:id="@+id/upgrade_bg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/upgrade_bg" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_upgrade"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="horizontal" >
+
+                            <ImageView
+                                android:id="@+id/upgrade_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="12dip"
+                                android:src="@drawable/upgrade_text" />
+
+                            <ImageView
+                                android:id="@+id/upgrade_close"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="-14dip"
+                                android:src="@drawable/upgrade_close_btn" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <com.devspark.sidenavigation.SideNavigationView
+                    android:id="@+id/side_navigation_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -63,7 +63,7 @@ public class CalculatorBrain {
 		return Double.toString(mOperand);
 	}
 
-	protected double performOperation(String operator) {
+	public double performOperation(String operator) {
 		if (operator.equals(CLEAR)) {
 			mOperand = 0;
 			mWaitingOperator = "";

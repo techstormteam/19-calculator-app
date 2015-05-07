@@ -8,9 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -18,21 +21,20 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import bsh.Interpreter;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.android.trivialdrivesample.util.Purchase;
@@ -41,7 +43,7 @@ import com.devspark.sidenavigation.SideNavigationView;
 import com.devspark.sidenavigation.SideNavigationView.Mode;
 import com.smartcalculator.R;
 
-public class MainActivity extends SherlockActivity implements OnClickListener,
+public class MainActivity extends SherlockFragmentActivity implements OnClickListener,
 
 ISideNavigationCallback {
 
@@ -97,315 +99,382 @@ ISideNavigationCallback {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-		// hide the window title.
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// hide the status bar and other OS-level chrome
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//		// hide the window title.
+//		requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		// hide the status bar and other OS-level chrome
+//		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//
+//		super.onCreate(savedInstanceState);
+//		setContentView(R.layout.backup_mainactivity);
+//		Purchases.initiatePurchase(MainActivity.this);
+//		prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+//		if (!prefs.getString("isPaymentMade", "").equals("true")) {
+//			ConstantAds.loadInterstitialAd(getApplicationContext(),
+//					"top");
+//		}
+//		int sw = getResources().getConfiguration().screenWidthDp;
+//		Log.d("pixel density", sw + "  " + android.os.Build.MANUFACTURER
+//				+ "    " + android.os.Build.MODEL);
+//		gestureDetector = new GestureDetector(this, new MyGestureDetector());
+//		gestureListener = new View.OnTouchListener() {
+//			public boolean onTouch(View v, MotionEvent event) {
+//				return gestureDetector.onTouchEvent(event);
+//			}
+//		};
+//		imgScreen = (ImageView) findViewById(R.id.screen);
+//		row1 = (RelativeLayout) findViewById(R.id.row1);
+//		if (isTablet(getApplicationContext())) {
+//			Log.d("device is", "tablet");
+//			imgScreen.setVisibility(View.INVISIBLE);
+//			row1.setBackground(getResources().getDrawable(R.drawable.screen));
+//		} else {
+//			Log.d("device is", "smart phone");
+//		}
+//
+//		// icon = (ImageView) findViewById(android.R.id.icon);
+//		vibe = (Vibrator) getApplicationContext().getSystemService(
+//				Context.VIBRATOR_SERVICE);
+//		sideNavigationView = (SideNavigationView) findViewById(R.id.side_navigation_view);
+//		sideNavigationView.setMenuItems(R.menu.side_navigation_menu);
+//		sideNavigationView.setMenuClickCallback(this);
+//		if (getIntent().hasExtra(EXTRA_TITLE)) {
+//			String title = getIntent().getStringExtra(EXTRA_TITLE);
+//			// int resId = getIntent().getIntExtra(EXTRA_RESOURCE_ID, 0);
+//			setTitle(title);
+//			// icon.setImageResource(resId);
+//			sideNavigationView
+//					.setMode(getIntent().getIntExtra(EXTRA_MODE, 0) == 0 ? Mode.LEFT
+//							: Mode.RIGHT);
+//		}
+//		mCalculatorBrain = new CalculatorBrain();
+//		// getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//		anim = AnimationUtils.loadAnimation(this, R.drawable.scale);
+//		anim.setAnimationListener(new AnimationListener() {
+//
+//			@Override
+//			public void onAnimationStart(Animation arg0) {
+//				rl_upgrade.setVisibility(View.VISIBLE);
+//				// TODO Auto-generated method stub
+//			}
+//
+//			@Override
+//			public void onAnimationRepeat(Animation arg0) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//
+//			@Override
+//			public void onAnimationEnd(Animation arg0) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//		});
+//
+//		anim_back = AnimationUtils.loadAnimation(this, R.drawable.scale_back);
+//		anim_back.setAnimationListener(new AnimationListener() {
+//
+//			@Override
+//			public void onAnimationStart(Animation arg0) {
+//				// TODO Auto-generated method stub
+//			}
+//
+//			@Override
+//			public void onAnimationRepeat(Animation arg0) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//
+//			@Override
+//			public void onAnimationEnd(Animation arg0) {
+//				// TODO Auto-generated method stub
+//				rl_upgrade.setVisibility(View.GONE);
+//
+//			}
+//		});
+//
+//		rl_upgrade = (RelativeLayout) findViewById(R.id.rl_upgrade);
+//		rl_upgrade_parent = (RelativeLayout) findViewById(R.id.rl_upgrade_parent);
+//		upgrade_close = (ImageView) findViewById(R.id.upgrade_close);
+//		upgrade_bg = (ImageView) findViewById(R.id.upgrade_bg);
+//		upgrade_text = (ImageView) findViewById(R.id.upgrade_text);
+//		upgrade_close.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//				rl_upgrade_parent.startAnimation(anim_back);
+//				upgradePopUp = 0;
+//			}
+//		});
+//		upgrade_bg.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//				rl_upgrade_parent.startAnimation(anim_back);
+//				upgradePopUp = 0;
+//			}
+//		});
+//		upgrade_text.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//			 Purchases.makePurchase(MainActivity.this);
+//
+////				if (checkvar == true) {
+////					editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+////							.edit();
+////					editor.putString("isPaymentMade", "true");
+////					editor.commit();
+////				} else {
+////					editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+////							.edit();
+////					editor.putString("isPaymentMade", "false");
+////					editor.commit();
+////				}
+//				rl_upgrade_parent.startAnimation(anim_back);
+//				upgradePopUp = 0;
+//
+//			}
+//		});
+//		rl_upgrade.setVisibility(View.GONE);
+//		upgradePopUp = 0;
+//		functionPad = (LinearLayout) findViewById(R.id.functionPad);
+//		mCalculatorDisplay = (TextView) findViewById(R.id.textView1);
+//		mTextViewSmall = (TextView) findViewById(R.id.textViewSmall);
+//		menuIcon = (ImageView) findViewById(R.id.menuicon);
+//		secondaryTextView = (TextView) findViewById(R.id.secondrayTextView1);
+//
+//		menuIcon.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				sideNavigationView.toggleMenu();
+//				vibe.vibrate(50);
+//			}
+//		});
+//		//
+//		// Typeface tf = Typeface.createFromAsset(getAssets(), "DS-DIGIB.TTF");
+//		Typeface tf2 = Typeface.createFromAsset(getAssets(), "DS-DIGI.TTF");
+//		mCalculatorDisplay.setTypeface(tf2);
+//		mTextViewSmall.setTypeface(tf2);
+//		secondaryTextView.setTypeface(tf2);
+//
+//		df.setMinimumFractionDigits(0);
+//		df.setMinimumIntegerDigits(1);
+//		df.setMaximumIntegerDigits(100);
+//
+//		findViewById(R.id.button0).setOnClickListener(this);
+//		findViewById(R.id.button1).setOnClickListener(this);
+//		findViewById(R.id.button2).setOnClickListener(this);
+//		findViewById(R.id.button3).setOnClickListener(this);
+//		findViewById(R.id.button4).setOnClickListener(this);
+//		findViewById(R.id.button5).setOnClickListener(this);
+//		findViewById(R.id.button6).setOnClickListener(this);
+//		findViewById(R.id.button7).setOnClickListener(this);
+//		findViewById(R.id.button8).setOnClickListener(this);
+//		findViewById(R.id.button9).setOnClickListener(this);
+//
+//		findViewById(R.id.buttonAdd).setOnClickListener(this);
+//		findViewById(R.id.buttonSubtract).setOnClickListener(this);
+//		findViewById(R.id.buttonMultiply).setOnClickListener(this);
+//		findViewById(R.id.buttonDivide).setOnClickListener(this);
+//		findViewById(R.id.buttonDecimalPoint).setOnClickListener(this);
+//		findViewById(R.id.buttonEquals).setOnClickListener(this);
+//		findViewById(R.id.buttonClear).setOnClickListener(this);
+//		findViewById(R.id.buttonClearMemory).setOnClickListener(this);
+//		findViewById(R.id.buttonAddToMemory).setOnClickListener(this);
+//		findViewById(R.id.buttonSubtractFromMemory).setOnClickListener(this);
+//		findViewById(R.id.buttonRecallMemory).setOnClickListener(this);
+//		findViewById(R.id.buttonSquareRoot).setOnClickListener(this);
+//		findViewById(R.id.buttonPercentage).setOnClickListener(this);
+//		findViewById(R.id.buttonSquared).setOnClickListener(this);
+//		findViewById(R.id.buttonToggleSign).setOnClickListener(this);
+//		functionPad.setOnTouchListener(gestureListener);
+//		findViewById(R.id.buttonBackSpace).setOnClickListener(
+//				new View.OnClickListener() {
+//
+//					@Override
+//					public void onClick(View v) {
+//						// TODO Auto-generated method stub
+//						vibe.vibrate(50);
+//						if (mCalculatorDisplay.getText().length() > 0) {
+//							// if last character to be removed is an operation
+//							// do set the waiting operation as ""
+//							if (OPERATIONS.contains(mCalculatorDisplay
+//									.getText()
+//									.toString()
+//									.substring(
+//											mCalculatorDisplay.getText()
+//													.toString().length() - 1))
+//									|| mCalculatorDisplay
+//											.getText()
+//											.toString()
+//											.substring(
+//													mCalculatorDisplay
+//															.getText()
+//															.toString()
+//															.length() - 1)
+//											.equals("%")
+//
+//									|| mCalculatorDisplay
+//											.getText()
+//											.toString()
+//											.substring(
+//													mCalculatorDisplay
+//															.getText()
+//															.toString()
+//															.length() - 1)
+//											.equals("^")) {
+//								CalculatorBrain.mWaitingOperator = "";
+//
+//							}
+//
+//							if (mCalculatorDisplay
+//									.getText()
+//									.toString()
+//									.substring(
+//											mCalculatorDisplay.getText()
+//													.toString().length() - 1)
+//									.equals(")")) {
+//								isBracketClosed = false;
+//								isBracketOpened = true;
+//							}
+//
+//							if (mCalculatorDisplay
+//									.getText()
+//									.toString()
+//									.substring(
+//											mCalculatorDisplay.getText()
+//													.toString().length() - 1)
+//									.equals("(")) {
+//								isBracketOpened = false;
+//								isBracketClosed = true;
+//							}
+//							mCalculatorDisplay.setText(mCalculatorDisplay
+//									.getText()
+//									.toString()
+//									.substring(
+//											0,
+//											mCalculatorDisplay.getText()
+//													.length() - 1));
+//							int size = 10;
+//							if (android.os.Build.MODEL.contains("N7100")) {
+//								size = 12;
+//							} else {
+//								size = 10;
+//							}
+//							if (mCalculatorDisplay.getText().toString()
+//									.length() > size) {
+//								int displayLength = mCalculatorDisplay
+//										.getText().toString().length()
+//										- size;
+//								String SecondaryText = "";
+//								SecondaryText = mCalculatorDisplay.getText()
+//										.toString();
+//								SecondaryText = SecondaryText.substring(0,
+//										size - 4);
+//								mCalculatorDisplay.setVisibility(View.GONE);
+//								secondaryTextView.setVisibility(View.VISIBLE);
+//								secondaryTextView.setText(SecondaryText
+//										+ "x10^" + displayLength);
+//
+//							} else {
+//								secondaryTextView.setVisibility(View.GONE);
+//								mCalculatorDisplay.setVisibility(View.VISIBLE);
+//							}
+//
+//						}
+//
+//						if (mCalculatorDisplay.getText().length() == 0
+//								|| mCalculatorDisplay.getText().equals("0.0")) {
+//							mCalculatorDisplay.setText("0");
+//							userIsInTheMiddleOfTypingANumber = false;
+//
+//						}
+//					}
+//				});
+//
+//		if (findViewById(R.id.buttonInvert) != null) {
+//			findViewById(R.id.buttonInvert).setOnClickListener(this);
+//		}
+//		if (findViewById(R.id.buttonSine) != null) {
+//			findViewById(R.id.buttonSine).setOnClickListener(this);
+//		}
+//		if (findViewById(R.id.buttonCosine) != null) {
+//			findViewById(R.id.buttonCosine).setOnClickListener(this);
+//		}
+//		if (findViewById(R.id.buttonTangent) != null) {
+//			findViewById(R.id.buttonTangent).setOnClickListener(this);
+//		}
 
+		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.backup_mainactivity);
-		Purchases.initiatePurchase(MainActivity.this);
-		prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-		if (!prefs.getString("isPaymentMade", "").equals("true")) {
-			ConstantAds.loadInterstitialAd(getApplicationContext(),
-					"top");
-		}
-		int sw = getResources().getConfiguration().screenWidthDp;
-		Log.d("pixel density", sw + "  " + android.os.Build.MANUFACTURER
-				+ "    " + android.os.Build.MODEL);
-		gestureDetector = new GestureDetector(this, new MyGestureDetector());
-		gestureListener = new View.OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				return gestureDetector.onTouchEvent(event);
+		// Get the view from drawer_main.xml
+		setContentView(R.layout.drawer_main);
+
+		// Get the Title
+		mTitle = mDrawerTitle = getTitle();
+
+		// Generate title
+		title = new String[] { "Title Fragment 1", "Title Fragment 2" };
+
+		// Generate subtitle
+		subtitle = new String[] { "Subtitle Fragment 1", "Subtitle Fragment 2" };
+
+		// Generate icon
+		icon = new int[] { R.drawable.action_about, R.drawable.action_settings };
+
+		// Locate DrawerLayout in drawer_main.xml
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+		// Locate ListView in drawer_main.xml
+		mDrawerList = (ListView) findViewById(R.id.listview_drawer);
+
+		// Set a custom shadow that overlays the main content when the drawer
+		// opens
+		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
+				GravityCompat.START);
+
+		// Pass string arrays to MenuListAdapter
+		mMenuAdapter = new MenuListAdapter(MainActivity.this, title, subtitle,
+				icon);
+
+		// Set the MenuListAdapter to the ListView
+		mDrawerList.setAdapter(mMenuAdapter);
+
+		// Capture listview menu item click
+		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+		// Enable ActionBar app icon to behave as action to toggle nav drawer
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		// ActionBarDrawerToggle ties together the the proper interactions
+		// between the sliding drawer and the action bar app icon
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+				R.drawable.ic_drawer, R.string.drawer_open,
+				R.string.drawer_close) {
+
+			public void onDrawerClosed(View view) {
+				// TODO Auto-generated method stub
+				super.onDrawerClosed(view);
+			}
+
+			public void onDrawerOpened(View drawerView) {
+				// TODO Auto-generated method stub
+				// Set the title on the action when drawer open
+				getSupportActionBar().setTitle(mDrawerTitle);
+				super.onDrawerOpened(drawerView);
 			}
 		};
-		imgScreen = (ImageView) findViewById(R.id.screen);
-		row1 = (RelativeLayout) findViewById(R.id.row1);
-		if (isTablet(getApplicationContext())) {
-			Log.d("device is", "tablet");
-			imgScreen.setVisibility(View.INVISIBLE);
-			row1.setBackground(getResources().getDrawable(R.drawable.screen));
-		} else {
-			Log.d("device is", "smart phone");
-		}
 
-		// icon = (ImageView) findViewById(android.R.id.icon);
-		vibe = (Vibrator) getApplicationContext().getSystemService(
-				Context.VIBRATOR_SERVICE);
-		sideNavigationView = (SideNavigationView) findViewById(R.id.side_navigation_view);
-		sideNavigationView.setMenuItems(R.menu.side_navigation_menu);
-		sideNavigationView.setMenuClickCallback(this);
-		if (getIntent().hasExtra(EXTRA_TITLE)) {
-			String title = getIntent().getStringExtra(EXTRA_TITLE);
-			// int resId = getIntent().getIntExtra(EXTRA_RESOURCE_ID, 0);
-			setTitle(title);
-			// icon.setImageResource(resId);
-			sideNavigationView
-					.setMode(getIntent().getIntExtra(EXTRA_MODE, 0) == 0 ? Mode.LEFT
-							: Mode.RIGHT);
-		}
-		mCalculatorBrain = new CalculatorBrain();
-		// getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		anim = AnimationUtils.loadAnimation(this, R.drawable.scale);
-		anim.setAnimationListener(new AnimationListener() {
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-			@Override
-			public void onAnimationStart(Animation arg0) {
-				rl_upgrade.setVisibility(View.VISIBLE);
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onAnimationEnd(Animation arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		anim_back = AnimationUtils.loadAnimation(this, R.drawable.scale_back);
-		anim_back.setAnimationListener(new AnimationListener() {
-
-			@Override
-			public void onAnimationStart(Animation arg0) {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onAnimationEnd(Animation arg0) {
-				// TODO Auto-generated method stub
-				rl_upgrade.setVisibility(View.GONE);
-
-			}
-		});
-
-		rl_upgrade = (RelativeLayout) findViewById(R.id.rl_upgrade);
-		rl_upgrade_parent = (RelativeLayout) findViewById(R.id.rl_upgrade_parent);
-		upgrade_close = (ImageView) findViewById(R.id.upgrade_close);
-		upgrade_bg = (ImageView) findViewById(R.id.upgrade_bg);
-		upgrade_text = (ImageView) findViewById(R.id.upgrade_text);
-		upgrade_close.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				rl_upgrade_parent.startAnimation(anim_back);
-				upgradePopUp = 0;
-			}
-		});
-		upgrade_bg.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				rl_upgrade_parent.startAnimation(anim_back);
-				upgradePopUp = 0;
-			}
-		});
-		upgrade_text.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-			 Purchases.makePurchase(MainActivity.this);
-
-//				if (checkvar == true) {
-//					editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
-//							.edit();
-//					editor.putString("isPaymentMade", "true");
-//					editor.commit();
-//				} else {
-//					editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
-//							.edit();
-//					editor.putString("isPaymentMade", "false");
-//					editor.commit();
-//				}
-				rl_upgrade_parent.startAnimation(anim_back);
-				upgradePopUp = 0;
-
-			}
-		});
-		rl_upgrade.setVisibility(View.GONE);
-		upgradePopUp = 0;
-		functionPad = (LinearLayout) findViewById(R.id.functionPad);
-		mCalculatorDisplay = (TextView) findViewById(R.id.textView1);
-		mTextViewSmall = (TextView) findViewById(R.id.textViewSmall);
-		menuIcon = (ImageView) findViewById(R.id.menuicon);
-		secondaryTextView = (TextView) findViewById(R.id.secondrayTextView1);
-
-		menuIcon.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				sideNavigationView.toggleMenu();
-				vibe.vibrate(50);
-			}
-		});
-		//
-		// Typeface tf = Typeface.createFromAsset(getAssets(), "DS-DIGIB.TTF");
-		Typeface tf2 = Typeface.createFromAsset(getAssets(), "DS-DIGI.TTF");
-		mCalculatorDisplay.setTypeface(tf2);
-		mTextViewSmall.setTypeface(tf2);
-		secondaryTextView.setTypeface(tf2);
-
-		df.setMinimumFractionDigits(0);
-		df.setMinimumIntegerDigits(1);
-		df.setMaximumIntegerDigits(100);
-
-		findViewById(R.id.button0).setOnClickListener(this);
-		findViewById(R.id.button1).setOnClickListener(this);
-		findViewById(R.id.button2).setOnClickListener(this);
-		findViewById(R.id.button3).setOnClickListener(this);
-		findViewById(R.id.button4).setOnClickListener(this);
-		findViewById(R.id.button5).setOnClickListener(this);
-		findViewById(R.id.button6).setOnClickListener(this);
-		findViewById(R.id.button7).setOnClickListener(this);
-		findViewById(R.id.button8).setOnClickListener(this);
-		findViewById(R.id.button9).setOnClickListener(this);
-
-		findViewById(R.id.buttonAdd).setOnClickListener(this);
-		findViewById(R.id.buttonSubtract).setOnClickListener(this);
-		findViewById(R.id.buttonMultiply).setOnClickListener(this);
-		findViewById(R.id.buttonDivide).setOnClickListener(this);
-		findViewById(R.id.buttonDecimalPoint).setOnClickListener(this);
-		findViewById(R.id.buttonEquals).setOnClickListener(this);
-		findViewById(R.id.buttonClear).setOnClickListener(this);
-		findViewById(R.id.buttonClearMemory).setOnClickListener(this);
-		findViewById(R.id.buttonAddToMemory).setOnClickListener(this);
-		findViewById(R.id.buttonSubtractFromMemory).setOnClickListener(this);
-		findViewById(R.id.buttonRecallMemory).setOnClickListener(this);
-		findViewById(R.id.buttonSquareRoot).setOnClickListener(this);
-		findViewById(R.id.buttonPercentage).setOnClickListener(this);
-		findViewById(R.id.buttonSquared).setOnClickListener(this);
-		findViewById(R.id.buttonToggleSign).setOnClickListener(this);
-		functionPad.setOnTouchListener(gestureListener);
-		findViewById(R.id.buttonBackSpace).setOnClickListener(
-				new View.OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						vibe.vibrate(50);
-						if (mCalculatorDisplay.getText().length() > 0) {
-							// if last character to be removed is an operation
-							// do set the waiting operation as ""
-							if (OPERATIONS.contains(mCalculatorDisplay
-									.getText()
-									.toString()
-									.substring(
-											mCalculatorDisplay.getText()
-													.toString().length() - 1))
-									|| mCalculatorDisplay
-											.getText()
-											.toString()
-											.substring(
-													mCalculatorDisplay
-															.getText()
-															.toString()
-															.length() - 1)
-											.equals("%")
-
-									|| mCalculatorDisplay
-											.getText()
-											.toString()
-											.substring(
-													mCalculatorDisplay
-															.getText()
-															.toString()
-															.length() - 1)
-											.equals("^")) {
-								CalculatorBrain.mWaitingOperator = "";
-
-							}
-
-							if (mCalculatorDisplay
-									.getText()
-									.toString()
-									.substring(
-											mCalculatorDisplay.getText()
-													.toString().length() - 1)
-									.equals(")")) {
-								isBracketClosed = false;
-								isBracketOpened = true;
-							}
-
-							if (mCalculatorDisplay
-									.getText()
-									.toString()
-									.substring(
-											mCalculatorDisplay.getText()
-													.toString().length() - 1)
-									.equals("(")) {
-								isBracketOpened = false;
-								isBracketClosed = true;
-							}
-							mCalculatorDisplay.setText(mCalculatorDisplay
-									.getText()
-									.toString()
-									.substring(
-											0,
-											mCalculatorDisplay.getText()
-													.length() - 1));
-							int size = 10;
-							if (android.os.Build.MODEL.contains("N7100")) {
-								size = 12;
-							} else {
-								size = 10;
-							}
-							if (mCalculatorDisplay.getText().toString()
-									.length() > size) {
-								int displayLength = mCalculatorDisplay
-										.getText().toString().length()
-										- size;
-								String SecondaryText = "";
-								SecondaryText = mCalculatorDisplay.getText()
-										.toString();
-								SecondaryText = SecondaryText.substring(0,
-										size - 4);
-								mCalculatorDisplay.setVisibility(View.GONE);
-								secondaryTextView.setVisibility(View.VISIBLE);
-								secondaryTextView.setText(SecondaryText
-										+ "x10^" + displayLength);
-
-							} else {
-								secondaryTextView.setVisibility(View.GONE);
-								mCalculatorDisplay.setVisibility(View.VISIBLE);
-							}
-
-						}
-
-						if (mCalculatorDisplay.getText().length() == 0
-								|| mCalculatorDisplay.getText().equals("0.0")) {
-							mCalculatorDisplay.setText("0");
-							userIsInTheMiddleOfTypingANumber = false;
-
-						}
-					}
-				});
-
-		if (findViewById(R.id.buttonInvert) != null) {
-			findViewById(R.id.buttonInvert).setOnClickListener(this);
-		}
-		if (findViewById(R.id.buttonSine) != null) {
-			findViewById(R.id.buttonSine).setOnClickListener(this);
-		}
-		if (findViewById(R.id.buttonCosine) != null) {
-			findViewById(R.id.buttonCosine).setOnClickListener(this);
-		}
-		if (findViewById(R.id.buttonTangent) != null) {
-			findViewById(R.id.buttonTangent).setOnClickListener(this);
+		if (savedInstanceState == null) {
+			selectItem(0);
 		}
 	}
 
@@ -819,37 +888,37 @@ ISideNavigationCallback {
 		mCalculatorDisplay.setText(df.format(mCalculatorBrain.getResult()));
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.main_menu, menu);
-		if (sideNavigationView.getMode() == Mode.RIGHT) {
-			menu.findItem(R.id.mode_right).setChecked(true);
-		} else {
-			menu.findItem(R.id.mode_left).setChecked(true);
-		}
-		return super.onCreateOptionsMenu(menu);
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		getSupportMenuInflater().inflate(R.menu.main_menu, menu);
+//		if (sideNavigationView.getMode() == Mode.RIGHT) {
+//			menu.findItem(R.id.mode_right).setChecked(true);
+//		} else {
+//			menu.findItem(R.id.mode_left).setChecked(true);
+//		}
+//		return super.onCreateOptionsMenu(menu);
+//	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			sideNavigationView.toggleMenu();
-			break;
-		case R.id.mode_left:
-			item.setChecked(true);
-			sideNavigationView.setMode(Mode.LEFT);
-			break;
-		case R.id.mode_right:
-			item.setChecked(true);
-			sideNavigationView.setMode(Mode.RIGHT);
-			break;
-
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-		return true;
-	}
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//		case android.R.id.home:
+//			sideNavigationView.toggleMenu();
+//			break;
+//		case R.id.mode_left:
+//			item.setChecked(true);
+//			sideNavigationView.setMode(Mode.LEFT);
+//			break;
+//		case R.id.mode_right:
+//			item.setChecked(true);
+//			sideNavigationView.setMode(Mode.RIGHT);
+//			break;
+//
+//		default:
+//			return super.onOptionsItemSelected(item);
+//		}
+//		return true;
+//	}
 
 	@Override
 	public void onSideNavigationItemClick(int itemId) {
@@ -905,21 +974,21 @@ ISideNavigationCallback {
 
 	}
 
-	@Override
-	public void onBackPressed() {
-		// hide menu if it shown
-		if (sideNavigationView.isShown()) {
-			sideNavigationView.hideMenu();
-			finish();
-		}
-		if (upgradePopUp == 1) {
-			rl_upgrade_parent.startAnimation(anim_back);
-			upgradePopUp = 0;
-		} else {
-			super.onBackPressed();
-			finish();
-		}
-	}
+//	@Override
+//	public void onBackPressed() {
+//		// hide menu if it shown
+//		if (sideNavigationView.isShown()) {
+//			sideNavigationView.hideMenu();
+//			finish();
+//		}
+//		if (upgradePopUp == 1) {
+//			rl_upgrade_parent.startAnimation(anim_back);
+//			upgradePopUp = 0;
+//		} else {
+//			super.onBackPressed();
+//			finish();
+//		}
+//	}
 
 	private void invokeActivity(String title) {
 		Intent intent = new Intent();
@@ -1162,4 +1231,101 @@ ISideNavigationCallback {
 		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
 	}
 
+	
+	
+	
+	
+	
+	// Declare Variables
+		DrawerLayout mDrawerLayout;
+		ListView mDrawerList;
+		ActionBarDrawerToggle mDrawerToggle;
+		MenuListAdapter mMenuAdapter;
+		String[] title;
+		String[] subtitle;
+		int[] icon;
+		Fragment fragment1 = new Fragment1();
+		Fragment fragment2 = new Fragment2();
+		private CharSequence mDrawerTitle;
+		private CharSequence mTitle;
+		
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		if (item.getItemId() == android.R.id.home) {
+
+			if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
+				mDrawerLayout.closeDrawer(mDrawerList);
+			} else {
+				mDrawerLayout.openDrawer(mDrawerList);
+			}
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
+	// ListView click listener in the navigation drawer
+	private class DrawerItemClickListener implements
+			ListView.OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			selectItem(position);
+		}
+	}
+
+	private void selectItem(int position) {
+
+//			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//			// Locate Position
+//			switch (position) {
+//			case 0:
+//				ft.replace(R.id.content_frame, fragment1);
+//				break;
+//			case 1:
+//				ft.replace(R.id.content_frame, fragment2);
+//				break;
+//			}
+//			ft.commit();
+//			mDrawerList.setItemChecked(position, true);
+//			// Get the title followed by the position
+//			setTitle(title[position]);
+//			// Close drawer
+//			mDrawerLayout.closeDrawer(mDrawerList);
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		mDrawerToggle.syncState();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		// Pass any configuration change to the drawer toggles
+		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+
+	@Override
+	public void setTitle(CharSequence title) {
+		mTitle = title;
+		getSupportActionBar().setTitle(mTitle);
+	}
+
+	@Override
+	public void onBackPressed() {
+
+//			FragmentManager manager = getSupportFragmentManager();
+//			if (manager.getBackStackEntryCount() > 0) {
+//				// If there are back-stack entries, leave the FragmentActivity
+//				// implementation take care of them.
+//				manager.popBackStack();
+//
+//			} else {
+//				// Otherwise, ask user if he wants to leave :)
+//				super.onBackPressed();
+//			}
+	}
 }

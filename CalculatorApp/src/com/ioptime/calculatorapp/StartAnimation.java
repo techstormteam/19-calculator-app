@@ -14,6 +14,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
 import com.smartcalculator.R;
 
 public class StartAnimation extends Activity{

@@ -311,8 +311,8 @@ public class UnitConverterTemp extends SherlockActivity implements
 		unit_name_farenheit.setText("Farenheit");
 		
 		symbols_kelvin.setText("K");
-		symbols_celsius.setText("¼C");
-		symbols_farenheit.setText("¼F");
+		symbols_celsius.setText("ï¿½C");
+		symbols_farenheit.setText("ï¿½F");
 
 		sideNavigationView.setMenuClickCallback(this);
 		if (getIntent().hasExtra(EXTRA_TITLE)) {

@@ -129,7 +129,6 @@ public class UnitConverterLength extends SherlockActivity implements
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-	ImageView menuIcon;
 	Vibrator vibe;
 	
 	RelativeLayout rl_upgrade;
@@ -241,7 +240,6 @@ public class UnitConverterLength extends SherlockActivity implements
 		upgradePopUp=0;
 		funtionPad = (LinearLayout) findViewById(R.id.functionPad);
 		sideNavigationView = (SideNavigationView) findViewById(R.id.side_navigation_view);
-		menuIcon = (ImageView) findViewById(R.id.menuicon);
 		sideNavigationView.setMenuItems(R.menu.side_navigation_menu);
 		funtionPad.setOnTouchListener(gestureListener);
 		uc_edittext = (EditText) findViewById(R.id.uc_edittext);
@@ -330,15 +328,7 @@ public class UnitConverterLength extends SherlockActivity implements
 		// getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		vibe = (Vibrator) getApplicationContext().getSystemService(
 				Context.VIBRATOR_SERVICE);
-		menuIcon.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				sideNavigationView.toggleMenu();
-				vibe.vibrate(50);
-			}
-		});
 
 		ll_centimeters.setOnClickListener(new OnClickListener() {
 

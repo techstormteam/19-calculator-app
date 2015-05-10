@@ -1,26 +1,21 @@
-package com.ioptime.calculatorapp;
+package com.ioptime.calculatorapp.fragments;
 
 import java.text.DecimalFormat;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.KeyEvent;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,21 +23,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.devspark.sidenavigation.ISideNavigationCallback;
-import com.devspark.sidenavigation.SideNavigationView;
-import com.devspark.sidenavigation.SideNavigationView.Mode;
+import com.actionbarsherlock.app.SherlockFragment;
+import com.ioptime.calculatorapp.HealthResults;
+import com.smartcalculator.MainActivityA;
 import com.smartcalculator.R;
 
-public class HealthCalculator extends SherlockActivity implements
-		ISideNavigationCallback, OnClickListener {
+public class FitnessCalculatorFragment extends SherlockFragment implements
+	OnClickListener {
 
+	Context ctx;
+	
 	public static final String EXTRA_TITLE = "com.devspark.sidenavigation.sample.extra.MTGOBJECT";
 	public static final String EXTRA_RESOURCE_ID = "com.devspark.sidenavigation.sample.extra.RESOURCE_ID";
 	public static final String EXTRA_MODE = "com.devspark.sidenavigation.sample.extra.MODE";
-	private SideNavigationView sideNavigationView;
 	RelativeLayout female_layout;
 	ImageView femaleUnselected;
 	ImageView MaleUnselected;
@@ -73,7 +66,7 @@ public class HealthCalculator extends SherlockActivity implements
 	ImageView imgMandatoryWrist;
 	ImageView imgMandatoryHips;
 	ImageView imgMandatoryForearms;
-	private GestureDetector gestureDetector;
+
 	View.OnTouchListener gestureListener;
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -91,25 +84,16 @@ public class HealthCalculator extends SherlockActivity implements
 	int upgradePopUp=0;
 	Animation anim;
 	Animation anim_back;
-
-	@SuppressLint("NewApi")
+	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-
-		// hide the window title.
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// hide the status bar and other OS-level chrome
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.health_calculator, container, false);
+		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.health_calculator);
-		gestureDetector = new GestureDetector(this, new MyGestureDetector());
-		gestureListener = new View.OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				return gestureDetector.onTouchEvent(event);
-			}
-		};
-		anim = AnimationUtils.loadAnimation(this, R.drawable.scale);
+		ctx = container.getContext();
+
+		anim = AnimationUtils.loadAnimation(ctx, R.drawable.scale);
 		anim.setAnimationListener(new AnimationListener() {
 
 			@Override
@@ -132,7 +116,7 @@ public class HealthCalculator extends SherlockActivity implements
 			}
 		});
 		
-		anim_back = AnimationUtils.loadAnimation(this, R.drawable.scale_back);
+		anim_back = AnimationUtils.loadAnimation(ctx, R.drawable.scale_back);
 		anim_back.setAnimationListener(new AnimationListener() {
 
 			@Override
@@ -155,11 +139,11 @@ public class HealthCalculator extends SherlockActivity implements
 			}
 		});
 		
-		rl_upgrade = (RelativeLayout) findViewById(R.id.rl_upgrade);
-		rl_upgrade_parent = (RelativeLayout) findViewById(R.id.rl_upgrade_parent);
-		upgrade_close = (ImageView) findViewById(R.id.upgrade_close);
-		upgrade_bg = (ImageView) findViewById(R.id.upgrade_bg);
-		upgrade_text = (ImageView) findViewById(R.id.upgrade_text);
+		rl_upgrade = (RelativeLayout) view.findViewById(R.id.rl_upgrade);
+		rl_upgrade_parent = (RelativeLayout) view.findViewById(R.id.rl_upgrade_parent);
+		upgrade_close = (ImageView) view.findViewById(R.id.upgrade_close);
+		upgrade_bg = (ImageView) view.findViewById(R.id.upgrade_bg);
+		upgrade_text = (ImageView) view.findViewById(R.id.upgrade_text);
 		upgrade_close.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -187,37 +171,36 @@ public class HealthCalculator extends SherlockActivity implements
 		});
 		rl_upgrade.setVisibility(View.GONE);
 		upgradePopUp=0;
-		funtionPad = (LinearLayout) findViewById(R.id.functionPad);
-		sideNavigationView = (SideNavigationView) findViewById(R.id.side_navigation_view);
-		Switch = (ImageView) findViewById(R.id.metric_switch);
-		female_layout = (RelativeLayout) findViewById(R.id.female_layout);
-		MaleUnselected = (ImageView) findViewById(R.id.male_unselected);
-		femaleUnselected = (ImageView) findViewById(R.id.female_selected);
-		heightScreen = (ImageView) findViewById(R.id.height_screen);
-		heightScreen2 = (ImageView) findViewById(R.id.height_screen_2);
-		weightScreen = (ImageView) findViewById(R.id.weight_screen);
-		waistScreen = (ImageView) findViewById(R.id.waist_screen);
-		wristScreen = (ImageView) findViewById(R.id.wrist_screen);
-		hipsScreen = (ImageView) findViewById(R.id.hips_screen);
-		forearmsScreen = (ImageView) findViewById(R.id.forearms_screen);
-		btnCalculate = (ImageView) findViewById(R.id.bnt_calculate);
-		etAgeScreen = (EditText) findViewById(R.id.et_age_screen);
-		etForeArmsScreen = (EditText) findViewById(R.id.et_forearms_screen);
-		etHeightScreen = (EditText) findViewById(R.id.et_height_screen);
-		etHeightScreen2 = (EditText) findViewById(R.id.et_height_screen_2);
-		etHipsScreen = (EditText) findViewById(R.id.et_hips_screen);
-		etWaistScreen = (EditText) findViewById(R.id.et_waist_screen);
-		etWeightScreen = (EditText) findViewById(R.id.et_weight_screen);
-		etWristScreen = (EditText) findViewById(R.id.et_wrist_screen);
-		imgMandatoryAge = (ImageView) findViewById(R.id.mandatory_age);
-		imgMandatoryHeight = (ImageView) findViewById(R.id.mandatory_height);
-		imgMandatoryWeight = (ImageView) findViewById(R.id.mandatory_weight);
-		imgMandatoryWaist = (ImageView) findViewById(R.id.mandatory_waist);
-		imgMandatoryWrist = (ImageView) findViewById(R.id.mandatory_wrist);
-		imgMandatoryHips = (ImageView) findViewById(R.id.mandatory_hips);
-		imgMandatoryForearms = (ImageView) findViewById(R.id.mandatory_forarms);
-		btnClear = (ImageView) findViewById(R.id.bnt_clear);
-		Typeface tf = Typeface.createFromAsset(getAssets(), "DS-DIGIB.TTF");
+		funtionPad = (LinearLayout) view.findViewById(R.id.functionPad);
+		Switch = (ImageView) view.findViewById(R.id.metric_switch);
+		female_layout = (RelativeLayout) view.findViewById(R.id.female_layout);
+		MaleUnselected = (ImageView) view.findViewById(R.id.male_unselected);
+		femaleUnselected = (ImageView) view.findViewById(R.id.female_selected);
+		heightScreen = (ImageView) view.findViewById(R.id.height_screen);
+		heightScreen2 = (ImageView) view.findViewById(R.id.height_screen_2);
+		weightScreen = (ImageView) view.findViewById(R.id.weight_screen);
+		waistScreen = (ImageView) view.findViewById(R.id.waist_screen);
+		wristScreen = (ImageView) view.findViewById(R.id.wrist_screen);
+		hipsScreen = (ImageView) view.findViewById(R.id.hips_screen);
+		forearmsScreen = (ImageView) view.findViewById(R.id.forearms_screen);
+		btnCalculate = (ImageView) view.findViewById(R.id.bnt_calculate);
+		etAgeScreen = (EditText) view.findViewById(R.id.et_age_screen);
+		etForeArmsScreen = (EditText) view.findViewById(R.id.et_forearms_screen);
+		etHeightScreen = (EditText) view.findViewById(R.id.et_height_screen);
+		etHeightScreen2 = (EditText) view.findViewById(R.id.et_height_screen_2);
+		etHipsScreen = (EditText) view.findViewById(R.id.et_hips_screen);
+		etWaistScreen = (EditText) view.findViewById(R.id.et_waist_screen);
+		etWeightScreen = (EditText) view.findViewById(R.id.et_weight_screen);
+		etWristScreen = (EditText) view.findViewById(R.id.et_wrist_screen);
+		imgMandatoryAge = (ImageView) view.findViewById(R.id.mandatory_age);
+		imgMandatoryHeight = (ImageView) view.findViewById(R.id.mandatory_height);
+		imgMandatoryWeight = (ImageView) view.findViewById(R.id.mandatory_weight);
+		imgMandatoryWaist = (ImageView) view.findViewById(R.id.mandatory_waist);
+		imgMandatoryWrist = (ImageView) view.findViewById(R.id.mandatory_wrist);
+		imgMandatoryHips = (ImageView) view.findViewById(R.id.mandatory_hips);
+		imgMandatoryForearms = (ImageView) view.findViewById(R.id.mandatory_forarms);
+		btnClear = (ImageView) view.findViewById(R.id.bnt_clear);
+		Typeface tf = Typeface.createFromAsset(ctx.getAssets(), "DS-DIGIB.TTF");
 		etAgeScreen.setTypeface(tf);
 		etForeArmsScreen.setTypeface(tf);
 		etHeightScreen.setTypeface(tf);
@@ -227,22 +210,10 @@ public class HealthCalculator extends SherlockActivity implements
 		etWeightScreen.setTypeface(tf);
 		etWristScreen.setTypeface(tf);
 
-		sideNavigationView.setMenuItems(R.menu.side_navigation_menu);
 		funtionPad.setOnTouchListener(gestureListener);
-		sideNavigationView.setMenuClickCallback(this);
-		if (getIntent().hasExtra(EXTRA_TITLE)) {
-			String title = getIntent().getStringExtra(EXTRA_TITLE);
-			// int resId = getIntent().getIntExtra(EXTRA_RESOURCE_ID, 0);
-			setTitle(title);
-			// icon.setImageResource(resId);
-			sideNavigationView
-					.setMode(getIntent().getIntExtra(EXTRA_MODE, 0) == 0 ? Mode.LEFT
-							: Mode.RIGHT);
-		}
 		// getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		vibe = (Vibrator) getApplicationContext().getSystemService(
+		vibe = (Vibrator) ctx.getApplicationContext().getSystemService(
 				Context.VIBRATOR_SERVICE);
-
 		Switch.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -393,7 +364,7 @@ public class HealthCalculator extends SherlockActivity implements
 							double LeanBodyWeight = ((((((weightInLBS * 0.732) + 8.987) + (wristInInches / 3.14)) - (waistInInches * 0.157)) - (hipsInInches * 0.249)) + (forearmsInInches * 0.434));
 							double BodyFat = ((weightInLBS - LeanBodyWeight) * 100)
 									/ weightInLBS;
-							Intent i = new Intent(getApplicationContext(),
+							Intent i = new Intent(ctx.getApplicationContext(),
 									HealthResults.class);
 							DecimalFormat f = new DecimalFormat("##.00");
 							i.putExtra("BMI", f.format(BMI) + "");
@@ -401,7 +372,7 @@ public class HealthCalculator extends SherlockActivity implements
 							i.putExtra("BodyFat", f.format(BodyFat) + "");
 							i.putExtra("Gender", "Female");
 							startActivity(i);
-							finish();
+							MainActivityA.getInstance().finish();
 							toast("BMI-> " + BMI + "--BMR->" + BMR);
 
 						} else {
@@ -438,7 +409,7 @@ public class HealthCalculator extends SherlockActivity implements
 									/ weightInLBS;
 							Log.d("Results are: ", "BMI-> " + BMI + "--BMR->"
 									+ BMR);
-							Intent i = new Intent(getApplicationContext(),
+							Intent i = new Intent(ctx.getApplicationContext(),
 									HealthResults.class);
 							DecimalFormat f = new DecimalFormat("##.00");
 							i.putExtra("BMI", f.format(BMI) + "");
@@ -446,7 +417,7 @@ public class HealthCalculator extends SherlockActivity implements
 							i.putExtra("BodyFat", f.format(BodyFat) + "");
 							i.putExtra("Gender", "Female");
 							startActivity(i);
-							finish();
+							MainActivityA.getInstance().finish();
 
 						}
 					} else {
@@ -479,7 +450,7 @@ public class HealthCalculator extends SherlockActivity implements
 									- (waistInInches * 4.15);
 							double BodyFat = ((weightInLBS - LeanBodyWeight) * 100)
 									/ weightInLBS;
-							Intent i = new Intent(getApplicationContext(),
+							Intent i = new Intent(ctx,
 									HealthResults.class);
 							DecimalFormat f = new DecimalFormat("##.00");
 							i.putExtra("BMI", f.format(BMI) + "");
@@ -487,7 +458,7 @@ public class HealthCalculator extends SherlockActivity implements
 							i.putExtra("BodyFat", f.format(BodyFat) + "");
 							i.putExtra("Gender", "Male");
 							startActivity(i);
-							finish();
+							MainActivityA.getInstance().finish();
 
 						} else {
 							double FeetHeight = Double
@@ -517,7 +488,7 @@ public class HealthCalculator extends SherlockActivity implements
 							Log.d("results are: ", "BMI: " + BMI
 									+ "  --  BMR: " + BMR + " -- BodyFat: "
 									+ BodyFat);
-							Intent i = new Intent(getApplicationContext(),
+							Intent i = new Intent(ctx,
 									HealthResults.class);
 							DecimalFormat f = new DecimalFormat("##.00");
 							i.putExtra("BMI", f.format(BMI) + "");
@@ -525,7 +496,7 @@ public class HealthCalculator extends SherlockActivity implements
 							i.putExtra("BodyFat", f.format(BodyFat) + "");
 							i.putExtra("Gender", "Male");
 							startActivity(i);
-							finish();
+							MainActivityA.getInstance().finish();
 						}
 					} else {
 						toast(errorMessage);
@@ -533,204 +504,11 @@ public class HealthCalculator extends SherlockActivity implements
 				}
 			}
 		});
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.main_menu, menu);
-		if (sideNavigationView.getMode() == Mode.RIGHT) {
-			menu.findItem(R.id.mode_right).setChecked(true);
-		} else {
-			menu.findItem(R.id.mode_left).setChecked(true);
-		}
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			sideNavigationView.toggleMenu();
-			break;
-		case R.id.mode_left:
-			item.setChecked(true);
-			sideNavigationView.setMode(Mode.LEFT);
-			break;
-		case R.id.mode_right:
-			item.setChecked(true);
-			sideNavigationView.setMode(Mode.RIGHT);
-			break;
-
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-		return true;
-	}
-
-	@Override
-	public void onSideNavigationItemClick(int itemId) {
-		// TODO Auto-generated method stub
-		switch (itemId) {
-		case R.id.side_navigation_menu_item1:
-			invokeActivity(getString(R.string.title1));
-			finish();
-			break;
-
-		case R.id.side_navigation_menu_item2:
-			invokeActivity(getString(R.string.title2));
-			finish();
-			break;
-
-		case R.id.side_navigation_menu_item3:
-			invokeActivity(getString(R.string.title3));
-			finish();
-			finish();
-			break;
-
-		case R.id.side_navigation_menu_item4:
-			invokeActivity(getString(R.string.title4));
-			finish();
-			break;
-
-		case R.id.side_navigation_menu_item5:
-			invokeActivity(getString(R.string.title5));
-			finish();
-			break;
-
-		case R.id.side_navigation_menu_item6:
-			invokeActivity(getString(R.string.title6));
-		//	finish();
-			break;
-
-		case R.id.side_navigation_menu_item7:
-			invokeActivity(getString(R.string.title7));
-			break;
-
-		case R.id.side_navigation_menu_item8:
-			invokeActivity(getString(R.string.title8));
-			finish();
-			break;
-
-		default:
-			return;
-		}
-
-	}
-
-	@Override
-	public void onBackPressed() {
-		// hide menu if it shown
-		if (sideNavigationView.isShown()) {
-			sideNavigationView.hideMenu();
-			finish();
-		} 
-		if(upgradePopUp==1)
-		{
-			rl_upgrade_parent.startAnimation(anim_back);
-			upgradePopUp=0;
-		}
-		else {
-			startActivity(new Intent(getApplicationContext(),MainActivity.class));
-			finish();
-		}
+		
+		return view;
 	}
 
 	
-	
-	
-	private void invokeActivity(String title) {
-		Intent intent = new Intent();
-		if (title.equals("SIMPLE CALCULATOR")) {
-			intent = new Intent(this, MainActivity.class);
-			intent.putExtra(EXTRA_TITLE, title);
-			intent.putExtra(EXTRA_MODE,
-					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			overridePendingTransition(0, 0);
-		} else if (title.equals("BASIC CALCULATOR")) {
-			intent = new Intent(this, MainActivity.class);
-			intent.putExtra(EXTRA_TITLE, title);
-			intent.putExtra(EXTRA_MODE,
-					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			overridePendingTransition(0, 0);
-		} else if (title.equals("UNIT CONVERTER")) {
-			intent = new Intent(this, UnitConverterLength.class);
-			intent.putExtra(EXTRA_TITLE, title);
-			intent.putExtra(EXTRA_MODE,
-					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			overridePendingTransition(0, 0);
-		} else if (title.equals("CURRENCY CONVERTERS")) {
-			intent = new Intent(this, CurrencyConverter.class);
-			intent.putExtra(EXTRA_TITLE, title);
-			intent.putExtra(EXTRA_MODE,
-					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			overridePendingTransition(0, 0);
-		} else if (title.equals("FITNESS CALCULATOR")) {
-			intent = new Intent(this, HealthCalculator.class);
-			intent.putExtra(EXTRA_TITLE, title);
-			intent.putExtra(EXTRA_MODE,
-					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			overridePendingTransition(0, 0);
-		} else if (title.equals("SETTINGS")) {
-			intent = new Intent(this, MainActivity.class); Toast.makeText(getApplicationContext(), "Coming soon", Toast.LENGTH_LONG).show();
-			intent.putExtra(EXTRA_TITLE, title);
-			intent.putExtra(EXTRA_MODE,
-					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			overridePendingTransition(0, 0);
-		} else if (title.equals("ABOUT")) {
-			intent = new Intent(this, About.class);
-			intent.putExtra(EXTRA_TITLE, title);
-			intent.putExtra(EXTRA_MODE,
-					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			overridePendingTransition(0, 0);
-		} else if (title.equals("UPGRADE")) {
-			sideNavigationView.hideMenu();
-			rl_upgrade_parent.startAnimation(anim);
-			upgradePopUp=1;
-			overridePendingTransition(0, 0);
-		}
-	}
-
-
-	class MyGestureDetector extends SimpleOnGestureListener {
-		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-				float velocityY) {
-			try {
-				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-					return false;
-				// right to left swipe
-				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
-						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
-						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					sideNavigationView.toggleMenu();
-				}
-			} catch (Exception e) {
-				// nothing
-			}
-			return false;
-		}
-
-		@Override
-		public boolean onDown(MotionEvent e) {
-			return true;
-		}
-
-	}
 
 	@Override
 	public void onClick(View v) {
@@ -739,8 +517,8 @@ public class HealthCalculator extends SherlockActivity implements
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+		InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(MainActivityA.getInstance().getCurrentFocus().getWindowToken(), 0);
 		return true;
 	}
 
@@ -888,21 +666,9 @@ public class HealthCalculator extends SherlockActivity implements
 	}
 
 	public void toast(String message) {
-		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG)
+		Toast.makeText(ctx, message, Toast.LENGTH_LONG)
 				.show();
 	}
 	
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
-
-			sideNavigationView.toggleMenu();
-			return true;
-		}
-
-		// let the system handle all other key events
-		return super.onKeyDown(keyCode, event);
-	}
-
-
+	
 }

@@ -3,10 +3,10 @@ package com.ioptime.calculatorapp;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.smartcalculator.R;
 
@@ -14,27 +14,26 @@ public class MenuListAdapter extends BaseAdapter {
 
 	// Declare Variables
 	Context context;
-	String[] mTitle;
-	String[] mSubTitle;
-	int[] mIcon;
+	String[] mTitleStr;
+	int[] mTitle;
+	int[] mTitleClicked;
 	LayoutInflater inflater;
 
-	public MenuListAdapter(Context context, String[] title, String[] subtitle,
-			int[] icon) {
+	public MenuListAdapter(Context context, String[] titleStr, int[] title, int[] titleClicked) {
 		this.context = context;
+		this.mTitleStr = titleStr;
 		this.mTitle = title;
-		this.mSubTitle = subtitle;
-		this.mIcon = icon;
+		this.mTitleClicked = titleClicked;
 	}
 
 	@Override
 	public int getCount() {
-		return mTitle.length;
+		return mTitleStr.length;
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return mTitle[position];
+		return mTitleStr[position];
 	}
 
 	@Override
@@ -42,31 +41,28 @@ public class MenuListAdapter extends BaseAdapter {
 		return position;
 	}
 
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		// Declare Variables
-		TextView txtTitle;
-		TextView txtSubTitle;
-		ImageView imgIcon;
+		final ImageView imgTitle;
 
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View itemView = inflater.inflate(R.layout.drawer_list_item, parent,
 				false);
 
-		// Locate the TextViews in drawer_list_item.xml
-		txtTitle = (TextView) itemView.findViewById(R.id.title);
-		txtSubTitle = (TextView) itemView.findViewById(R.id.subtitle);
-
-		// Locate the ImageView in drawer_list_item.xml
-		imgIcon = (ImageView) itemView.findViewById(R.id.icon);
-
-		// Set the results into TextViews
-		txtTitle.setText(mTitle[position]);
-		txtSubTitle.setText(mSubTitle[position]);
-
-		// Set the results into ImageView
-		imgIcon.setImageResource(mIcon[position]);
-
+		// Locate the ImageViews in drawer_list_item.xml
+		imgTitle = (ImageView) itemView.findViewById(R.id.side_navigation_item_text);
+		imgTitle.setImageResource(mTitle[position]);
+		imgTitle.setContentDescription(mTitleStr[position]);
+		
+//		imgTitle.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				imgTitle.setImageResource(mTitleClicked[position]);
+//			}
+//		});
+		
 		return itemView;
 	}
 

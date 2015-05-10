@@ -41,6 +41,12 @@
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
+            android:name="com.smartcalculator.MainActivityA"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
             android:name="com.ioptime.calculatorapp.HealthCalculator"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"

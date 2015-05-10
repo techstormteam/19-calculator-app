@@ -10,20 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
-        <ImageView
-            android:id="@+id/menuicon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/ic_action_side_navigation" />
-
-        <View
-            android:id="@+id/adView"
-            android:layout_width="fill_parent"
-            android:layout_height="20dip"
-            android:layout_alignParentTop="true" >
-        </View>
 
         <RelativeLayout
             android:id="@+id/rl_heading"

@@ -4,7 +4,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,12 +11,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.ioptime.calculatorapp.Fragment1;
-import com.ioptime.calculatorapp.Fragment2;
 import com.ioptime.calculatorapp.MenuListAdapter;
+import com.ioptime.calculatorapp.fragments.AboutFragment;
+import com.ioptime.calculatorapp.fragments.BasicCalculatorFragment;
+import com.ioptime.calculatorapp.fragments.CurrencyConverterFragment;
+import com.ioptime.calculatorapp.fragments.FitnessCalculatorFragment;
+import com.ioptime.calculatorapp.fragments.SettingsFragment;
+import com.ioptime.calculatorapp.fragments.UnitConverterFragment;
+import com.ioptime.calculatorapp.fragments.UpgradeFragment;
 
 public class MainActivityA extends SherlockFragmentActivity {
 
@@ -26,17 +29,28 @@ public class MainActivityA extends SherlockFragmentActivity {
 	ListView mDrawerList;
 	ActionBarDrawerToggle mDrawerToggle;
 	MenuListAdapter mMenuAdapter;
-	String[] title;
-	String[] subtitle;
-	int[] icon;
-	Fragment fragment1 = new Fragment1();
-	Fragment fragment2 = new Fragment2();
+	String[] titleStr;
+	int[] title;
+	int[] titleClicked;
+	Fragment fragBasicCalculator = new BasicCalculatorFragment();
+	Fragment fragCurrencyConverter = new CurrencyConverterFragment();
+	Fragment fragUnitConverter = new UnitConverterFragment();
+	Fragment fragFitnessCalculator = new FitnessCalculatorFragment();
+	Fragment fragSettings = new SettingsFragment();
+	Fragment fragUpgrade = new UpgradeFragment();
+	Fragment fragAbout = new AboutFragment();
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 
+	private static MainActivityA instance;
+	public static MainActivityA getInstance() {
+		return instance;
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		instance = this;
 		// Get the view from drawer_main.xml
 		setContentView(R.layout.drawer_main);
 
@@ -44,13 +58,16 @@ public class MainActivityA extends SherlockFragmentActivity {
 		mTitle = mDrawerTitle = getTitle();
 
 		// Generate title
-		title = new String[] { "Title Fragment 1", "Title Fragment 2" };
-
-		// Generate subtitle
-		subtitle = new String[] { "Subtitle Fragment 1", "Subtitle Fragment 2" };
-
-		// Generate icon
-		icon = new int[] { R.drawable.action_about, R.drawable.action_settings };
+		titleStr = new String[] { "BASIC CALCULATOR", "CURRENTCY CONVERTER", "UNIT CONVERTER", 
+				"FITNESS CALCULATOR", "SETTINGS", "UPGRADE", "ABOUT" };
+		
+		
+		
+		title = new int[] { R.drawable.menu1, R.drawable.menu2, R.drawable.menu3, 
+				R.drawable.menu4, R.drawable.menu5, R.drawable.menu6, R.drawable.menu7 };
+		
+		titleClicked = new int[] { R.drawable.menu1_p, R.drawable.menu2_p, R.drawable.menu3_p, 
+				R.drawable.menu4_p, R.drawable.menu5_p, R.drawable.menu6_p, R.drawable.menu7_p };
 
 		// Locate DrawerLayout in drawer_main.xml
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -64,8 +81,7 @@ public class MainActivityA extends SherlockFragmentActivity {
 				GravityCompat.START);
 
 		// Pass string arrays to MenuListAdapter
-		mMenuAdapter = new MenuListAdapter(MainActivityA.this, title, subtitle,
-				icon);
+		mMenuAdapter = new MenuListAdapter(MainActivityA.this, titleStr, title, titleClicked);
 
 		// Set the MenuListAdapter to the ListView
 		mDrawerList.setAdapter(mMenuAdapter);
@@ -97,7 +113,6 @@ public class MainActivityA extends SherlockFragmentActivity {
 		};
 
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-
 		if (savedInstanceState == null) {
 			selectItem(0);
 		}
@@ -130,22 +145,37 @@ public class MainActivityA extends SherlockFragmentActivity {
 
 	private void selectItem(int position) {
 
-//		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//		// Locate Position
-//		switch (position) {
-//		case 0:
-//			ft.replace(R.id.content_frame, fragment1);
-//			break;
-//		case 1:
-//			ft.replace(R.id.content_frame, fragment2);
-//			break;
-//		}
-//		ft.commit();
-//		mDrawerList.setItemChecked(position, true);
-//		// Get the title followed by the position
-//		setTitle(title[position]);
-//		// Close drawer
-//		mDrawerLayout.closeDrawer(mDrawerList);
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		// Locate Position
+		switch (position) {
+		case 0:
+			ft.replace(R.id.content_frame, fragBasicCalculator);
+			break;
+		case 1:
+			ft.replace(R.id.content_frame, fragCurrencyConverter);
+			break;
+		case 2:
+			ft.replace(R.id.content_frame, fragUnitConverter);
+			break;
+		case 3:
+			ft.replace(R.id.content_frame, fragFitnessCalculator);
+			break;
+		case 4:
+			//ft.replace(R.id.content_frame, fragSettings);
+			break;
+		case 5:
+			ft.replace(R.id.content_frame, fragUpgrade);
+			break;
+		case 6:
+			ft.replace(R.id.content_frame, fragAbout);
+			break;
+		}
+		ft.commit();
+		mDrawerList.setItemChecked(position, true);
+		// Get the title followed by the position
+		setTitle(title[position]);
+		// Close drawer
+		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 
 	@Override
@@ -182,4 +212,21 @@ public class MainActivityA extends SherlockFragmentActivity {
 //			super.onBackPressed();
 //		}
 	}
+	
+//	@Override
+//	protected void onSaveInstanceState(Bundle outState) {
+//		super.onSaveInstanceState(outState);
+//		// Save variables on screen orientation change
+//		outState.putDouble("OPERAND", mCalculatorBrain.getResult());
+//		outState.putDouble("MEMORY", mCalculatorBrain.getMemory());
+//	}
+//
+//	@Override
+//	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//		super.onRestoreInstanceState(savedInstanceState);
+//		// Restore variables on screen orientation change
+//		mCalculatorBrain.setOperand(savedInstanceState.getDouble("OPERAND"));
+//		mCalculatorBrain.setMemory(savedInstanceState.getDouble("MEMORY"));
+//		mCalculatorDisplay.setText(df.format(mCalculatorBrain.getResult()));
+//	}
 }

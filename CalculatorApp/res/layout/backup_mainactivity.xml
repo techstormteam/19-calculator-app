@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <LinearLayout
+   <LinearLayout
         android:id="@+id/functionPad"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,25 +12,6 @@
         android:background="@drawable/bg"
         android:orientation="vertical" >
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-                android:id="@+id/menuicon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/ic_action_side_navigation" />
-
-            <View
-                android:id="@+id/adView"
-                android:layout_width="fill_parent"
-                android:layout_height="40dip"
-                android:layout_alignParentTop="true" >
-            </View>
-        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/row1"

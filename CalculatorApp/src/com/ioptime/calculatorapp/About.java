@@ -45,7 +45,6 @@ public class About extends SherlockActivity implements OnClickListener,
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-	ImageView menuIcon;
 	Vibrator vibe;
 
 	RelativeLayout rl_upgrade;
@@ -203,7 +202,6 @@ public class About extends SherlockActivity implements OnClickListener,
 			}
 		};
 		sideNavigationView = (SideNavigationView) findViewById(R.id.side_navigation_view);
-		menuIcon = (ImageView) findViewById(R.id.menuicon);
 		Typeface tf = Typeface.createFromAsset(getAssets(), "DS-DIGIB.TTF");
 		sideNavigationView.setMenuItems(R.menu.side_navigation_menu);
 		sideNavigationView.setMenuClickCallback(this);
@@ -220,15 +218,6 @@ public class About extends SherlockActivity implements OnClickListener,
 		// getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		vibe = (Vibrator) getApplicationContext().getSystemService(
 				Context.VIBRATOR_SERVICE);
-		menuIcon.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				sideNavigationView.toggleMenu();
-				vibe.vibrate(50);
-			}
-		});
 
 		plugin_fb.setOnClickListener(new OnClickListener() {
 

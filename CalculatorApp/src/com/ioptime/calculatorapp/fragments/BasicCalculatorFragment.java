@@ -1,55 +1,45 @@
-package com.ioptime.calculatorapp;
+package com.ioptime.calculatorapp.fragments;
 
 import java.text.DecimalFormat;
 import java.util.Stack;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import bsh.Interpreter;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
+import com.actionbarsherlock.app.SherlockFragment;
 import com.android.trivialdrivesample.util.Purchase;
-import com.devspark.sidenavigation.ISideNavigationCallback;
-import com.devspark.sidenavigation.SideNavigationView;
-import com.devspark.sidenavigation.SideNavigationView.Mode;
-import com.ioptime.calculatorapp.fragments.BasicCalculatorFragment;
+import com.ioptime.calculatorapp.CalculatorBrain;
+import com.ioptime.calculatorapp.ConstantAds;
+import com.ioptime.calculatorapp.MainActivity;
+import com.ioptime.calculatorapp.Purchases;
+import com.smartcalculator.MainActivityA;
 import com.smartcalculator.R;
 
-public class MainActivity extends SherlockFragmentActivity implements OnClickListener,
-
-ISideNavigationCallback {
-
+public class BasicCalculatorFragment extends SherlockFragment implements OnClickListener {
+	
+	private Context ctx;
+	
 	public static TextView mCalculatorDisplay;
 	public static TextView mTextViewSmall;
 	String sFirstOperand = "";
@@ -71,7 +61,6 @@ ISideNavigationCallback {
 	public static final String EXTRA_TITLE = "com.devspark.sidenavigation.sample.extra.MTGOBJECT";
 	public static final String EXTRA_RESOURCE_ID = "com.devspark.sidenavigation.sample.extra.RESOURCE_ID";
 	public static final String EXTRA_MODE = "com.devspark.sidenavigation.sample.extra.MODE";
-	private SideNavigationView sideNavigationView;
 	LinearLayout functionPad;
 	TextView secondaryTextView;
 	Boolean isGreaterThan10Digit = false;
@@ -96,36 +85,38 @@ ISideNavigationCallback {
 	SharedPreferences prefs;
 	SharedPreferences.Editor editor;
 	public static final String MY_PREFS_NAME = "MyPrefsFile";
-
-	@SuppressLint("NewApi")
+	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-
+	public View onCreateView(LayoutInflater inflater, final ViewGroup container,
+			Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.backup_mainactivity, container, false);
+		
+		ctx = container.getContext();
+		
 		// hide the window title.
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		MainActivityA.getInstance().requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// hide the status bar and other OS-level chrome
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//		MainActivityA.getInstance().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.backup_mainactivity);
-		Purchases.initiatePurchase(MainActivity.this);
-		prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+		Purchases.initiatePurchase(MainActivityA.getInstance());
+		prefs = container.getContext().getSharedPreferences(MY_PREFS_NAME, container.getContext().MODE_PRIVATE);
 		if (!prefs.getString("isPaymentMade", "").equals("true")) {
-			ConstantAds.loadInterstitialAd(getApplicationContext(),
+			ConstantAds.loadInterstitialAd(container.getContext(),
 					"top");
 		}
 		int sw = getResources().getConfiguration().screenWidthDp;
 		Log.d("pixel density", sw + "  " + android.os.Build.MANUFACTURER
 				+ "    " + android.os.Build.MODEL);
-		gestureDetector = new GestureDetector(this, new MyGestureDetector());
-		gestureListener = new View.OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				return gestureDetector.onTouchEvent(event);
-			}
-		};
-		imgScreen = (ImageView) findViewById(R.id.screen);
-		row1 = (RelativeLayout) findViewById(R.id.row1);
-		if (isTablet(getApplicationContext())) {
+//		gestureDetector = new GestureDetector(container.getContext(), new MyGestureDetector());
+//		gestureListener = new View.OnTouchListener() {
+//			public boolean onTouch(View v, MotionEvent event) {
+//				return gestureDetector.onTouchEvent(event);
+//			}
+//		};
+		imgScreen = (ImageView) rootView.findViewById(R.id.screen);
+		row1 = (RelativeLayout) rootView.findViewById(R.id.row1);
+		if (isTablet(container.getContext())) {
 			Log.d("device is", "tablet");
 			imgScreen.setVisibility(View.INVISIBLE);
 			row1.setBackground(getResources().getDrawable(R.drawable.screen));
@@ -133,24 +124,18 @@ ISideNavigationCallback {
 			Log.d("device is", "smart phone");
 		}
 
-		// icon = (ImageView) findViewById(android.R.id.icon);
-		vibe = (Vibrator) getApplicationContext().getSystemService(
+		// icon = (ImageView) rootView.findViewById(android.R.id.icon);
+		vibe = (Vibrator) container.getContext().getSystemService(
 				Context.VIBRATOR_SERVICE);
-		sideNavigationView = (SideNavigationView) findViewById(R.id.side_navigation_view);
-		sideNavigationView.setMenuItems(R.menu.side_navigation_menu);
-		sideNavigationView.setMenuClickCallback(this);
-		if (getIntent().hasExtra(EXTRA_TITLE)) {
-			String title = getIntent().getStringExtra(EXTRA_TITLE);
-			// int resId = getIntent().getIntExtra(EXTRA_RESOURCE_ID, 0);
-			setTitle(title);
-			// icon.setImageResource(resId);
-			sideNavigationView
-					.setMode(getIntent().getIntExtra(EXTRA_MODE, 0) == 0 ? Mode.LEFT
-							: Mode.RIGHT);
-		}
+//		if (getIntent().hasExtra(EXTRA_TITLE)) {
+//			String title = getIntent().getStringExtra(EXTRA_TITLE);
+//			// int resId = getIntent().getIntExtra(EXTRA_RESOURCE_ID, 0);
+//			setTitle(title);
+//			// icon.setImageResource(resId);
+//		}
 		mCalculatorBrain = new CalculatorBrain();
 		// getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		anim = AnimationUtils.loadAnimation(this, R.drawable.scale);
+		anim = AnimationUtils.loadAnimation(container.getContext(), R.drawable.scale);
 		anim.setAnimationListener(new AnimationListener() {
 
 			@Override
@@ -172,7 +157,7 @@ ISideNavigationCallback {
 			}
 		});
 
-		anim_back = AnimationUtils.loadAnimation(this, R.drawable.scale_back);
+		anim_back = AnimationUtils.loadAnimation(container.getContext(), R.drawable.scale_back);
 		anim_back.setAnimationListener(new AnimationListener() {
 
 			@Override
@@ -194,11 +179,11 @@ ISideNavigationCallback {
 			}
 		});
 
-		rl_upgrade = (RelativeLayout) findViewById(R.id.rl_upgrade);
-		rl_upgrade_parent = (RelativeLayout) findViewById(R.id.rl_upgrade_parent);
-		upgrade_close = (ImageView) findViewById(R.id.upgrade_close);
-		upgrade_bg = (ImageView) findViewById(R.id.upgrade_bg);
-		upgrade_text = (ImageView) findViewById(R.id.upgrade_text);
+		rl_upgrade = (RelativeLayout) rootView.findViewById(R.id.rl_upgrade);
+		rl_upgrade_parent = (RelativeLayout) rootView.findViewById(R.id.rl_upgrade_parent);
+		upgrade_close = (ImageView) rootView.findViewById(R.id.upgrade_close);
+		upgrade_bg = (ImageView) rootView.findViewById(R.id.upgrade_bg);
+		upgrade_text = (ImageView) rootView.findViewById(R.id.upgrade_text);
 		upgrade_close.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -222,34 +207,34 @@ ISideNavigationCallback {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-			 Purchases.makePurchase(MainActivity.this);
+			 Purchases.makePurchase(MainActivityA.getInstance());
 
-//				if (checkvar == true) {
-//					editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
-//							.edit();
-//					editor.putString("isPaymentMade", "true");
-//					editor.commit();
-//				} else {
-//					editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
-//							.edit();
-//					editor.putString("isPaymentMade", "false");
-//					editor.commit();
-//				}
-				rl_upgrade_parent.startAnimation(anim_back);
+//						if (checkvar == true) {
+//							editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+//									.edit();
+//							editor.putString("isPaymentMade", "true");
+//							editor.commit();
+//						} else {
+//							editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+//									.edit();
+//							editor.putString("isPaymentMade", "false");
+//							editor.commit();
+//						}
+//				rl_upgrade_parent.startAnimation(anim_back);
 				upgradePopUp = 0;
 
 			}
 		});
 		rl_upgrade.setVisibility(View.GONE);
 		upgradePopUp = 0;
-		functionPad = (LinearLayout) findViewById(R.id.functionPad);
-		mCalculatorDisplay = (TextView) findViewById(R.id.textView1);
-		mTextViewSmall = (TextView) findViewById(R.id.textViewSmall);
-		secondaryTextView = (TextView) findViewById(R.id.secondrayTextView1);
+		functionPad = (LinearLayout) rootView.findViewById(R.id.functionPad);
+		mCalculatorDisplay = (TextView) rootView.findViewById(R.id.textView1);
+		mTextViewSmall = (TextView) rootView.findViewById(R.id.textViewSmall);
+		secondaryTextView = (TextView) rootView.findViewById(R.id.secondrayTextView1);
 
 		//
 		// Typeface tf = Typeface.createFromAsset(getAssets(), "DS-DIGIB.TTF");
-		Typeface tf2 = Typeface.createFromAsset(getAssets(), "DS-DIGI.TTF");
+		Typeface tf2 = Typeface.createFromAsset(MainActivityA.getInstance().getAssets(), "DS-DIGI.TTF");
 		mCalculatorDisplay.setTypeface(tf2);
 		mTextViewSmall.setTypeface(tf2);
 		secondaryTextView.setTypeface(tf2);
@@ -258,34 +243,34 @@ ISideNavigationCallback {
 		df.setMinimumIntegerDigits(1);
 		df.setMaximumIntegerDigits(100);
 
-		findViewById(R.id.button0).setOnClickListener(this);
-		findViewById(R.id.button1).setOnClickListener(this);
-		findViewById(R.id.button2).setOnClickListener(this);
-		findViewById(R.id.button3).setOnClickListener(this);
-		findViewById(R.id.button4).setOnClickListener(this);
-		findViewById(R.id.button5).setOnClickListener(this);
-		findViewById(R.id.button6).setOnClickListener(this);
-		findViewById(R.id.button7).setOnClickListener(this);
-		findViewById(R.id.button8).setOnClickListener(this);
-		findViewById(R.id.button9).setOnClickListener(this);
+		rootView.findViewById(R.id.button0).setOnClickListener(this);
+		rootView.findViewById(R.id.button1).setOnClickListener(this);
+		rootView.findViewById(R.id.button2).setOnClickListener(this);
+		rootView.findViewById(R.id.button3).setOnClickListener(this);
+		rootView.findViewById(R.id.button4).setOnClickListener(this);
+		rootView.findViewById(R.id.button5).setOnClickListener(this);
+		rootView.findViewById(R.id.button6).setOnClickListener(this);
+		rootView.findViewById(R.id.button7).setOnClickListener(this);
+		rootView.findViewById(R.id.button8).setOnClickListener(this);
+		rootView.findViewById(R.id.button9).setOnClickListener(this);
 
-		findViewById(R.id.buttonAdd).setOnClickListener(this);
-		findViewById(R.id.buttonSubtract).setOnClickListener(this);
-		findViewById(R.id.buttonMultiply).setOnClickListener(this);
-		findViewById(R.id.buttonDivide).setOnClickListener(this);
-		findViewById(R.id.buttonDecimalPoint).setOnClickListener(this);
-		findViewById(R.id.buttonEquals).setOnClickListener(this);
-		findViewById(R.id.buttonClear).setOnClickListener(this);
-		findViewById(R.id.buttonClearMemory).setOnClickListener(this);
-		findViewById(R.id.buttonAddToMemory).setOnClickListener(this);
-		findViewById(R.id.buttonSubtractFromMemory).setOnClickListener(this);
-		findViewById(R.id.buttonRecallMemory).setOnClickListener(this);
-		findViewById(R.id.buttonSquareRoot).setOnClickListener(this);
-		findViewById(R.id.buttonPercentage).setOnClickListener(this);
-		findViewById(R.id.buttonSquared).setOnClickListener(this);
-		findViewById(R.id.buttonToggleSign).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonAdd).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonSubtract).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonMultiply).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonDivide).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonDecimalPoint).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonEquals).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonClear).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonClearMemory).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonAddToMemory).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonSubtractFromMemory).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonRecallMemory).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonSquareRoot).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonPercentage).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonSquared).setOnClickListener(this);
+		rootView.findViewById(R.id.buttonToggleSign).setOnClickListener(this);
 		functionPad.setOnTouchListener(gestureListener);
-		findViewById(R.id.buttonBackSpace).setOnClickListener(
+		rootView.findViewById(R.id.buttonBackSpace).setOnClickListener(
 				new View.OnClickListener() {
 
 					@Override
@@ -389,22 +374,22 @@ ISideNavigationCallback {
 					}
 				});
 
-		if (findViewById(R.id.buttonInvert) != null) {
-			findViewById(R.id.buttonInvert).setOnClickListener(this);
+		if (rootView.findViewById(R.id.buttonInvert) != null) {
+			rootView.findViewById(R.id.buttonInvert).setOnClickListener(this);
 		}
-		if (findViewById(R.id.buttonSine) != null) {
-			findViewById(R.id.buttonSine).setOnClickListener(this);
+		if (rootView.findViewById(R.id.buttonSine) != null) {
+			rootView.findViewById(R.id.buttonSine).setOnClickListener(this);
 		}
-		if (findViewById(R.id.buttonCosine) != null) {
-			findViewById(R.id.buttonCosine).setOnClickListener(this);
+		if (rootView.findViewById(R.id.buttonCosine) != null) {
+			rootView.findViewById(R.id.buttonCosine).setOnClickListener(this);
 		}
-		if (findViewById(R.id.buttonTangent) != null) {
-			findViewById(R.id.buttonTangent).setOnClickListener(this);
+		if (rootView.findViewById(R.id.buttonTangent) != null) {
+			rootView.findViewById(R.id.buttonTangent).setOnClickListener(this);
 		}
-
 		
+		return rootView;
 	}
-
+	
 	@Override
 	public void onClick(View v) {
 		vibe.vibrate(50);
@@ -798,22 +783,7 @@ ISideNavigationCallback {
 		ConstantAds.displayInterstitial();
 	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		// Save variables on screen orientation change
-		outState.putDouble("OPERAND", mCalculatorBrain.getResult());
-		outState.putDouble("MEMORY", mCalculatorBrain.getMemory());
-	}
-
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		// Restore variables on screen orientation change
-		mCalculatorBrain.setOperand(savedInstanceState.getDouble("OPERAND"));
-		mCalculatorBrain.setMemory(savedInstanceState.getDouble("MEMORY"));
-		mCalculatorDisplay.setText(df.format(mCalculatorBrain.getResult()));
-	}
+	
 
 //	@Override
 //	public boolean onCreateOptionsMenu(Menu menu) {
@@ -847,59 +817,6 @@ ISideNavigationCallback {
 //		return true;
 //	}
 
-	@Override
-	public void onSideNavigationItemClick(int itemId) {
-		// TODO Auto-generated method stub
-		switch (itemId) {
-		case R.id.side_navigation_menu_item1:
-			invokeActivity(getString(R.string.title1));
-			finish();
-			break;
-
-		case R.id.side_navigation_menu_item2:
-			invokeActivity(getString(R.string.title2));
-			finish();
-			break;
-
-		case R.id.side_navigation_menu_item3:
-			invokeActivity(getString(R.string.title3));
-			finish();
-			finish();
-			break;
-
-		case R.id.side_navigation_menu_item4:
-			invokeActivity(getString(R.string.title4));
-			if (prefs.getString("isPaymentMade", "").equals("true")) {
-				finish();
-			}
-			break;
-
-		case R.id.side_navigation_menu_item5:
-			invokeActivity(getString(R.string.title5));
-			if (prefs.getString("isPaymentMade", "").equals("true")) {
-				finish();
-			}
-			break;
-
-		case R.id.side_navigation_menu_item6:
-			invokeActivity(getString(R.string.title6));
-			// finish();
-			break;
-
-		case R.id.side_navigation_menu_item7:
-			invokeActivity(getString(R.string.title7));
-			break;
-
-		case R.id.side_navigation_menu_item8:
-			invokeActivity(getString(R.string.title8));
-			finish();
-			break;
-
-		default:
-			return;
-		}
-
-	}
 
 //	@Override
 //	public void onBackPressed() {
@@ -918,129 +835,102 @@ ISideNavigationCallback {
 //	}
 
 	private void invokeActivity(String title) {
-		Intent intent = new Intent();
-		if (title.equals("SIMPLE CALCULATOR")) {
-			intent = new Intent(this, MainActivity.class);
-			intent.putExtra(EXTRA_TITLE, title);
-			intent.putExtra(EXTRA_MODE,
-					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			overridePendingTransition(0, 0);
-		} else if (title.equals("BASIC CALCULATOR")) {
-			intent = new Intent(this, MainActivity.class);
-			intent.putExtra(EXTRA_TITLE, title);
-			intent.putExtra(EXTRA_MODE,
-					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			overridePendingTransition(0, 0);
-		} else if (title.equals("UNIT CONVERTER")) {
-			if (prefs.getString("isPaymentMade", "").equals("true")) {
-				intent = new Intent(this, UnitConverterLength.class);
-				intent.putExtra(EXTRA_TITLE, title);
-				intent.putExtra(EXTRA_MODE,
-						sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				overridePendingTransition(0, 0);
-			} else if (!prefs.getString("isPaymentMade", "").equals("true")) {
-				sideNavigationView.hideMenu();
-				rl_upgrade_parent.startAnimation(anim);
-				upgradePopUp = 1;
-				overridePendingTransition(0, 0);
-			}
-		} else if (title.equals("CURRENCY CONVERTERS")) {
-			intent = new Intent(this, CurrencyConverter.class);
-			intent.putExtra(EXTRA_TITLE, title);
-			intent.putExtra(EXTRA_MODE,
-					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			overridePendingTransition(0, 0);
-		} else if (title.equals("FITNESS CALCULATOR")) {
-			if (prefs.getString("isPaymentMade", "").equals("true")) {
-				intent = new Intent(this, HealthCalculator.class);
-				intent.putExtra(EXTRA_TITLE, title);
-				intent.putExtra(EXTRA_MODE,
-						sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				overridePendingTransition(0, 0);
-			} else if (!prefs.getString("isPaymentMade", "").equals("true")) {
-				sideNavigationView.hideMenu();
-				rl_upgrade_parent.startAnimation(anim);
-				upgradePopUp = 1;
-				overridePendingTransition(0, 0);
-			}
-		} else if (title.equals("SETTINGS")) {
-			intent = new Intent(this, MainActivity.class);
-			Toast.makeText(getApplicationContext(), "Coming soon",
-					Toast.LENGTH_LONG).show();
-			intent.putExtra(EXTRA_TITLE, title);
-			intent.putExtra(EXTRA_MODE,
-					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			overridePendingTransition(0, 0);
-		} else if (title.equals("ABOUT")) {
-			intent = new Intent(this, About.class);
-			intent.putExtra(EXTRA_TITLE, title);
-			intent.putExtra(EXTRA_MODE,
-					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			overridePendingTransition(0, 0);
-		} else if (title.equals("UPGRADE")) {
-
-			if (!prefs.getString("isPaymentMade", "").equals("true")) {
-				sideNavigationView.hideMenu();
-				rl_upgrade_parent.startAnimation(anim);
-				upgradePopUp = 1;
-				overridePendingTransition(0, 0);
-			}
-
-		}
+//		Intent intent = new Intent();
+//		if (title.equals("SIMPLE CALCULATOR")) {
+//			intent = new Intent(ctx, MainActivity.class);
+//			intent.putExtra(EXTRA_TITLE, title);
+//			intent.putExtra(EXTRA_MODE,
+//					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
+//			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//			startActivity(intent);
+//			overridePendingTransition(0, 0);
+//		} else if (title.equals("BASIC CALCULATOR")) {
+//			intent = new Intent(ctx, MainActivity.class);
+//			intent.putExtra(EXTRA_TITLE, title);
+//			intent.putExtra(EXTRA_MODE,
+//					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
+//			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//			startActivity(intent);
+//			overridePendingTransition(0, 0);
+//		} else if (title.equals("UNIT CONVERTER")) {
+//			if (prefs.getString("isPaymentMade", "").equals("true")) {
+//				intent = new Intent(this, UnitConverterLength.class);
+//				intent.putExtra(EXTRA_TITLE, title);
+//				intent.putExtra(EXTRA_MODE,
+//						sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				startActivity(intent);
+//				overridePendingTransition(0, 0);
+//			} else if (!prefs.getString("isPaymentMade", "").equals("true")) {
+//				sideNavigationView.hideMenu();
+//				rl_upgrade_parent.startAnimation(anim);
+//				upgradePopUp = 1;
+//				overridePendingTransition(0, 0);
+//			}
+//		} else if (title.equals("CURRENCY CONVERTERS")) {
+//			intent = new Intent(this, CurrencyConverter.class);
+//			intent.putExtra(EXTRA_TITLE, title);
+//			intent.putExtra(EXTRA_MODE,
+//					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
+//			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//			startActivity(intent);
+//			overridePendingTransition(0, 0);
+//		} else if (title.equals("FITNESS CALCULATOR")) {
+//			if (prefs.getString("isPaymentMade", "").equals("true")) {
+//				intent = new Intent(ctx, HealthCalculator.class);
+//				intent.putExtra(EXTRA_TITLE, title);
+//				intent.putExtra(EXTRA_MODE,
+//						sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				startActivity(intent);
+//				overridePendingTransition(0, 0);
+//			} else if (!prefs.getString("isPaymentMade", "").equals("true")) {
+//				sideNavigationView.hideMenu();
+//				rl_upgrade_parent.startAnimation(anim);
+//				upgradePopUp = 1;
+//				overridePendingTransition(0, 0);
+//			}
+//		} else if (title.equals("SETTINGS")) {
+//			intent = new Intent(ctx, MainActivity.class);
+//			Toast.makeText(getApplicationContext(), "Coming soon",
+//					Toast.LENGTH_LONG).show();
+//			intent.putExtra(EXTRA_TITLE, title);
+//			intent.putExtra(EXTRA_MODE,
+//					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
+//			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//			startActivity(intent);
+//			overridePendingTransition(0, 0);
+//		} else if (title.equals("ABOUT")) {
+//			intent = new Intent(ctx, About.class);
+//			intent.putExtra(EXTRA_TITLE, title);
+//			intent.putExtra(EXTRA_MODE,
+//					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
+//			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//			startActivity(intent);
+//			overridePendingTransition(0, 0);
+//		} else if (title.equals("UPGRADE")) {
+//
+//			if (!prefs.getString("isPaymentMade", "").equals("true")) {
+//				sideNavigationView.hideMenu();
+//				rl_upgrade_parent.startAnimation(anim);
+//				upgradePopUp = 1;
+//				overridePendingTransition(0, 0);
+//			}
+//
+//		}
 	}
 
-	class MyGestureDetector extends SimpleOnGestureListener {
-		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-				float velocityY) {
-			try {
-				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-					return false;
-				// right to left swipe
-				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
-						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
-						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					sideNavigationView.toggleMenu();
-				}
-			} catch (Exception e) {
-				// nothing
-			}
-			return false;
-		}
-
-		@Override
-		public boolean onDown(MotionEvent e) {
-			return true;
-		}
-
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
-
-			sideNavigationView.toggleMenu();
-			return true;
-		}
-
-		// let the system handle all other key events
-		return super.onKeyDown(keyCode, event);
-	}
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		if (keyCode == KeyEvent.KEYCODE_MENU) {
+//
+//			sideNavigationView.toggleMenu();
+//			return true;
+//		}
+//
+//		// let the system handle all other key events
+//		return super.onKeyDown(keyCode, event);
+//	}
 
 	private Animation outToLeftAnimation() {
 		Animation outtoLeft = new TranslateAnimation(
@@ -1150,7 +1040,7 @@ ISideNavigationCallback {
 	// }
 
 	public void alert(String toast) {
-		Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG)
+		Toast.makeText(ctx, toast, Toast.LENGTH_LONG)
 				.show();
 	}
 
@@ -1158,10 +1048,5 @@ ISideNavigationCallback {
 		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
 	}
 
-	
-	
-	
-	
-	
 	
 }

@@ -15,6 +15,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.smartcalculator.MainActivityA;
 import com.smartcalculator.R;
 
 public class StartAnimation extends Activity{
@@ -55,7 +56,7 @@ public class StartAnimation extends Activity{
 			public void onAnimationEnd(Animation arg0) {
 				// TODO Auto-generated method stub
 				img_parent.setVisibility(View.GONE);
-				startActivity(new Intent(getApplicationContext(),MainActivity.class));
+				startActivity(new Intent(getApplicationContext(),MainActivityA.class));
 				finish();
 				
 			}

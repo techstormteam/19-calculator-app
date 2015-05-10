@@ -1,4 +1,4 @@
-package com.ioptime.calculatorapp;
+package com.ioptime.calculatorapp.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,12 +8,13 @@ import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.smartcalculator.R;
 
-public class Fragment1 extends SherlockFragment {
+public class SettingsFragment extends SherlockFragment {
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment1, container, false);
-		return rootView;
+		View view = inflater.inflate(R.layout.viewpager_main, container, false);
+		return view;
 	}
-	
+
 }

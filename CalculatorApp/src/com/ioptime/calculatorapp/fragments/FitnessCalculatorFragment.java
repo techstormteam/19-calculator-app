@@ -3,7 +3,6 @@ package com.ioptime.calculatorapp.fragments;
 import java.text.DecimalFormat;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -24,12 +23,11 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.ioptime.calculatorapp.HealthResults;
 import com.smartcalculator.MainActivityA;
 import com.smartcalculator.R;
 
 public class FitnessCalculatorFragment extends SherlockFragment implements
-	OnClickListener {
+	OnClickListener, Upgradeable {
 
 	Context ctx;
 	
@@ -364,15 +362,9 @@ public class FitnessCalculatorFragment extends SherlockFragment implements
 							double LeanBodyWeight = ((((((weightInLBS * 0.732) + 8.987) + (wristInInches / 3.14)) - (waistInInches * 0.157)) - (hipsInInches * 0.249)) + (forearmsInInches * 0.434));
 							double BodyFat = ((weightInLBS - LeanBodyWeight) * 100)
 									/ weightInLBS;
-							Intent i = new Intent(ctx.getApplicationContext(),
-									HealthResults.class);
 							DecimalFormat f = new DecimalFormat("##.00");
-							i.putExtra("BMI", f.format(BMI) + "");
-							i.putExtra("BMR", f.format(BMR) + "");
-							i.putExtra("BodyFat", f.format(BodyFat) + "");
-							i.putExtra("Gender", "Female");
-							startActivity(i);
-							MainActivityA.getInstance().finish();
+							MainActivityA.getInstance().showHealthResultsFragment(
+									f.format(BMI), f.format(BMR), f.format(BodyFat), "Female");
 							toast("BMI-> " + BMI + "--BMR->" + BMR);
 
 						} else {
@@ -409,16 +401,9 @@ public class FitnessCalculatorFragment extends SherlockFragment implements
 									/ weightInLBS;
 							Log.d("Results are: ", "BMI-> " + BMI + "--BMR->"
 									+ BMR);
-							Intent i = new Intent(ctx.getApplicationContext(),
-									HealthResults.class);
 							DecimalFormat f = new DecimalFormat("##.00");
-							i.putExtra("BMI", f.format(BMI) + "");
-							i.putExtra("BMR", f.format(BMR) + "");
-							i.putExtra("BodyFat", f.format(BodyFat) + "");
-							i.putExtra("Gender", "Female");
-							startActivity(i);
-							MainActivityA.getInstance().finish();
-
+							MainActivityA.getInstance().showHealthResultsFragment(
+									f.format(BMI), f.format(BMR), f.format(BodyFat), "Female");
 						}
 					} else {
 						// toast(errorMessage);
@@ -450,15 +435,9 @@ public class FitnessCalculatorFragment extends SherlockFragment implements
 									- (waistInInches * 4.15);
 							double BodyFat = ((weightInLBS - LeanBodyWeight) * 100)
 									/ weightInLBS;
-							Intent i = new Intent(ctx,
-									HealthResults.class);
 							DecimalFormat f = new DecimalFormat("##.00");
-							i.putExtra("BMI", f.format(BMI) + "");
-							i.putExtra("BMR", f.format(BMR) + "");
-							i.putExtra("BodyFat", f.format(BodyFat) + "");
-							i.putExtra("Gender", "Male");
-							startActivity(i);
-							MainActivityA.getInstance().finish();
+							MainActivityA.getInstance().showHealthResultsFragment(
+									f.format(BMI), f.format(BMR), f.format(BodyFat), "Male");
 
 						} else {
 							double FeetHeight = Double
@@ -488,15 +467,9 @@ public class FitnessCalculatorFragment extends SherlockFragment implements
 							Log.d("results are: ", "BMI: " + BMI
 									+ "  --  BMR: " + BMR + " -- BodyFat: "
 									+ BodyFat);
-							Intent i = new Intent(ctx,
-									HealthResults.class);
 							DecimalFormat f = new DecimalFormat("##.00");
-							i.putExtra("BMI", f.format(BMI) + "");
-							i.putExtra("BMR", f.format(BMR) + "");
-							i.putExtra("BodyFat", f.format(BodyFat) + "");
-							i.putExtra("Gender", "Male");
-							startActivity(i);
-							MainActivityA.getInstance().finish();
+							MainActivityA.getInstance().showHealthResultsFragment(
+									f.format(BMI), f.format(BMR), f.format(BodyFat), "Male");
 						}
 					} else {
 						toast(errorMessage);
@@ -665,6 +638,17 @@ public class FitnessCalculatorFragment extends SherlockFragment implements
 		return true;
 	}
 
+	@Override
+	public void showUpgrade() {
+		rl_upgrade_parent.startAnimation(anim);
+		upgradePopUp=1;
+	}
+
+	@Override
+	public int getUpgradePopUp() {
+		return upgradePopUp;
+	}
+	
 	public void toast(String message) {
 		Toast.makeText(ctx, message, Toast.LENGTH_LONG)
 				.show();

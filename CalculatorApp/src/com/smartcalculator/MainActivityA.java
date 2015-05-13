@@ -1,9 +1,10 @@
 package com.smartcalculator;
 
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,12 +19,28 @@ import com.ioptime.calculatorapp.fragments.AboutFragment;
 import com.ioptime.calculatorapp.fragments.BasicCalculatorFragment;
 import com.ioptime.calculatorapp.fragments.CurrencyConverterFragment;
 import com.ioptime.calculatorapp.fragments.FitnessCalculatorFragment;
+import com.ioptime.calculatorapp.fragments.HealthResultsFragment;
+import com.ioptime.calculatorapp.fragments.SelectCountriesListFragment;
+import com.ioptime.calculatorapp.fragments.SelectFormCountryFragment;
 import com.ioptime.calculatorapp.fragments.SettingsFragment;
-import com.ioptime.calculatorapp.fragments.UnitConverterFragment;
-import com.ioptime.calculatorapp.fragments.UpgradeFragment;
+import com.ioptime.calculatorapp.fragments.UnitConverterAreaFragment;
+import com.ioptime.calculatorapp.fragments.UnitConverterDataSizeFragment;
+import com.ioptime.calculatorapp.fragments.UnitConverterEnergyFragment;
+import com.ioptime.calculatorapp.fragments.UnitConverterForceFragment;
+import com.ioptime.calculatorapp.fragments.UnitConverterLengthFragment;
+import com.ioptime.calculatorapp.fragments.UnitConverterPowerFragment;
+import com.ioptime.calculatorapp.fragments.UnitConverterPressureFragment;
+import com.ioptime.calculatorapp.fragments.UnitConverterSpeedFragment;
+import com.ioptime.calculatorapp.fragments.UnitConverterTempFragment;
+import com.ioptime.calculatorapp.fragments.UnitConverterTimeFragment;
+import com.ioptime.calculatorapp.fragments.UnitConverterVolumeFragment;
+import com.ioptime.calculatorapp.fragments.UnitConverterWeightFragment;
+import com.ioptime.calculatorapp.fragments.Upgradeable;
 
 public class MainActivityA extends SherlockFragmentActivity {
 
+	public static final String MY_PREFS_NAME = "MyPrefsFile";
+	
 	// Declare Variables
 	DrawerLayout mDrawerLayout;
 	ListView mDrawerList;
@@ -32,13 +49,101 @@ public class MainActivityA extends SherlockFragmentActivity {
 	String[] titleStr;
 	int[] title;
 	int[] titleClicked;
-	Fragment fragBasicCalculator = new BasicCalculatorFragment();
-	Fragment fragCurrencyConverter = new CurrencyConverterFragment();
-	Fragment fragUnitConverter = new UnitConverterFragment();
-	Fragment fragFitnessCalculator = new FitnessCalculatorFragment();
-	Fragment fragSettings = new SettingsFragment();
-	Fragment fragUpgrade = new UpgradeFragment();
-	Fragment fragAbout = new AboutFragment();
+	
+	SharedPreferences prefs;
+	
+	BasicCalculatorFragment fragBasicCalculator = new BasicCalculatorFragment();
+	CurrencyConverterFragment fragCurrencyConverter = new CurrencyConverterFragment();
+	UnitConverterLengthFragment fragUnitConverterLength = new UnitConverterLengthFragment();
+	FitnessCalculatorFragment fragFitnessCalculator = new FitnessCalculatorFragment();
+	SettingsFragment fragSettings = new SettingsFragment();
+	
+	
+	UnitConverterAreaFragment fragUnitConverterArea = new UnitConverterAreaFragment();
+	UnitConverterDataSizeFragment fragUnitConverterDataSize = new UnitConverterDataSizeFragment();
+	UnitConverterEnergyFragment fragUnitConverterEnergy = new UnitConverterEnergyFragment();
+	UnitConverterForceFragment fragUnitConverterForce = new UnitConverterForceFragment();
+	UnitConverterPowerFragment fragUnitConverterPower = new UnitConverterPowerFragment();
+	UnitConverterPressureFragment fragUnitConverterPressure = new UnitConverterPressureFragment();
+	UnitConverterSpeedFragment fragUnitConverterSpeed = new UnitConverterSpeedFragment();
+	UnitConverterTempFragment fragUnitConverterTemp = new UnitConverterTempFragment();
+	UnitConverterTimeFragment fragUnitConverterTime = new UnitConverterTimeFragment();
+	UnitConverterVolumeFragment fragUnitConverterVolume = new UnitConverterVolumeFragment();
+	UnitConverterWeightFragment fragUnitConverterWeight = new UnitConverterWeightFragment();
+	
+	HealthResultsFragment fragHealthResults = new HealthResultsFragment();
+	SelectCountriesListFragment fragSelectCountriesList = new SelectCountriesListFragment();
+	SelectFormCountryFragment fragSelectFormCountry = new SelectFormCountryFragment();
+	
+	public void showCurrencyConverterFragment(String refresh) {
+		selectItem(1, false);
+	}
+	
+	public void showHealthResultsFragment(String bmi, String bmr, String bodyFat, String Gender) {
+		selectItem(80, true);
+	}
+	
+	public void showSelectCountriesListFragment() {
+		selectItem(81, true);
+	}
+	
+	public void showSelectFormCountryFragment() {
+		selectItem(82, true);
+	}
+	
+	
+	
+	
+	public void showUnitConverterAreaFragment() {
+		selectItem(90, true);
+	}
+	
+	public void showUnitConverterDataSizeFragment() {
+		selectItem(91, true);
+	}
+	
+	public void showUnitConverterEnergyFragment() {
+		selectItem(92, true);
+	}
+	
+	public void showUnitConverterForceFragment() {
+		selectItem(93, true);
+	}
+	
+	public void showUnitConverterPowerFragment() {
+		selectItem(94, true);
+	}
+	
+	public void showUnitConverterPressureFragment() {
+		selectItem(95, true);
+	}	
+	
+	public void showUnitConverterSpeedFragment() {
+		selectItem(96, true);
+	}
+	
+	public void showUnitConverterTempFragment() {
+		selectItem(97, true);
+	}
+	
+	public void showUnitConverterTimeFragment() {
+		selectItem(98, true);
+	}	
+	
+	public void showUnitConverterVolumeFragment() {
+		selectItem(99, true);
+	}
+	
+	public void showUnitConverterWeightFragment() {
+		selectItem(100, true);
+	}
+	
+	public void showUnitConverterLengthFragment() {
+		selectItem(101, true);
+	}
+	
+	Upgradeable currentFragmentCanUpgrade;
+	AboutFragment fragAbout = new AboutFragment();
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 
@@ -54,6 +159,10 @@ public class MainActivityA extends SherlockFragmentActivity {
 		// Get the view from drawer_main.xml
 		setContentView(R.layout.drawer_main);
 
+		currentFragmentCanUpgrade = fragBasicCalculator;
+
+		prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+		
 		// Get the Title
 		mTitle = mDrawerTitle = getTitle();
 
@@ -114,7 +223,7 @@ public class MainActivityA extends SherlockFragmentActivity {
 
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		if (savedInstanceState == null) {
-			selectItem(0);
+			selectItem(0, false);
 		}
 	}
 
@@ -139,43 +248,123 @@ public class MainActivityA extends SherlockFragmentActivity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			selectItem(position);
+			selectItem(position, false);
 		}
 	}
 
-	private void selectItem(int position) {
+	private void selectItem(int position, boolean changeViewOnly) {
 
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		// Locate Position
 		switch (position) {
 		case 0:
 			ft.replace(R.id.content_frame, fragBasicCalculator);
+			currentFragmentCanUpgrade = fragBasicCalculator;
 			break;
 		case 1:
-			ft.replace(R.id.content_frame, fragCurrencyConverter);
+			if (prefs.getString("isPaymentMade", "").equals("true")) {
+				ft.replace(R.id.content_frame, fragCurrencyConverter);
+				currentFragmentCanUpgrade = fragCurrencyConverter;
+			} else if (!prefs.getString("isPaymentMade", "").equals("true")) {
+				currentFragmentCanUpgrade.showUpgrade();
+			}
 			break;
 		case 2:
-			ft.replace(R.id.content_frame, fragUnitConverter);
+			ft.replace(R.id.content_frame, fragUnitConverterLength);
+			currentFragmentCanUpgrade = fragUnitConverterLength;
 			break;
 		case 3:
-			ft.replace(R.id.content_frame, fragFitnessCalculator);
+			if (prefs.getString("isPaymentMade", "").equals("true")) {
+				ft.replace(R.id.content_frame, fragFitnessCalculator);
+				currentFragmentCanUpgrade = fragFitnessCalculator;
+			} else if (!prefs.getString("isPaymentMade", "").equals("true")) {
+				currentFragmentCanUpgrade.showUpgrade();
+			}
 			break;
 		case 4:
 			//ft.replace(R.id.content_frame, fragSettings);
 			break;
 		case 5:
-			ft.replace(R.id.content_frame, fragUpgrade);
+			if (!prefs.getString("isPaymentMade", "").equals("true")) {
+				currentFragmentCanUpgrade.showUpgrade();
+			}
 			break;
 		case 6:
 			ft.replace(R.id.content_frame, fragAbout);
+			currentFragmentCanUpgrade = fragAbout;
+			break;
+		
+		case 80:
+			ft.replace(R.id.content_frame, fragHealthResults);
+			currentFragmentCanUpgrade = fragHealthResults;
+			break;
+		case 81:
+			ft.replace(R.id.content_frame, fragSelectCountriesList);
+			currentFragmentCanUpgrade = fragSelectCountriesList;
+			break;
+		case 82:
+			ft.replace(R.id.content_frame, fragSelectFormCountry);
+			currentFragmentCanUpgrade = fragSelectFormCountry;
+			break;
+			
+		case 90:
+			ft.replace(R.id.content_frame, fragUnitConverterArea);
+			currentFragmentCanUpgrade = fragUnitConverterArea;
+			break;
+		case 91:
+			ft.replace(R.id.content_frame, fragUnitConverterDataSize);
+			currentFragmentCanUpgrade = fragUnitConverterDataSize;
+			break;
+		case 92:
+			ft.replace(R.id.content_frame, fragUnitConverterEnergy);
+			currentFragmentCanUpgrade = fragUnitConverterEnergy;
+			break;
+		case 93:
+			ft.replace(R.id.content_frame, fragUnitConverterForce);
+			currentFragmentCanUpgrade = fragUnitConverterForce;
+			break;
+		case 94:
+			ft.replace(R.id.content_frame, fragUnitConverterPower);
+			currentFragmentCanUpgrade = fragUnitConverterPower;
+			break;
+		case 95:
+			ft.replace(R.id.content_frame, fragUnitConverterPressure);
+			currentFragmentCanUpgrade = fragUnitConverterPressure;
+			break;
+		case 96:
+			ft.replace(R.id.content_frame, fragUnitConverterSpeed);
+			currentFragmentCanUpgrade = fragUnitConverterSpeed;
+			break;
+		case 97:
+			ft.replace(R.id.content_frame, fragUnitConverterTemp);
+			currentFragmentCanUpgrade = fragUnitConverterTemp;
+			break;
+		case 98:
+			ft.replace(R.id.content_frame, fragUnitConverterTime);
+			currentFragmentCanUpgrade = fragUnitConverterTime;
+			break;
+		case 99:
+			ft.replace(R.id.content_frame, fragUnitConverterVolume);
+			currentFragmentCanUpgrade = fragUnitConverterVolume;
+			break;
+		case 100:
+			ft.replace(R.id.content_frame, fragUnitConverterWeight);
+			currentFragmentCanUpgrade = fragUnitConverterWeight;
+			break;
+		case 101:
+			ft.replace(R.id.content_frame, fragUnitConverterLength);
+			currentFragmentCanUpgrade = fragUnitConverterLength;
 			break;
 		}
 		ft.commit();
-		mDrawerList.setItemChecked(position, true);
-		// Get the title followed by the position
-		setTitle(title[position]);
-		// Close drawer
-		mDrawerLayout.closeDrawer(mDrawerList);
+		
+		if (!changeViewOnly) {
+			mDrawerList.setItemChecked(position, true);
+			// Get the title followed by the position
+			setTitle(titleStr[position]);
+			// Close drawer
+			mDrawerLayout.closeDrawer(mDrawerList);
+		}
 	}
 
 	@Override
@@ -201,32 +390,21 @@ public class MainActivityA extends SherlockFragmentActivity {
 	@Override
 	public void onBackPressed() {
 
-//		FragmentManager manager = getSupportFragmentManager();
-//		if (manager.getBackStackEntryCount() > 0) {
-//			// If there are back-stack entries, leave the FragmentActivity
-//			// implementation take care of them.
-//			manager.popBackStack();
-//
-//		} else {
-//			// Otherwise, ask user if he wants to leave :)
-//			super.onBackPressed();
-//		}
+		if(currentFragmentCanUpgrade.getUpgradePopUp() == 1)
+		{
+			currentFragmentCanUpgrade.showUpgrade();
+		}
+		
+		FragmentManager manager = getSupportFragmentManager();
+		if (manager.getBackStackEntryCount() > 0) {
+			// If there are back-stack entries, leave the FragmentActivity
+			// implementation take care of them.
+			manager.popBackStack();
+
+		} else {
+			// Otherwise, ask user if he wants to leave :)
+			super.onBackPressed();
+		}
 	}
 	
-//	@Override
-//	protected void onSaveInstanceState(Bundle outState) {
-//		super.onSaveInstanceState(outState);
-//		// Save variables on screen orientation change
-//		outState.putDouble("OPERAND", mCalculatorBrain.getResult());
-//		outState.putDouble("MEMORY", mCalculatorBrain.getMemory());
-//	}
-//
-//	@Override
-//	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//		super.onRestoreInstanceState(savedInstanceState);
-//		// Restore variables on screen orientation change
-//		mCalculatorBrain.setOperand(savedInstanceState.getDouble("OPERAND"));
-//		mCalculatorBrain.setMemory(savedInstanceState.getDouble("MEMORY"));
-//		mCalculatorDisplay.setText(df.format(mCalculatorBrain.getResult()));
-//	}
 }

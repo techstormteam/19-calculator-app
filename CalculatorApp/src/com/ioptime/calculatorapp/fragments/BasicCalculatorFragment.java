@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -29,14 +31,14 @@ import bsh.Interpreter;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.android.trivialdrivesample.util.Purchase;
+import com.devspark.sidenavigation.SideNavigationView;
 import com.ioptime.calculatorapp.CalculatorBrain;
 import com.ioptime.calculatorapp.ConstantAds;
-import com.ioptime.calculatorapp.MainActivity;
 import com.ioptime.calculatorapp.Purchases;
 import com.smartcalculator.MainActivityA;
 import com.smartcalculator.R;
 
-public class BasicCalculatorFragment extends SherlockFragment implements OnClickListener {
+public class BasicCalculatorFragment extends SherlockFragment implements OnClickListener, Upgradeable {
 	
 	private Context ctx;
 	
@@ -61,6 +63,7 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 	public static final String EXTRA_TITLE = "com.devspark.sidenavigation.sample.extra.MTGOBJECT";
 	public static final String EXTRA_RESOURCE_ID = "com.devspark.sidenavigation.sample.extra.RESOURCE_ID";
 	public static final String EXTRA_MODE = "com.devspark.sidenavigation.sample.extra.MODE";
+	private SideNavigationView sideNavigationView;
 	LinearLayout functionPad;
 	TextView secondaryTextView;
 	Boolean isGreaterThan10Digit = false;
@@ -89,34 +92,31 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 	@Override
 	public View onCreateView(LayoutInflater inflater, final ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.backup_mainactivity, container, false);
+		View view = inflater.inflate(R.layout.backup_mainactivity, container, false);
+		
+		
+		
+		super.onCreate(savedInstanceState);
 		
 		ctx = container.getContext();
-		
-		// hide the window title.
-//		MainActivityA.getInstance().requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// hide the status bar and other OS-level chrome
-//		MainActivityA.getInstance().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-		super.onCreate(savedInstanceState);
 		Purchases.initiatePurchase(MainActivityA.getInstance());
-		prefs = container.getContext().getSharedPreferences(MY_PREFS_NAME, container.getContext().MODE_PRIVATE);
+		prefs = ctx.getSharedPreferences(MY_PREFS_NAME, ctx.MODE_PRIVATE);
 		if (!prefs.getString("isPaymentMade", "").equals("true")) {
-			ConstantAds.loadInterstitialAd(container.getContext(),
+			ConstantAds.loadInterstitialAd(ctx,
 					"top");
 		}
 		int sw = getResources().getConfiguration().screenWidthDp;
 		Log.d("pixel density", sw + "  " + android.os.Build.MANUFACTURER
 				+ "    " + android.os.Build.MODEL);
-//		gestureDetector = new GestureDetector(container.getContext(), new MyGestureDetector());
-//		gestureListener = new View.OnTouchListener() {
-//			public boolean onTouch(View v, MotionEvent event) {
-//				return gestureDetector.onTouchEvent(event);
-//			}
-//		};
-		imgScreen = (ImageView) rootView.findViewById(R.id.screen);
-		row1 = (RelativeLayout) rootView.findViewById(R.id.row1);
-		if (isTablet(container.getContext())) {
+		gestureDetector = new GestureDetector(ctx, new MyGestureDetector());
+		gestureListener = new View.OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				return gestureDetector.onTouchEvent(event);
+			}
+		};
+		imgScreen = (ImageView) view.findViewById(R.id.screen);
+		row1 = (RelativeLayout) view.findViewById(R.id.row1);
+		if (isTablet(ctx)) {
 			Log.d("device is", "tablet");
 			imgScreen.setVisibility(View.INVISIBLE);
 			row1.setBackground(getResources().getDrawable(R.drawable.screen));
@@ -124,18 +124,12 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 			Log.d("device is", "smart phone");
 		}
 
-		// icon = (ImageView) rootView.findViewById(android.R.id.icon);
-		vibe = (Vibrator) container.getContext().getSystemService(
+		// icon = (ImageView) view.findViewById(android.R.id.icon);
+		vibe = (Vibrator) ctx.getSystemService(
 				Context.VIBRATOR_SERVICE);
-//		if (getIntent().hasExtra(EXTRA_TITLE)) {
-//			String title = getIntent().getStringExtra(EXTRA_TITLE);
-//			// int resId = getIntent().getIntExtra(EXTRA_RESOURCE_ID, 0);
-//			setTitle(title);
-//			// icon.setImageResource(resId);
-//		}
 		mCalculatorBrain = new CalculatorBrain();
 		// getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		anim = AnimationUtils.loadAnimation(container.getContext(), R.drawable.scale);
+		anim = AnimationUtils.loadAnimation(ctx, R.drawable.scale);
 		anim.setAnimationListener(new AnimationListener() {
 
 			@Override
@@ -157,7 +151,7 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 			}
 		});
 
-		anim_back = AnimationUtils.loadAnimation(container.getContext(), R.drawable.scale_back);
+		anim_back = AnimationUtils.loadAnimation(ctx, R.drawable.scale_back);
 		anim_back.setAnimationListener(new AnimationListener() {
 
 			@Override
@@ -179,11 +173,11 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 			}
 		});
 
-		rl_upgrade = (RelativeLayout) rootView.findViewById(R.id.rl_upgrade);
-		rl_upgrade_parent = (RelativeLayout) rootView.findViewById(R.id.rl_upgrade_parent);
-		upgrade_close = (ImageView) rootView.findViewById(R.id.upgrade_close);
-		upgrade_bg = (ImageView) rootView.findViewById(R.id.upgrade_bg);
-		upgrade_text = (ImageView) rootView.findViewById(R.id.upgrade_text);
+		rl_upgrade = (RelativeLayout) view.findViewById(R.id.rl_upgrade);
+		rl_upgrade_parent = (RelativeLayout) view.findViewById(R.id.rl_upgrade_parent);
+		upgrade_close = (ImageView) view.findViewById(R.id.upgrade_close);
+		upgrade_bg = (ImageView) view.findViewById(R.id.upgrade_bg);
+		upgrade_text = (ImageView) view.findViewById(R.id.upgrade_text);
 		upgrade_close.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -209,32 +203,32 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 				// TODO Auto-generated method stub
 			 Purchases.makePurchase(MainActivityA.getInstance());
 
-//						if (checkvar == true) {
-//							editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
-//									.edit();
-//							editor.putString("isPaymentMade", "true");
-//							editor.commit();
-//						} else {
-//							editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
-//									.edit();
-//							editor.putString("isPaymentMade", "false");
-//							editor.commit();
-//						}
-//				rl_upgrade_parent.startAnimation(anim_back);
+//				if (checkvar == true) {
+//					editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+//							.edit();
+//					editor.putString("isPaymentMade", "true");
+//					editor.commit();
+//				} else {
+//					editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+//							.edit();
+//					editor.putString("isPaymentMade", "false");
+//					editor.commit();
+//				}
+				rl_upgrade_parent.startAnimation(anim_back);
 				upgradePopUp = 0;
 
 			}
 		});
 		rl_upgrade.setVisibility(View.GONE);
 		upgradePopUp = 0;
-		functionPad = (LinearLayout) rootView.findViewById(R.id.functionPad);
-		mCalculatorDisplay = (TextView) rootView.findViewById(R.id.textView1);
-		mTextViewSmall = (TextView) rootView.findViewById(R.id.textViewSmall);
-		secondaryTextView = (TextView) rootView.findViewById(R.id.secondrayTextView1);
+		functionPad = (LinearLayout) view.findViewById(R.id.functionPad);
+		mCalculatorDisplay = (TextView) view.findViewById(R.id.textView1);
+		mTextViewSmall = (TextView) view.findViewById(R.id.textViewSmall);
+		secondaryTextView = (TextView) view.findViewById(R.id.secondrayTextView1);
 
 		//
 		// Typeface tf = Typeface.createFromAsset(getAssets(), "DS-DIGIB.TTF");
-		Typeface tf2 = Typeface.createFromAsset(MainActivityA.getInstance().getAssets(), "DS-DIGI.TTF");
+		Typeface tf2 = Typeface.createFromAsset(ctx.getAssets(), "DS-DIGI.TTF");
 		mCalculatorDisplay.setTypeface(tf2);
 		mTextViewSmall.setTypeface(tf2);
 		secondaryTextView.setTypeface(tf2);
@@ -243,34 +237,34 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 		df.setMinimumIntegerDigits(1);
 		df.setMaximumIntegerDigits(100);
 
-		rootView.findViewById(R.id.button0).setOnClickListener(this);
-		rootView.findViewById(R.id.button1).setOnClickListener(this);
-		rootView.findViewById(R.id.button2).setOnClickListener(this);
-		rootView.findViewById(R.id.button3).setOnClickListener(this);
-		rootView.findViewById(R.id.button4).setOnClickListener(this);
-		rootView.findViewById(R.id.button5).setOnClickListener(this);
-		rootView.findViewById(R.id.button6).setOnClickListener(this);
-		rootView.findViewById(R.id.button7).setOnClickListener(this);
-		rootView.findViewById(R.id.button8).setOnClickListener(this);
-		rootView.findViewById(R.id.button9).setOnClickListener(this);
+		view.findViewById(R.id.button0).setOnClickListener(this);
+		view.findViewById(R.id.button1).setOnClickListener(this);
+		view.findViewById(R.id.button2).setOnClickListener(this);
+		view.findViewById(R.id.button3).setOnClickListener(this);
+		view.findViewById(R.id.button4).setOnClickListener(this);
+		view.findViewById(R.id.button5).setOnClickListener(this);
+		view.findViewById(R.id.button6).setOnClickListener(this);
+		view.findViewById(R.id.button7).setOnClickListener(this);
+		view.findViewById(R.id.button8).setOnClickListener(this);
+		view.findViewById(R.id.button9).setOnClickListener(this);
 
-		rootView.findViewById(R.id.buttonAdd).setOnClickListener(this);
-		rootView.findViewById(R.id.buttonSubtract).setOnClickListener(this);
-		rootView.findViewById(R.id.buttonMultiply).setOnClickListener(this);
-		rootView.findViewById(R.id.buttonDivide).setOnClickListener(this);
-		rootView.findViewById(R.id.buttonDecimalPoint).setOnClickListener(this);
-		rootView.findViewById(R.id.buttonEquals).setOnClickListener(this);
-		rootView.findViewById(R.id.buttonClear).setOnClickListener(this);
-		rootView.findViewById(R.id.buttonClearMemory).setOnClickListener(this);
-		rootView.findViewById(R.id.buttonAddToMemory).setOnClickListener(this);
-		rootView.findViewById(R.id.buttonSubtractFromMemory).setOnClickListener(this);
-		rootView.findViewById(R.id.buttonRecallMemory).setOnClickListener(this);
-		rootView.findViewById(R.id.buttonSquareRoot).setOnClickListener(this);
-		rootView.findViewById(R.id.buttonPercentage).setOnClickListener(this);
-		rootView.findViewById(R.id.buttonSquared).setOnClickListener(this);
-		rootView.findViewById(R.id.buttonToggleSign).setOnClickListener(this);
+		view.findViewById(R.id.buttonAdd).setOnClickListener(this);
+		view.findViewById(R.id.buttonSubtract).setOnClickListener(this);
+		view.findViewById(R.id.buttonMultiply).setOnClickListener(this);
+		view.findViewById(R.id.buttonDivide).setOnClickListener(this);
+		view.findViewById(R.id.buttonDecimalPoint).setOnClickListener(this);
+		view.findViewById(R.id.buttonEquals).setOnClickListener(this);
+		view.findViewById(R.id.buttonClear).setOnClickListener(this);
+		view.findViewById(R.id.buttonClearMemory).setOnClickListener(this);
+		view.findViewById(R.id.buttonAddToMemory).setOnClickListener(this);
+		view.findViewById(R.id.buttonSubtractFromMemory).setOnClickListener(this);
+		view.findViewById(R.id.buttonRecallMemory).setOnClickListener(this);
+		view.findViewById(R.id.buttonSquareRoot).setOnClickListener(this);
+		view.findViewById(R.id.buttonPercentage).setOnClickListener(this);
+		view.findViewById(R.id.buttonSquared).setOnClickListener(this);
+		view.findViewById(R.id.buttonToggleSign).setOnClickListener(this);
 		functionPad.setOnTouchListener(gestureListener);
-		rootView.findViewById(R.id.buttonBackSpace).setOnClickListener(
+		view.findViewById(R.id.buttonBackSpace).setOnClickListener(
 				new View.OnClickListener() {
 
 					@Override
@@ -337,26 +331,12 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 											0,
 											mCalculatorDisplay.getText()
 													.length() - 1));
-							int size = 10;
-							if (android.os.Build.MODEL.contains("N7100")) {
-								size = 12;
-							} else {
-								size = 10;
-							}
+							int size = getSize();
+							
+							
 							if (mCalculatorDisplay.getText().toString()
-									.length() > size) {
-								int displayLength = mCalculatorDisplay
-										.getText().toString().length()
-										- size;
-								String SecondaryText = "";
-								SecondaryText = mCalculatorDisplay.getText()
-										.toString();
-								SecondaryText = SecondaryText.substring(0,
-										size - 4);
-								mCalculatorDisplay.setVisibility(View.GONE);
-								secondaryTextView.setVisibility(View.VISIBLE);
-								secondaryTextView.setText(SecondaryText
-										+ "x10^" + displayLength);
+									.length() >= size) {
+								totalDisplayTextView(size);
 
 							} else {
 								secondaryTextView.setVisibility(View.GONE);
@@ -374,22 +354,21 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 					}
 				});
 
-		if (rootView.findViewById(R.id.buttonInvert) != null) {
-			rootView.findViewById(R.id.buttonInvert).setOnClickListener(this);
+		if (view.findViewById(R.id.buttonInvert) != null) {
+			view.findViewById(R.id.buttonInvert).setOnClickListener(this);
 		}
-		if (rootView.findViewById(R.id.buttonSine) != null) {
-			rootView.findViewById(R.id.buttonSine).setOnClickListener(this);
+		if (view.findViewById(R.id.buttonSine) != null) {
+			view.findViewById(R.id.buttonSine).setOnClickListener(this);
 		}
-		if (rootView.findViewById(R.id.buttonCosine) != null) {
-			rootView.findViewById(R.id.buttonCosine).setOnClickListener(this);
+		if (view.findViewById(R.id.buttonCosine) != null) {
+			view.findViewById(R.id.buttonCosine).setOnClickListener(this);
 		}
-		if (rootView.findViewById(R.id.buttonTangent) != null) {
-			rootView.findViewById(R.id.buttonTangent).setOnClickListener(this);
+		if (view.findViewById(R.id.buttonTangent) != null) {
+			view.findViewById(R.id.buttonTangent).setOnClickListener(this);
 		}
-		
-		return rootView;
+
+		return view;
 	}
-	
 	@Override
 	public void onClick(View v) {
 		vibe.vibrate(50);
@@ -692,10 +671,10 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 							smallTextviewText = mCalculatorDisplay.getText()
 									.toString();
 							if (smallTextviewText.length() < 27) {
-								MainActivity.mTextViewSmall
+								BasicCalculatorFragment.mTextViewSmall
 										.setText(smallTextviewText);
 							} else {
-								MainActivity.mTextViewSmall
+								BasicCalculatorFragment.mTextViewSmall
 										.setText(smallTextviewText
 												.substring(smallTextviewText
 														.length() - 27));
@@ -751,23 +730,11 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 
 			}
 		}
-		// decreasing display size if it is greater than 12
-		int size = 10;
-		if (android.os.Build.MODEL.contains("N7100")) {
-			size = 12;
-		} else {
-			size = 10;
-		}
-		if (mCalculatorDisplay.getText().toString().length() > size) {
-			int displayLength = mCalculatorDisplay.getText().toString()
-					.length()
-					- size;
-			String SecondaryText = "";
-			SecondaryText = mCalculatorDisplay.getText().toString();
-			SecondaryText = SecondaryText.substring(0, size - 4);
-			mCalculatorDisplay.setVisibility(View.GONE);
-			secondaryTextView.setVisibility(View.VISIBLE);
-			secondaryTextView.setText(SecondaryText + "x10^" + displayLength);
+		
+		int size = getSize();
+		
+		if (mCalculatorDisplay.getText().toString().length() >= size) {
+			totalDisplayTextView(size);
 
 		} else {
 			secondaryTextView.setVisibility(View.GONE);
@@ -776,6 +743,35 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 
 	}
 
+	private int getSize() {
+		// decreasing display size if it is greater than 12
+		int size = 10;
+		if (android.os.Build.MODEL.contains("N7100")) {
+			size = 12;
+		} else {
+			size = 10;
+		}
+		return size;
+	}
+	
+	private void totalDisplayTextView(int size) {
+		
+		String eCharacters = "x10^";
+		int eLength = eCharacters.length();
+		
+		int overLength = mCalculatorDisplay.getText().toString()
+				.length() - size;
+		int displayLength = overLength + eLength + 1;
+		int numberOfLength = displayLength / 10 == 0 ? 1 : 2;
+		displayLength = displayLength / 10 == 0 ? displayLength : displayLength+1;
+		String SecondaryText = "";
+		SecondaryText = mCalculatorDisplay.getText().toString();
+		SecondaryText = SecondaryText.substring(0, size - eLength - numberOfLength);
+		mCalculatorDisplay.setVisibility(View.GONE);
+		secondaryTextView.setVisibility(View.VISIBLE);
+		secondaryTextView.setText(SecondaryText + eCharacters + displayLength);
+	}
+	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -783,7 +779,22 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 		ConstantAds.displayInterstitial();
 	}
 
-	
+//	@Override
+//	protected void onSaveInstanceState(Bundle outState) {
+//		super.onSaveInstanceState(outState);
+//		// Save variables on screen orientation change
+//		outState.putDouble("OPERAND", mCalculatorBrain.getResult());
+//		outState.putDouble("MEMORY", mCalculatorBrain.getMemory());
+//	}
+
+//	@Override
+//	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//		super.onRestoreInstanceState(savedInstanceState);
+//		// Restore variables on screen orientation change
+//		mCalculatorBrain.setOperand(savedInstanceState.getDouble("OPERAND"));
+//		mCalculatorBrain.setMemory(savedInstanceState.getDouble("MEMORY"));
+//		mCalculatorDisplay.setText(df.format(mCalculatorBrain.getResult()));
+//	}
 
 //	@Override
 //	public boolean onCreateOptionsMenu(Menu menu) {
@@ -817,120 +828,36 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 //		return true;
 //	}
 
+	
 
-//	@Override
-//	public void onBackPressed() {
-//		// hide menu if it shown
-//		if (sideNavigationView.isShown()) {
-//			sideNavigationView.hideMenu();
-//			finish();
-//		}
-//		if (upgradePopUp == 1) {
-//			rl_upgrade_parent.startAnimation(anim_back);
-//			upgradePopUp = 0;
-//		} else {
-//			super.onBackPressed();
-//			finish();
-//		}
-//	}
+	
 
-	private void invokeActivity(String title) {
-//		Intent intent = new Intent();
-//		if (title.equals("SIMPLE CALCULATOR")) {
-//			intent = new Intent(ctx, MainActivity.class);
-//			intent.putExtra(EXTRA_TITLE, title);
-//			intent.putExtra(EXTRA_MODE,
-//					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-//			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//			startActivity(intent);
-//			overridePendingTransition(0, 0);
-//		} else if (title.equals("BASIC CALCULATOR")) {
-//			intent = new Intent(ctx, MainActivity.class);
-//			intent.putExtra(EXTRA_TITLE, title);
-//			intent.putExtra(EXTRA_MODE,
-//					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-//			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//			startActivity(intent);
-//			overridePendingTransition(0, 0);
-//		} else if (title.equals("UNIT CONVERTER")) {
-//			if (prefs.getString("isPaymentMade", "").equals("true")) {
-//				intent = new Intent(this, UnitConverterLength.class);
-//				intent.putExtra(EXTRA_TITLE, title);
-//				intent.putExtra(EXTRA_MODE,
-//						sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//				startActivity(intent);
-//				overridePendingTransition(0, 0);
-//			} else if (!prefs.getString("isPaymentMade", "").equals("true")) {
-//				sideNavigationView.hideMenu();
-//				rl_upgrade_parent.startAnimation(anim);
-//				upgradePopUp = 1;
-//				overridePendingTransition(0, 0);
-//			}
-//		} else if (title.equals("CURRENCY CONVERTERS")) {
-//			intent = new Intent(this, CurrencyConverter.class);
-//			intent.putExtra(EXTRA_TITLE, title);
-//			intent.putExtra(EXTRA_MODE,
-//					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-//			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//			startActivity(intent);
-//			overridePendingTransition(0, 0);
-//		} else if (title.equals("FITNESS CALCULATOR")) {
-//			if (prefs.getString("isPaymentMade", "").equals("true")) {
-//				intent = new Intent(ctx, HealthCalculator.class);
-//				intent.putExtra(EXTRA_TITLE, title);
-//				intent.putExtra(EXTRA_MODE,
-//						sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//				startActivity(intent);
-//				overridePendingTransition(0, 0);
-//			} else if (!prefs.getString("isPaymentMade", "").equals("true")) {
-//				sideNavigationView.hideMenu();
-//				rl_upgrade_parent.startAnimation(anim);
-//				upgradePopUp = 1;
-//				overridePendingTransition(0, 0);
-//			}
-//		} else if (title.equals("SETTINGS")) {
-//			intent = new Intent(ctx, MainActivity.class);
-//			Toast.makeText(getApplicationContext(), "Coming soon",
-//					Toast.LENGTH_LONG).show();
-//			intent.putExtra(EXTRA_TITLE, title);
-//			intent.putExtra(EXTRA_MODE,
-//					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-//			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//			startActivity(intent);
-//			overridePendingTransition(0, 0);
-//		} else if (title.equals("ABOUT")) {
-//			intent = new Intent(ctx, About.class);
-//			intent.putExtra(EXTRA_TITLE, title);
-//			intent.putExtra(EXTRA_MODE,
-//					sideNavigationView.getMode() == Mode.LEFT ? 0 : 1);
-//			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//			startActivity(intent);
-//			overridePendingTransition(0, 0);
-//		} else if (title.equals("UPGRADE")) {
-//
-//			if (!prefs.getString("isPaymentMade", "").equals("true")) {
-//				sideNavigationView.hideMenu();
-//				rl_upgrade_parent.startAnimation(anim);
-//				upgradePopUp = 1;
-//				overridePendingTransition(0, 0);
-//			}
-//
-//		}
+	class MyGestureDetector extends SimpleOnGestureListener {
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+				float velocityY) {
+			try {
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					return false;
+				// right to left swipe
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					sideNavigationView.toggleMenu();
+				}
+			} catch (Exception e) {
+				// nothing
+			}
+			return false;
+		}
+
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return true;
+		}
+
 	}
-
-//	@Override
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if (keyCode == KeyEvent.KEYCODE_MENU) {
-//
-//			sideNavigationView.toggleMenu();
-//			return true;
-//		}
-//
-//		// let the system handle all other key events
-//		return super.onKeyDown(keyCode, event);
-//	}
 
 	private Animation outToLeftAnimation() {
 		Animation outtoLeft = new TranslateAnimation(
@@ -1048,5 +975,16 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
 	}
 
+
+	@Override
+	public void showUpgrade() {
+		rl_upgrade_parent.startAnimation(anim);
+		upgradePopUp=1;
+	}
+
+	@Override
+	public int getUpgradePopUp() {
+		return upgradePopUp;
+	}
 	
 }

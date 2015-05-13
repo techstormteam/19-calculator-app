@@ -2,6 +2,8 @@ package com.ioptime.calculatorapp;
 
 import java.text.DecimalFormat;
 
+import com.ioptime.calculatorapp.fragments.BasicCalculatorFragment;
+
 import android.util.Log;
 import android.widget.TextView;
 
@@ -110,32 +112,32 @@ public class CalculatorBrain {
 		if (mWaitingOperator != "") {
 			Log.d("calcapp: setting small text", mWaitingOperand
 					+ mWaitingOperator + mOperand);
-			if (MainActivity.isFirstCalc) {
-				smallTextviewText = MainActivity.df.format(mWaitingOperand)
-						+ mWaitingOperator + MainActivity.df.format(mOperand);
-				// MainActivity.mTextViewSmall.setText(MainActivity.df
+			if (BasicCalculatorFragment.isFirstCalc) {
+				smallTextviewText = BasicCalculatorFragment.df.format(mWaitingOperand)
+						+ mWaitingOperator + BasicCalculatorFragment.df.format(mOperand);
+				// BasicCalculatorFragment.mTextViewSmall.setText(BasicCalculatorFragment.df
 				// .format(mWaitingOperand)
 				// + mWaitingOperator
-				// + MainActivity.df.format(mOperand));
-				MainActivity.isFirstCalc = false;
+				// + BasicCalculatorFragment.df.format(mOperand));
+				BasicCalculatorFragment.isFirstCalc = false;
 
 				if (smallTextviewText.length() < 27) {
-					MainActivity.mTextViewSmall.setText(smallTextviewText);
+					BasicCalculatorFragment.mTextViewSmall.setText(smallTextviewText);
 				} else {
-					MainActivity.mTextViewSmall.setText(smallTextviewText
+					BasicCalculatorFragment.mTextViewSmall.setText(smallTextviewText
 							.substring(smallTextviewText.length() - 27));
 				}
 			} else {
 				smallTextviewText = smallTextviewText + mWaitingOperator
-						+ MainActivity.df.format(mOperand);
+						+ BasicCalculatorFragment.df.format(mOperand);
 				if (smallTextviewText.length() < 27) {
-					MainActivity.mTextViewSmall.setText(smallTextviewText);
+					BasicCalculatorFragment.mTextViewSmall.setText(smallTextviewText);
 				} else {
-					MainActivity.mTextViewSmall.setText(smallTextviewText
+					BasicCalculatorFragment.mTextViewSmall.setText(smallTextviewText
 							.substring(smallTextviewText.length() - 27));
 				}
-				// MainActivity.mTextViewSmall.append(mWaitingOperator
-				// + MainActivity.df.format(mOperand));
+				// BasicCalculatorFragment.mTextViewSmall.append(mWaitingOperator
+				// + BasicCalculatorFragment.df.format(mOperand));
 			}
 		}
 		if (mWaitingOperator.equals(ADD)) {
@@ -168,11 +170,11 @@ public class CalculatorBrain {
 		}
 
 		if (mWaitingOperator != "") {
-			MainActivity.mCalculatorDisplay.setText("");
-			if (MainActivity.df.format(mOperand).equals("0.0")) {
-				MainActivity.mCalculatorDisplay.setText("0");
+			BasicCalculatorFragment.mCalculatorDisplay.setText("");
+			if (BasicCalculatorFragment.df.format(mOperand).equals("0.0")) {
+				BasicCalculatorFragment.mCalculatorDisplay.setText("0");
 			} else {
-				MainActivity.mCalculatorDisplay.setText(MainActivity.df
+				BasicCalculatorFragment.mCalculatorDisplay.setText(BasicCalculatorFragment.df
 						.format(mOperand));
 			}
 		}

@@ -14,56 +14,34 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.KeyEvent;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.devspark.sidenavigation.SideNavigationView;
-import com.devspark.sidenavigation.SideNavigationView.Mode;
-import com.ioptime.calculatorapp.About;
-import com.ioptime.calculatorapp.Constants;
-import com.ioptime.calculatorapp.CurrencyConverter;
-import com.ioptime.calculatorapp.HealthCalculator;
-import com.ioptime.calculatorapp.MainActivity;
-import com.ioptime.calculatorapp.UnitConverterArea;
-import com.ioptime.calculatorapp.UnitConverterDataSize;
-import com.ioptime.calculatorapp.UnitConverterEnergy;
-import com.ioptime.calculatorapp.UnitConverterForce;
-import com.ioptime.calculatorapp.UnitConverterLength;
-import com.ioptime.calculatorapp.UnitConverterPower;
-import com.ioptime.calculatorapp.UnitConverterPressure;
-import com.ioptime.calculatorapp.UnitConverterSpeed;
-import com.ioptime.calculatorapp.UnitConverterTemp;
-import com.ioptime.calculatorapp.UnitConverterTime;
-import com.ioptime.calculatorapp.UnitConverterVolume;
-import com.ioptime.calculatorapp.UnitConverterWeight;
 import com.smartcalculator.MainActivityA;
 import com.smartcalculator.R;
 
-public class UnitConverterFragment extends SherlockFragment implements
-	OnClickListener {
+public class UnitConverterLengthFragment extends SherlockFragment implements Upgradeable {
+
+	Context ctx;
 
 	ListView lv;
-	Context ctx;
 
 	LinearLayout funtionPad;
 	EditText uc_edittext;
@@ -337,6 +315,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 		vibe = (Vibrator) ctx.getSystemService(
 				Context.VIBRATOR_SERVICE);
 
+
 		ll_centimeters.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -462,10 +441,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Constants.startActivity(MainActivityA.getInstance(), new Intent(
-						ctx, UnitConverterTemp.class));
-				MainActivityA.getInstance().finish();
+				MainActivityA.getInstance().showUnitConverterTempFragment();
 			}
 		});
 
@@ -473,10 +449,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Constants.startActivity(MainActivityA.getInstance(), new Intent(
-						ctx, UnitConverterTemp.class));
-				MainActivityA.getInstance().finish();
+				MainActivityA.getInstance().showUnitConverterTempFragment();
 			}
 		});
 
@@ -500,9 +473,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				if (slider == 0) {
-					startActivity(new Intent(ctx,
-							UnitConverterArea.class));
-					MainActivityA.getInstance().finish();
+					MainActivityA.getInstance().showUnitConverterAreaFragment();
 
 				}
 			}
@@ -514,9 +485,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				if (slider == 0) {
-					startActivity(new Intent(ctx,
-							UnitConverterDataSize.class));
-					MainActivityA.getInstance().finish();
+					MainActivityA.getInstance().showUnitConverterDataSizeFragment();
 				}
 			}
 		});
@@ -527,9 +496,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				if (slider == 0) {
-					startActivity(new Intent(ctx,
-							UnitConverterEnergy.class));
-					MainActivityA.getInstance().finish();
+					MainActivityA.getInstance().showUnitConverterEnergyFragment();
 				}
 			}
 		});
@@ -540,9 +507,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				if (slider == 0) {
-					startActivity(new Intent(ctx,
-							UnitConverterForce.class));
-					MainActivityA.getInstance().finish();
+					MainActivityA.getInstance().showUnitConverterForceFragment();
 				}
 			}
 		});
@@ -553,9 +518,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				if (slider == 0) {
-					startActivity(new Intent(ctx,
-							UnitConverterLength.class));
-					MainActivityA.getInstance().finish();
+					MainActivityA.getInstance().showUnitConverterLengthFragment();
 				}
 			}
 		});
@@ -566,9 +529,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				if (slider == 0) {
-					startActivity(new Intent(ctx,
-							UnitConverterPower.class));
-					MainActivityA.getInstance().finish();
+					MainActivityA.getInstance().showUnitConverterPowerFragment();
 				}
 			}
 		});
@@ -579,9 +540,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				if (slider == 0) {
-					startActivity(new Intent(ctx,
-							UnitConverterPressure.class));
-					MainActivityA.getInstance().finish();
+					MainActivityA.getInstance().showUnitConverterPressureFragment();
 				}
 			}
 		});
@@ -592,9 +551,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				if (slider == 0) {
-					startActivity(new Intent(ctx,
-							UnitConverterSpeed.class));
-					MainActivityA.getInstance().finish();
+					MainActivityA.getInstance().showUnitConverterSpeedFragment();
 				}
 			}
 		});
@@ -605,9 +562,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				if (slider == 0) {
-					startActivity(new Intent(ctx,
-							UnitConverterTemp.class));
-					MainActivityA.getInstance().finish();
+					MainActivityA.getInstance().showUnitConverterTempFragment();
 				}
 			}
 		});
@@ -618,9 +573,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				if (slider == 0) {
-					startActivity(new Intent(ctx,
-							UnitConverterTime.class));
-					MainActivityA.getInstance().finish();
+					MainActivityA.getInstance().showUnitConverterTimeFragment();
 				}
 			}
 		});
@@ -631,9 +584,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				if (slider == 0) {
-					startActivity(new Intent(ctx,
-							UnitConverterVolume.class));
-					MainActivityA.getInstance().finish();
+					MainActivityA.getInstance().showUnitConverterVolumeFragment();
 				}
 			}
 		});
@@ -644,9 +595,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				if (slider == 0) {
-					startActivity(new Intent(ctx,
-							UnitConverterWeight.class));
-					MainActivityA.getInstance().finish();
+					MainActivityA.getInstance().showUnitConverterWeightFragment();
 				}
 			}
 		});
@@ -750,6 +699,8 @@ public class UnitConverterFragment extends SherlockFragment implements
 		return outtoRight;
 	}
 
+	
+
 	class MyGestureDetector extends SimpleOnGestureListener {
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
@@ -770,7 +721,7 @@ public class UnitConverterFragment extends SherlockFragment implements
 						rl_slider_parent.startAnimation(outToRightAnimation());
 						slider = 1;
 					} else {
-						sideNavigationView.toggleMenu();
+//						sideNavigationView.toggleMenu();
 					}
 
 				}
@@ -787,11 +738,6 @@ public class UnitConverterFragment extends SherlockFragment implements
 
 	}
 
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-
-	}
 
 	public boolean onTouchEvent(MotionEvent event) {
 		// InputMethodManager imm = (InputMethodManager)
@@ -799,7 +745,8 @@ public class UnitConverterFragment extends SherlockFragment implements
 		// imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
 		return true;
 	}
-	
+
+
 	public void changeBackGround(String val) {
 		ll_centimeters.setBackgroundColor(Color.parseColor("#00000000"));
 		ll_feet.setBackgroundColor(Color.parseColor("#00000000"));
@@ -1390,6 +1337,17 @@ public class UnitConverterFragment extends SherlockFragment implements
 		ctx.startActivity(intent);
 		((Activity) ctx).overridePendingTransition(R.drawable.right_slide_in,
 				R.drawable.right_slide_out);
+	}
+	
+	@Override
+	public void showUpgrade() {
+		rl_upgrade_parent.startAnimation(anim);
+		upgradePopUp=1;
+	}
+
+	@Override
+	public int getUpgradePopUp() {
+		return upgradePopUp;
 	}
 	
 }

@@ -36,7 +36,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -55,24 +54,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.devspark.sidenavigation.SideNavigationView;
 import com.devspark.sidenavigation.SideNavigationView.Mode;
-import com.ioptime.calculatorapp.About;
 import com.ioptime.calculatorapp.ConstantAds;
-import com.ioptime.calculatorapp.CurrencyConverter;
 import com.ioptime.calculatorapp.CurrencyListArray;
-import com.ioptime.calculatorapp.HealthCalculator;
-import com.ioptime.calculatorapp.MainActivity;
 import com.ioptime.calculatorapp.Purchases;
-import com.ioptime.calculatorapp.SelectCountriesList;
-import com.ioptime.calculatorapp.SelectFromCountry;
-import com.ioptime.calculatorapp.UnitConverterLength;
 import com.smartcalculator.MainActivityA;
 import com.smartcalculator.R;
 
-public class CurrencyConverterFragment extends SherlockFragment {
+public class CurrencyConverterFragment extends SherlockFragment implements Upgradeable {
 
 	LinearLayout funtionPad;
 	Context ctx;
@@ -132,7 +123,6 @@ public class CurrencyConverterFragment extends SherlockFragment {
 	String sub_3_flagRes;
 	String sub_4_flagRes;
 	String sub_5_flagRes;
-	ImageView menuIcon;
 	ImageView refreshButton;
 	ImageView addCurrencyImage;
 	ImageView currencySlotFullImage;
@@ -327,7 +317,6 @@ public class CurrencyConverterFragment extends SherlockFragment {
 		funtionPad = (LinearLayout) view.findViewById(R.id.functionPad);
 		sideNavigationView = (SideNavigationView) view.findViewById(R.id.side_navigation_view);
 		refreshTime = (TextView) view.findViewById(R.id.next_refresh_time);
-		menuIcon = (ImageView) view.findViewById(R.id.menuicon);
 		sideNavigationView.setMenuItems(R.menu.side_navigation_menu);
 		funtionPad.setOnTouchListener(gestureListener);
 		circleBtn = (ImageView) view.findViewById(R.id.circle_button_check);
@@ -538,13 +527,7 @@ public class CurrencyConverterFragment extends SherlockFragment {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(container.getContext(),
-						SelectFromCountry.class);
-
-				startActivity(intent);
-				MainActivityA.getInstance().finish();
-
+				MainActivityA.getInstance().showSelectFormCountryFragment();
 			}
 		});
 
@@ -558,11 +541,7 @@ public class CurrencyConverterFragment extends SherlockFragment {
 					Toast.makeText(container.getContext(),
 							"Currency Slot full", Toast.LENGTH_LONG).show();
 				} else {
-					Intent intent = new Intent(container.getContext(),
-							SelectCountriesList.class);
-
-					startActivity(intent);
-					MainActivityA.getInstance().finish();
+					MainActivityA.getInstance().showSelectCountriesListFragment();
 				}
 			}
 		});
@@ -844,15 +823,6 @@ public class CurrencyConverterFragment extends SherlockFragment {
 		// getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		vibe = (Vibrator) container.getContext().getSystemService(
 				Context.VIBRATOR_SERVICE);
-		menuIcon.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				sideNavigationView.toggleMenu();
-				vibe.vibrate(50);
-			}
-		});
 
 		etContent.addTextChangedListener(watch);
 		
@@ -1723,6 +1693,17 @@ public class CurrencyConverterFragment extends SherlockFragment {
 		// listener
 	}
 
+	@Override
+	public void showUpgrade() {
+		rl_upgrade_parent.startAnimation(anim);
+		upgradePopUp=1;
+	}
+
+	@Override
+	public int getUpgradePopUp() {
+		return upgradePopUp;
+	}
+	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

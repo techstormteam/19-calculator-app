@@ -31,7 +31,7 @@ import com.ioptime.calculatorapp.Purchases;
 import com.smartcalculator.MainActivityA;
 import com.smartcalculator.R;
 
-public class AboutFragment extends SherlockFragment {
+public class AboutFragment extends SherlockFragment implements Upgradeable {
 
 	Context ctx;
 	public static final String EXTRA_TITLE = "com.devspark.sidenavigation.sample.extra.MTGOBJECT";
@@ -271,7 +271,18 @@ public class AboutFragment extends SherlockFragment {
 		i.setData(Uri.parse(url));
 		startActivity(i);
 	}
+	
+	@Override
+	public void showUpgrade() {
+		rl_upgrade_parent.startAnimation(anim);
+		upgradePopUp=1;
+	}
 
+	@Override
+	public int getUpgradePopUp() {
+		return upgradePopUp;
+	}
+	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

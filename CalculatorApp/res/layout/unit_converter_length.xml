@@ -166,7 +166,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="Meters"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
 
                             <ImageView
                                 android:id="@+id/meters_conversion_arrow"
@@ -185,7 +185,7 @@
                                 android:layout_marginTop="1dip"
                                 android:text="10.0000"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
 
                             <TextView
                                 android:id="@+id/meters_symbols"
@@ -195,7 +195,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="m"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
                         </LinearLayout>
 
                         <ImageView
@@ -227,7 +227,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="Feet"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
 
                             <ImageView
                                 android:id="@+id/feet_conversion_arrow"
@@ -246,7 +246,7 @@
                                 android:layout_marginTop="1dip"
                                 android:text="10.0000"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
 
                             <TextView
                                 android:id="@+id/feet_symbols"
@@ -256,7 +256,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="ft"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
                         </LinearLayout>
 
                         <ImageView
@@ -288,7 +288,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="Yards"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
 
                             <ImageView
                                 android:id="@+id/yards_conversion_arrow"
@@ -307,7 +307,7 @@
                                 android:layout_marginTop="1dip"
                                 android:text="10.0000"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
 
                             <TextView
                                 android:id="@+id/yards_symbols"
@@ -317,7 +317,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="yd"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
                         </LinearLayout>
 
                         <ImageView
@@ -349,7 +349,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="Inches"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
 
                             <ImageView
                                 android:id="@+id/inches_conversion_arrow"
@@ -368,7 +368,7 @@
                                 android:layout_marginTop="1dip"
                                 android:text="10.0000"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
 
                             <TextView
                                 android:id="@+id/inches_symbols"
@@ -378,7 +378,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="in"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
                         </LinearLayout>
 
                         <ImageView
@@ -410,7 +410,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="Kilometers"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
 
                             <ImageView
                                 android:id="@+id/kilometers_conversion_arrow"
@@ -429,7 +429,7 @@
                                 android:layout_marginTop="1dip"
                                 android:text="10.0000"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
 
                             <TextView
                                 android:id="@+id/kilometers_symbols"
@@ -439,7 +439,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="km"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
                         </LinearLayout>
 
                         <ImageView
@@ -471,7 +471,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="Miles"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
 
                             <ImageView
                                 android:id="@+id/miles_conversion_arrow"
@@ -490,7 +490,7 @@
                                 android:layout_marginTop="1dip"
                                 android:text="10.0000"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
 
                             <TextView
                                 android:id="@+id/miles_symbols"
@@ -500,7 +500,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="mi"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
                         </LinearLayout>
 
                         <ImageView
@@ -532,7 +532,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="Centimeters"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
 
                             <ImageView
                                 android:id="@+id/centimeters_conversion_arrow"
@@ -551,7 +551,7 @@
                                 android:layout_marginTop="1dip"
                                 android:text="10.0000"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
 
                             <TextView
                                 android:id="@+id/centimeters_symbols"
@@ -561,7 +561,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="cm"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
                         </LinearLayout>
 
                         <ImageView
@@ -593,7 +593,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="Milimeters"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
 
                             <ImageView
                                 android:id="@+id/milimeters_conversion_arrow"
@@ -612,7 +612,7 @@
                                 android:layout_marginTop="1dip"
                                 android:text="10.0000"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
 
                             <TextView
                                 android:id="@+id/milimeters_symbols"
@@ -622,7 +622,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="mm"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
                         </LinearLayout>
 
                         <ImageView
@@ -654,7 +654,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="Microns"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
 
                             <ImageView
                                 android:id="@+id/microns_conversion_arrow"
@@ -673,7 +673,7 @@
                                 android:layout_marginTop="1dip"
                                 android:text="10.0000"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
 
                             <TextView
                                 android:id="@+id/microns_symbols"
@@ -683,7 +683,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="um"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
                         </LinearLayout>
 
                         <ImageView
@@ -715,7 +715,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="Nanometers"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
 
                             <ImageView
                                 android:id="@+id/nanometers_conversion_arrow"
@@ -734,7 +734,7 @@
                                 android:layout_marginTop="1dip"
                                 android:text="10.0000"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
 
                             <TextView
                                 android:id="@+id/nanometers_symbols"
@@ -744,7 +744,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="nm"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
                         </LinearLayout>
 
                         <ImageView
@@ -775,7 +775,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="Light Years"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
 
                             <ImageView
                                 android:id="@+id/lightyears_conversion_arrow"
@@ -794,7 +794,7 @@
                                 android:layout_marginTop="1dip"
                                 android:text="10.0000"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
 
                             <TextView
                                 android:id="@+id/lightyears_symbols"
@@ -804,7 +804,7 @@
                                 android:layout_marginLeft="10dip"
                                 android:text="ly"
                                 android:textColor="#ffffff"
-                                android:textSize="18dp" />
+                                android:textSize="15dp" />
                         </LinearLayout>
 
                         <ImageView

@@ -182,7 +182,6 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				rl_upgrade_parent.startAnimation(anim_back);
 				upgradePopUp = 0;
 			}
@@ -191,7 +190,6 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				rl_upgrade_parent.startAnimation(anim_back);
 				upgradePopUp = 0;
 			}
@@ -200,7 +198,6 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 			 Purchases.makePurchase(MainActivityA.getInstance());
 
 //				if (checkvar == true) {

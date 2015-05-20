@@ -296,7 +296,6 @@ Upgradeable {
 		unit_name_millibar.setText("Millibar");
 		unit_name_bar.setText("Bar");
 		unit_name_atmosphere.setText("Atmosphere(std)");
-		unit_name_atmosphere.setTextSize(16);
 		unit_name_poundpersqinch.setText("Pounds per sq.inch");
 		
 		ImageView next_empty_view=(ImageView) view.findViewById(R.id.uc_empty_view_next);

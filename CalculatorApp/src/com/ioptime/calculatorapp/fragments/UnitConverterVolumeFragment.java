@@ -315,7 +315,6 @@ Upgradeable {
 		unit_name_cufeet.setText("Cu.Feet");
 		unit_name_cuyards.setText("Cu.Yards");
 		unit_name_fluidounces.setText("Fluid Ounce (US)");
-		unit_name_fluidounces.setTextSize(17);
 		unit_name_gallon.setText("Gallon (US)");
 		unit_name_pint.setText("Pint (US)");
 

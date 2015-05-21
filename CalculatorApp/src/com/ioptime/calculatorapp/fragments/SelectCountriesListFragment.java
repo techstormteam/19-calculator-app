@@ -77,7 +77,6 @@ public class SelectCountriesListFragment extends SherlockFragment implements Upg
 	ArrayList<CurrencyFlags> arraylist = new ArrayList<CurrencyFlags>();
 	ListView list;
 	SharedPreferences.Editor editor;
-	public static final String MY_PREFS_NAME = "MyPrefsFile";
 	boolean checkvar = false;
 	SharedPreferences prefs;
 	
@@ -90,7 +89,7 @@ public class SelectCountriesListFragment extends SherlockFragment implements Upg
 		ctx = container.getContext();
 		Purchases.initiatePurchase(MainActivityA.getInstance());
 		mainRelativeLayout = (RelativeLayout) view.findViewById(R.id.main_relative_layout);
-		prefs = ctx.getSharedPreferences(MY_PREFS_NAME, ctx.MODE_PRIVATE);
+		prefs = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME, ctx.MODE_PRIVATE);
 		if (!prefs.getString("isPaymentMade", "").equals("true")) {
 			ConstantAds.loadInterstitialAd(ctx,
 					"top");
@@ -101,7 +100,7 @@ public class SelectCountriesListFragment extends SherlockFragment implements Upg
 		flag = currencyListArray.drawables();
 		etSearch = (EditText) view.findViewById(R.id.etSearch);
 		ImageView addCurrency = (ImageView) view.findViewById(R.id.addCurrency);
-		SharedPreferences prefs = ctx.getSharedPreferences(MY_PREFS_NAME,
+		SharedPreferences prefs = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
 				ctx.MODE_PRIVATE);
 		String currencyNames = prefs.getString("currencyNames", "");
 		Log.d("test", currencyNames);
@@ -211,8 +210,8 @@ public class SelectCountriesListFragment extends SherlockFragment implements Upg
 //					editor.putString("isPaymentMade", "false");
 //					editor.commit();
 //				}
-				rl_upgrade_parent.startAnimation(anim_back);
-				upgradePopUp = 0;
+//				rl_upgrade_parent.startAnimation(anim_back);
+//				upgradePopUp = 0;
 			}
 		});
 		rl_upgrade.setVisibility(View.GONE);
@@ -285,7 +284,7 @@ public class SelectCountriesListFragment extends SherlockFragment implements Upg
 		LayoutInflater inflater;
 		private List<CurrencyFlags> worldpopulationlist = null;
 		private ArrayList<CurrencyFlags> arraylist;
-		SharedPreferences prefs = ctx.getSharedPreferences(MY_PREFS_NAME,
+		SharedPreferences prefs = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
 				ctx.MODE_PRIVATE);
 		String currencyFullNames = prefs.getString("currencyFullNames", "");
 
@@ -404,7 +403,7 @@ public class SelectCountriesListFragment extends SherlockFragment implements Upg
 					String currencyNameToPass;
 					int currencyFlagToPass;
 					SharedPreferences prefs = ctx.getSharedPreferences(
-							MY_PREFS_NAME, ctx.MODE_PRIVATE);
+							MainActivityA.MY_PREFS_NAME, ctx.MODE_PRIVATE);
 					String currencyNames = prefs.getString("currencyNames", "");
 					for (int i = 0; i < currencyNames.length(); i++) {
 						if (currencyNames.startsWith(",")) {
@@ -450,7 +449,7 @@ public class SelectCountriesListFragment extends SherlockFragment implements Upg
 								}
 								Log.d("passingcurrencyandflags", currencyNames
 										+ "------" + currencyFlags);
-								editor = ctx.getSharedPreferences(MY_PREFS_NAME,
+								editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
 										ctx.MODE_PRIVATE).edit();
 								editor.putString("currencyNames", currencyNames);
 								editor.putString("flags", currencyFlags);

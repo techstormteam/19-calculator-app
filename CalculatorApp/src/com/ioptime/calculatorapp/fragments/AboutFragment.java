@@ -62,7 +62,6 @@ public class AboutFragment extends SherlockFragment implements Upgradeable {
 	boolean checkvar = false;
 	SharedPreferences prefs;
 	SharedPreferences.Editor editor;
-	public static final String MY_PREFS_NAME = "MyPrefsFile";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,7 +73,7 @@ public class AboutFragment extends SherlockFragment implements Upgradeable {
 		float matrics = getResources().getDisplayMetrics().density;
 		Purchases.initiatePurchase(MainActivityA.getInstance());
 		mainRelativeLayout = (RelativeLayout) view.findViewById(R.id.main_relative_layout);
-		prefs = ctx.getSharedPreferences(MY_PREFS_NAME, ctx.MODE_PRIVATE);
+		prefs = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME, ctx.MODE_PRIVATE);
 		if (!prefs.getString("isPaymentMade", "").equals("true")) {
 			ConstantAds.loadInterstitialAd(ctx,
 					"top");
@@ -174,8 +173,8 @@ public class AboutFragment extends SherlockFragment implements Upgradeable {
 //				editor.putString("isPaymentMade", "false");
 //				editor.commit();
 //			}
-				rl_upgrade_parent.startAnimation(anim_back);
-				upgradePopUp = 0;
+//				rl_upgrade_parent.startAnimation(anim_back);
+//				upgradePopUp = 0;
 			}
 		});
 		rl_upgrade.setVisibility(View.GONE);

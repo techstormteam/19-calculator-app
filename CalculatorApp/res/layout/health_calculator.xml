@@ -17,7 +17,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/adView"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dip"
             android:src="@drawable/heading_fitness_calc" />
 
         <RelativeLayout

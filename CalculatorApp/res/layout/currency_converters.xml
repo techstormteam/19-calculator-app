@@ -26,7 +26,6 @@
                     android:id="@+id/currency_heading_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dip"
                     android:src="@drawable/cc_heading" />
 
                 <ImageView
@@ -167,6 +166,7 @@
                 android:paddingBottom="60dip" >
 
                 <LinearLayout
+                    android:id="@+id/rl_sub_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
@@ -199,7 +199,8 @@
                             android:background="@null"
                             android:text=""
                             android:textColor="#000000"
-                            android:textSize="30dp" />
+                            android:textSize="30dp"
+                            android:tag="subName" />
 
                         <ImageView
                             android:id="@+id/sub_1_img"
@@ -211,7 +212,8 @@
                             android:maxHeight="60dp"
                             android:maxWidth="60dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/afn" />
+                            android:src="@drawable/afn"
+                            android:tag="subImg" />
 
                         <TextView
                             android:id="@+id/sub_1_currency_full"
@@ -224,7 +226,8 @@
                             android:paddingLeft="20dip"
                             android:text=""
                             android:textColor="#000000"
-                            android:textSize="12dp" />
+                            android:textSize="12dp"
+                            android:tag="subFull" />
 
                         <TextView
                             android:id="@+id/sub_1_currency"
@@ -277,7 +280,8 @@
                             android:background="@null"
                             android:text=""
                             android:textColor="#000000"
-                            android:textSize="30dp" />
+                            android:textSize="30dp"
+                            android:tag="subName" />
 
                         <ImageView
                             android:id="@+id/sub_2_img"
@@ -289,7 +293,8 @@
                             android:maxHeight="60dp"
                             android:maxWidth="60dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/inr" />
+                            android:src="@drawable/inr"
+                            android:tag="subImg" />
 
                         <TextView
                             android:id="@+id/sub_2_currency_full"
@@ -302,7 +307,8 @@
                             android:paddingLeft="20dip"
                             android:text=""
                             android:textColor="#000000"
-                            android:textSize="12dp" />
+                            android:textSize="12dp"
+                            android:tag="subFull" />
 
                         <TextView
                             android:id="@+id/sub_2_currency"
@@ -355,7 +361,8 @@
                             android:background="@null"
                             android:text=""
                             android:textColor="#000000"
-                            android:textSize="30dp" />
+                            android:textSize="30dp"
+                            android:tag="subName" />
 
                         <ImageView
                             android:id="@+id/sub_3_img"
@@ -367,7 +374,8 @@
                             android:maxHeight="60dp"
                             android:maxWidth="60dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/jpy" />
+                            android:src="@drawable/jpy"
+                            android:tag="subImg" />
 
                         <TextView
                             android:id="@+id/sub_3_currency_full"
@@ -380,7 +388,8 @@
                             android:paddingLeft="20dip"
                             android:text=""
                             android:textColor="#000000"
-                            android:textSize="12dp" />
+                            android:textSize="12dp"
+                            android:tag="subFull" />
 
                         <TextView
                             android:id="@+id/sub_3_currency"
@@ -434,7 +443,8 @@
                             android:background="@null"
                             android:text=""
                             android:textColor="#000000"
-                            android:textSize="30dp" />
+                            android:textSize="30dp"
+                            android:tag="subName" />
 
                         <ImageView
                             android:id="@+id/sub_4_img"
@@ -446,7 +456,8 @@
                             android:maxHeight="60dp"
                             android:maxWidth="60dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/lkr" />
+                            android:src="@drawable/lkr"
+                            android:tag="subImg" />
 
                         <TextView
                             android:id="@+id/sub_4_currency_full"
@@ -459,7 +470,8 @@
                             android:paddingLeft="20dip"
                             android:text=""
                             android:textColor="#000000"
-                            android:textSize="12dp" />
+                            android:textSize="12dp"
+                            android:tag="subFull" />
 
                         <TextView
                             android:id="@+id/sub_4_currency"
@@ -512,7 +524,8 @@
                             android:background="@null"
                             android:text=""
                             android:textColor="#000000"
-                            android:textSize="30dp" />
+                            android:textSize="30dp"
+                            android:tag="subName" />
 
                         <TextView
                             android:id="@+id/sub_5_currency_full"
@@ -525,7 +538,8 @@
                             android:paddingLeft="20dip"
                             android:text=""
                             android:textColor="#000000"
-                            android:textSize="12dp" />
+                            android:textSize="12dp"
+                            android:tag="subFull" />
 
                         <TextView
                             android:id="@+id/sub_5_currency"
@@ -550,7 +564,8 @@
                             android:maxHeight="60dp"
                             android:maxWidth="60dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/pkr" />
+                            android:src="@drawable/pkr"
+                            android:tag="subImg" />
 
                         <ImageView
                             android:id="@+id/sub_5_delete_button"

@@ -15,27 +15,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
-            <ImageView
-                android:id="@+id/menuicon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/ic_action_side_navigation" />
-
-            <View
-                android:id="@+id/adView"
-                android:layout_width="fill_parent"
-                android:layout_height="20dip"
-                android:layout_alignParentTop="true" >
-            </View>
-
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/adView"
-                android:background="@drawable/cc_list_bg" 
-                android:layout_marginTop="20dip">
+                android:background="@drawable/cc_list_bg">
 
                 <ImageView
                     android:id="@+id/currency_heading"

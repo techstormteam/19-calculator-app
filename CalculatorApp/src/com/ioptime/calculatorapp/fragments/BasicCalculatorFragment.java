@@ -87,7 +87,6 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 	boolean checkvar = false;
 	SharedPreferences prefs;
 	SharedPreferences.Editor editor;
-	public static final String MY_PREFS_NAME = "MyPrefsFile";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -100,7 +99,7 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 		
 		ctx = container.getContext();
 		Purchases.initiatePurchase(MainActivityA.getInstance());
-		prefs = ctx.getSharedPreferences(MY_PREFS_NAME, ctx.MODE_PRIVATE);
+		prefs = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME, ctx.MODE_PRIVATE);
 		if (!prefs.getString("isPaymentMade", "").equals("true")) {
 			ConstantAds.loadInterstitialAd(ctx,
 					"top");
@@ -211,8 +210,8 @@ public class BasicCalculatorFragment extends SherlockFragment implements OnClick
 //					editor.putString("isPaymentMade", "false");
 //					editor.commit();
 //				}
-				rl_upgrade_parent.startAnimation(anim_back);
-				upgradePopUp = 0;
+//				rl_upgrade_parent.startAnimation(anim_back);
+//				upgradePopUp = 0;
 
 			}
 		});

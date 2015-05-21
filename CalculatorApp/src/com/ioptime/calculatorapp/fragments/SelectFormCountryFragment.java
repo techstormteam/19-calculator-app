@@ -77,7 +77,6 @@ public class SelectFormCountryFragment extends SherlockFragment implements Upgra
 	boolean checkvar = false;
 	SharedPreferences prefs;
 	SharedPreferences.Editor editor;
-	public static final String MY_PREFS_NAME = "MyPrefsFile";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,13 +87,13 @@ public class SelectFormCountryFragment extends SherlockFragment implements Upgra
 		ctx = container.getContext();
 		Purchases.initiatePurchase(MainActivityA.getInstance());
 		mainRelativeLayout = (RelativeLayout) view.findViewById(R.id.main_relative_layout);
-		prefs = ctx.getSharedPreferences(MY_PREFS_NAME, ctx.MODE_PRIVATE);
+		prefs = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME, ctx.MODE_PRIVATE);
 		if (!prefs.getString("isPaymentMade", "").equals("true")) {
 			ConstantAds.loadInterstitialAd(ctx,
 					"top");
 		}
 		ImageView addCurrency = (ImageView) view.findViewById(R.id.addCurrency);
-		SharedPreferences prefs = ctx.getSharedPreferences(MY_PREFS_NAME,
+		SharedPreferences prefs = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
 				ctx.MODE_PRIVATE);
 		String currencyNames = prefs.getString("currencyNames", "");
 		for (int i = 0; i < currencyNames.length(); i++) {
@@ -209,8 +208,8 @@ public class SelectFormCountryFragment extends SherlockFragment implements Upgra
 //					editor.putString("isPaymentMade", "false");
 //					editor.commit();
 //				}
-				rl_upgrade_parent.startAnimation(anim_back);
-				upgradePopUp = 0;
+//				rl_upgrade_parent.startAnimation(anim_back);
+//				upgradePopUp = 0;
 			}
 		});
 		rl_upgrade.setVisibility(View.GONE);
@@ -284,7 +283,7 @@ public class SelectFormCountryFragment extends SherlockFragment implements Upgra
 		LayoutInflater inflater;
 		private List<CurrencyFlags> worldpopulationlist = null;
 		private ArrayList<CurrencyFlags> arraylist;
-		SharedPreferences prefs = ctx.getSharedPreferences(MY_PREFS_NAME,
+		SharedPreferences prefs = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
 				ctx.MODE_PRIVATE);
 		String currencyFullNames = prefs.getString("currencyFullNames", "");
 
@@ -375,7 +374,7 @@ public class SelectFormCountryFragment extends SherlockFragment implements Upgra
 				public void onClick(View arg0) {
 					// Send single item click data to SingleItemView Class
 					SharedPreferences prefs = ctx.getSharedPreferences(
-							MY_PREFS_NAME, ctx.MODE_PRIVATE);
+							MainActivityA.MY_PREFS_NAME, ctx.MODE_PRIVATE);
 					String fromCurrencyNames = prefs.getString(
 							"fromCurrencyNames", "");
 					String fromCurrencyFlags = prefs.getString(
@@ -397,7 +396,7 @@ public class SelectFormCountryFragment extends SherlockFragment implements Upgra
 							fromCurrencyFlags = String
 									.valueOf(worldpopulationlist.get(position)
 											.getFlag());
-							editor = ctx.getSharedPreferences(MY_PREFS_NAME,
+							editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
 									ctx.MODE_PRIVATE).edit();
 							editor.putString("fromCurrencyNames",
 									fromCurrencyNames);

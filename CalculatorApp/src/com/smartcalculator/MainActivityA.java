@@ -18,6 +18,7 @@ import com.ioptime.calculatorapp.MenuListAdapter;
 import com.ioptime.calculatorapp.fragments.AboutFragment;
 import com.ioptime.calculatorapp.fragments.BasicCalculatorFragment;
 import com.ioptime.calculatorapp.fragments.CurrencyConverterFragment;
+import com.ioptime.calculatorapp.fragments.CurrencyConverterFragment.MyDragListener;
 import com.ioptime.calculatorapp.fragments.FitnessCalculatorFragment;
 import com.ioptime.calculatorapp.fragments.HealthResultsFragment;
 import com.ioptime.calculatorapp.fragments.SelectCountriesListFragment;
@@ -159,6 +160,9 @@ public class MainActivityA extends SherlockFragmentActivity {
 		// Get the view from drawer_main.xml
 		setContentView(R.layout.drawer_main);
 
+//		DrawerLayout mainView = (DrawerLayout)findViewById(R.id.drawer_layout);
+//		mainView.setOnDragListener(new MyDragListener());
+		
 		currentFragmentCanUpgrade = fragBasicCalculator;
 
 		prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
@@ -167,13 +171,13 @@ public class MainActivityA extends SherlockFragmentActivity {
 		mTitle = mDrawerTitle = getTitle();
 
 		// Generate title
-		titleStr = new String[] { "BASIC CALCULATOR", "CURRENTCY CONVERTER", "UNIT CONVERTER", 
+		titleStr = new String[] { "BASIC CALCULATOR", "CURRENCY CONVERTER", "UNIT CONVERTER", 
 				"FITNESS CALCULATOR", "SETTINGS", "UPGRADE", "ABOUT" };
 		
 		
 		
-		title = new int[] { R.drawable.menu1, R.drawable.menu2, R.drawable.menu3, 
-				R.drawable.menu4, R.drawable.menu5, R.drawable.menu6, R.drawable.menu7 };
+		title = new int[] { R.drawable.menuleft1, R.drawable.menuleft2, R.drawable.menuleft3, 
+				R.drawable.menuleft4, R.drawable.menuleft5, R.drawable.menuleft6, R.drawable.menuleft7 };
 		
 		titleClicked = new int[] { R.drawable.menu1_p, R.drawable.menu2_p, R.drawable.menu3_p, 
 				R.drawable.menu4_p, R.drawable.menu5_p, R.drawable.menu6_p, R.drawable.menu7_p };
@@ -209,12 +213,10 @@ public class MainActivityA extends SherlockFragmentActivity {
 				R.string.drawer_close) {
 
 			public void onDrawerClosed(View view) {
-				// TODO Auto-generated method stub
 				super.onDrawerClosed(view);
 			}
 
 			public void onDrawerOpened(View drawerView) {
-				// TODO Auto-generated method stub
 				// Set the title on the action when drawer open
 				getSupportActionBar().setTitle(mDrawerTitle);
 				super.onDrawerOpened(drawerView);
@@ -262,16 +264,16 @@ public class MainActivityA extends SherlockFragmentActivity {
 			currentFragmentCanUpgrade = fragBasicCalculator;
 			break;
 		case 1:
+			ft.replace(R.id.content_frame, fragCurrencyConverter);
+			currentFragmentCanUpgrade = fragCurrencyConverter;
+			break;
+		case 2:
 			if (prefs.getString("isPaymentMade", "").equals("true")) {
-				ft.replace(R.id.content_frame, fragCurrencyConverter);
-				currentFragmentCanUpgrade = fragCurrencyConverter;
+				ft.replace(R.id.content_frame, fragUnitConverterLength);
+				currentFragmentCanUpgrade = fragUnitConverterLength;
 			} else if (!prefs.getString("isPaymentMade", "").equals("true")) {
 				currentFragmentCanUpgrade.showUpgrade();
 			}
-			break;
-		case 2:
-			ft.replace(R.id.content_frame, fragUnitConverterLength);
-			currentFragmentCanUpgrade = fragUnitConverterLength;
 			break;
 		case 3:
 			if (prefs.getString("isPaymentMade", "").equals("true")) {

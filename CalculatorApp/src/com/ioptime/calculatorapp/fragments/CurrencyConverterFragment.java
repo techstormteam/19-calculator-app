@@ -1,29 +1,21 @@
 package com.ioptime.calculatorapp.fragments;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -34,13 +26,18 @@ import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.DragShadowBuilder;
 import android.view.View.OnClickListener;
+import android.view.View.OnDragListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -58,8 +55,10 @@ import com.actionbarsherlock.view.MenuItem;
 import com.devspark.sidenavigation.SideNavigationView;
 import com.devspark.sidenavigation.SideNavigationView.Mode;
 import com.ioptime.calculatorapp.ConstantAds;
+import com.ioptime.calculatorapp.CurrencyFlags;
 import com.ioptime.calculatorapp.CurrencyListArray;
 import com.ioptime.calculatorapp.Purchases;
+import com.ioptime.calculatorapp.WebserviceUtil;
 import com.smartcalculator.MainActivityA;
 import com.smartcalculator.R;
 
@@ -160,6 +159,8 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 	Bundle bundle;
 	String refreshCheck;
 
+	RelativeLayout contentMain;
+	LinearLayout rl_sub_list;
 	RelativeLayout sub_1_rl;
 	RelativeLayout sub_2_rl;
 	RelativeLayout sub_3_rl;
@@ -184,14 +185,15 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 	Animation anim;
 	Animation anim_back;
 	RelativeLayout mainRelativeLayout;
-
-	public static final String MY_PREFS_NAME = "MyPrefsFile";
 	
+	List<CurrencyFlags> worldpopulationlist = null;
+	
+	CounterClass timer;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, final ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.currency_converters, container, false);
-
 		super.onCreate(savedInstanceState);
 		ctx = container.getContext();
 		Purchases.initiatePurchase(MainActivityA.getInstance());
@@ -199,8 +201,9 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		bundle = savedInstanceState;
 		
 		mainRelativeLayout = (RelativeLayout) view.findViewById(R.id.main_relative_layout);
-
-		prefs = container.getContext().getSharedPreferences(MY_PREFS_NAME, container.getContext().MODE_PRIVATE);
+		mainRelativeLayout.setOnDragListener(new MyDragListener());
+		
+		prefs = container.getContext().getSharedPreferences(MainActivityA.MY_PREFS_NAME, container.getContext().MODE_PRIVATE);
 		if (!prefs.getString("isPaymentMade", "").equals("true")) {
 			ConstantAds.loadInterstitialAd(container.getContext(),
 					"top");
@@ -209,10 +212,10 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		currencyFlags = prefs.getString("flags", "");
 		currencyFullNames = prefs.getString("currencyFullNames", "");
 		fromCurrencyNames = prefs.getString("fromCurrencyNames", "USD");
-		fromCurrencyFlags = prefs.getString("fromCurrencyFlags", "");
+		fromCurrencyFlags = prefs.getString("fromCurrencyFlags", String.valueOf(R.drawable.usd));
 		fromCurrencyNamesFull = prefs.getString("fromCurrencyNamesFull",
 				"USD - USA");
-		final CounterClass timer = new CounterClass(60000, 1000);
+		timer = new CounterClass(60000, 1000);
 		// timer.start();
 		gestureDetector = new GestureDetector(container.getContext(), new MyGestureDetector());
 		gestureListener = new View.OnTouchListener() {
@@ -301,14 +304,13 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 //							.edit();
 //					editor.putString("isPaymentMade", "true");
 //					editor.commit();
-//				} else {
 //					editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
 //							.edit();
 //					editor.putString("isPaymentMade", "false");
 //					editor.commit();
 //				}
-				rl_upgrade_parent.startAnimation(anim_back);
-				upgradePopUp = 0;
+//				rl_upgrade_parent.startAnimation(anim_back);
+//				upgradePopUp = 0;
 			}
 		});
 		rl_upgrade.setVisibility(View.GONE);
@@ -321,6 +323,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		funtionPad.setOnTouchListener(gestureListener);
 		circleBtn = (ImageView) view.findViewById(R.id.circle_button_check);
 		etContent = (EditText) view.findViewById(R.id.tvContent);
+		etContent.setOnDragListener(new MyDragListener());
 		currenyContentFull = (TextView) view.findViewById(R.id.content_currency_full);
 		fromImage = (ImageView) view.findViewById(R.id.imgContent);
 		sub_1_tv = (TextView) view.findViewById(R.id.sub_1_tv);
@@ -353,18 +356,43 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		sub_3 = (ImageView) view.findViewById(R.id.sub_3);
 		sub_4 = (ImageView) view.findViewById(R.id.sub_4);
 		sub_5 = (ImageView) view.findViewById(R.id.sub_5);
+		contentMain = (RelativeLayout) view.findViewById(R.id.rl_content_main);
+		contentMain.setOnDragListener(new MyDragListener());
+		rl_sub_list = (LinearLayout) view.findViewById(R.id.rl_sub_list);
 		sub_1_rl = (RelativeLayout) view.findViewById(R.id.rl_sub_1);
+		sub_1_rl.setOnLongClickListener(new MyLongClickListener());
+		sub_1_rl.setOnDragListener(new MyDragListener());
+		sub_1_rl.setOnClickListener(new MyClickListener());
+		sub_1_rl.setTag("0");
 		sub_2_rl = (RelativeLayout) view.findViewById(R.id.rl_sub_2);
+		sub_2_rl.setOnLongClickListener(new MyLongClickListener());
+		sub_2_rl.setOnDragListener(new MyDragListener());
+		sub_2_rl.setOnClickListener(new MyClickListener());
+		sub_2_rl.setTag("1");
 		sub_3_rl = (RelativeLayout) view.findViewById(R.id.rl_sub_3);
+		sub_3_rl.setOnLongClickListener(new MyLongClickListener());
+		sub_3_rl.setOnDragListener(new MyDragListener());
+		sub_3_rl.setOnClickListener(new MyClickListener());
+		sub_3_rl.setTag("2");
 		sub_4_rl = (RelativeLayout) view.findViewById(R.id.rl_sub_4);
+		sub_4_rl.setOnLongClickListener(new MyLongClickListener());
+		sub_4_rl.setOnDragListener(new MyDragListener());
+		sub_4_rl.setOnClickListener(new MyClickListener());
+		sub_4_rl.setTag("3");
 		sub_5_rl = (RelativeLayout) view.findViewById(R.id.rl_sub_5);
+		sub_5_rl.setOnLongClickListener(new MyLongClickListener());
+		sub_5_rl.setOnDragListener(new MyDragListener());
+		sub_5_rl.setOnClickListener(new MyClickListener());
+		sub_5_rl.setTag("4");
 		addCurrencyImage = (ImageView) view.findViewById(R.id.add_currency_image);
 		currencySlotFullImage = (ImageView) view.findViewById(R.id.slot_full_image);
 		addNewGuide = (ImageView) view.findViewById(R.id.add_new_guide);
 		if (!fromCurrencyFlags.equals("")) {
 			fromImage.setImageResource(Integer.valueOf(fromCurrencyFlags));
+			fromImage.setTag(Integer.valueOf(fromCurrencyFlags));
 		} else {
 			fromImage.setImageResource(R.drawable.usd_united_states_dollar);
+			fromImage.setTag(R.drawable.usd_united_states_dollar);
 		}
 		ArrayList<String> cloneList = new ArrayList<String>();
 		for (String curVal : currencyListArray.currencyList()) {
@@ -403,126 +431,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		currencyNamesArray = currencyNames.split(",");
 		currencyFlagsArray = currencyFlags.split(",");
 		currencyFullNamesArray = currencyFullNames.split(",");
-
-		if (currencyNames.equals("")) {
-			addNewGuide.setVisibility(View.VISIBLE);
-		} else {
-			addNewGuide.setVisibility(View.GONE);
-		}
-
-		if (!currencyNames.equals("") && currencyNamesArray.length == 1) {
-			subView1Visible();
-			fullName1 = currencyFullNamesArray[0];
-			sub_1_abrv = currencyNamesArray[0];
-			sub_1_flagRes = currencyFlagsArray[0];
-			sub_1_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[0]));
-			addCurrencyImage.setImageResource(R.drawable.add_currency_4_5);
-			currencySlotFullImage.setImageResource(R.drawable.slot_full_1_5);
-
-		}
-		if (currencyNamesArray.length == 2) {
-			subView1Visible();
-			subView2Visible();
-			fullName1 = currencyFullNamesArray[0];
-			fullName2 = currencyFullNamesArray[1];
-			sub_1_abrv = currencyNamesArray[0];
-			sub_2_abrv = currencyNamesArray[1];
-			sub_1_flagRes = currencyFlagsArray[0];
-			sub_2_flagRes = currencyFlagsArray[1];
-			Log.d("test2", currencyFlags);
-			sub_1_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[0]));
-			sub_2_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[1]));
-			addCurrencyImage.setImageResource(R.drawable.add_currency_3_5);
-			currencySlotFullImage.setImageResource(R.drawable.slot_full_2_5);
-		}
-		if (currencyNamesArray.length == 3) {
-			subView1Visible();
-			subView2Visible();
-			subView3Visible();
-			sub_1_abrv = currencyNamesArray[0];
-			sub_2_abrv = currencyNamesArray[1];
-			sub_3_abrv = currencyNamesArray[2];
-			fullName1 = currencyFullNamesArray[0];
-			fullName2 = currencyFullNamesArray[1];
-			fullName3 = currencyFullNamesArray[2];
-			sub_1_flagRes = currencyFlagsArray[0];
-			sub_2_flagRes = currencyFlagsArray[1];
-			sub_3_flagRes = currencyFlagsArray[2];
-			sub_1_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[0]));
-			sub_2_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[1]));
-			sub_3_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[2]));
-			addCurrencyImage.setImageResource(R.drawable.add_currency_2_5);
-			currencySlotFullImage.setImageResource(R.drawable.slot_full_3_5);
-		}
-		if (currencyNamesArray.length == 4) {
-			subView1Visible();
-			subView2Visible();
-			subView3Visible();
-			subView4Visible();
-			fullName1 = currencyFullNamesArray[0];
-			fullName2 = currencyFullNamesArray[1];
-			fullName3 = currencyFullNamesArray[2];
-			fullName4 = currencyFullNamesArray[3];
-			sub_1_abrv = currencyNamesArray[0];
-			sub_2_abrv = currencyNamesArray[1];
-			sub_3_abrv = currencyNamesArray[2];
-			sub_4_abrv = currencyNamesArray[3];
-			sub_1_flagRes = currencyFlagsArray[0];
-			sub_2_flagRes = currencyFlagsArray[1];
-			sub_3_flagRes = currencyFlagsArray[2];
-			sub_4_flagRes = currencyFlagsArray[3];
-			sub_1_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[0]));
-			sub_2_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[1]));
-			sub_3_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[2]));
-			sub_4_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[3]));
-			addCurrencyImage.setImageResource(R.drawable.add_currency_1_5);
-			currencySlotFullImage.setImageResource(R.drawable.slot_full_4_5);
-		}
-		if (currencyNamesArray.length == 5) {
-			subView1Visible();
-			subView2Visible();
-			subView3Visible();
-			subView4Visible();
-			subView5Visible();
-			fullName1 = currencyFullNamesArray[0];
-			fullName2 = currencyFullNamesArray[1];
-			fullName3 = currencyFullNamesArray[2];
-			fullName4 = currencyFullNamesArray[3];
-			fullName5 = currencyFullNamesArray[4];
-			sub_1_abrv = currencyNamesArray[0];
-			sub_2_abrv = currencyNamesArray[1];
-			sub_3_abrv = currencyNamesArray[2];
-			sub_4_abrv = currencyNamesArray[3];
-			sub_5_abrv = currencyNamesArray[4];
-			sub_1_flagRes = currencyFlagsArray[0];
-			sub_2_flagRes = currencyFlagsArray[1];
-			sub_3_flagRes = currencyFlagsArray[2];
-			sub_4_flagRes = currencyFlagsArray[3];
-			sub_5_flagRes = currencyFlagsArray[4];
-			sub_1_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[0]));
-			sub_2_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[1]));
-			sub_3_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[2]));
-			sub_4_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[3]));
-			sub_5_image
-					.setImageResource(Integer.valueOf(currencyFlagsArray[4]));
-			addCurrencyImage.setImageResource(R.drawable.add_currency_0_5);
-			currencySlotFullImage.setImageResource(R.drawable.slot_full_5_5);
-
-		}
+		updateString();
 		circleBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -582,7 +491,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 				Log.d("stats", "currencyarry:" + currencyNamesArray.length
 						+ "   currencynames:" + currencyNames
 						+ "    currencyFullNames:" + currencyFullNames);
-				editor = container.getContext().getSharedPreferences(MY_PREFS_NAME, container.getContext().MODE_PRIVATE)
+				editor = container.getContext().getSharedPreferences(MainActivityA.MY_PREFS_NAME, container.getContext().MODE_PRIVATE)
 						.edit();
 				editor.putString("sub1_currencyRate", "");
 				editor.commit();
@@ -625,7 +534,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 				Log.d("stats", "currencyarry:" + currencyNamesArray.length
 						+ "   currencynames:" + currencyNames
 						+ "    currencyFullNames:" + currencyFullNames);
-				editor = ctx.getSharedPreferences(MY_PREFS_NAME, container.getContext().MODE_PRIVATE)
+				editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME, container.getContext().MODE_PRIVATE)
 						.edit();
 				editor.putString("sub2_currencyRate", "");
 				editor.commit();
@@ -668,7 +577,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 				Log.d("stats", "currencyarry:" + currencyNamesArray.length
 						+ "   currencynames:" + currencyNames
 						+ "    currencyFullNames:" + currencyFullNames);
-				editor = ctx.getSharedPreferences(MY_PREFS_NAME, container.getContext().MODE_PRIVATE)
+				editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME, container.getContext().MODE_PRIVATE)
 						.edit();
 				editor.putString("sub3_currencyRate", "");
 				editor.commit();
@@ -711,7 +620,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 				Log.d("stats", "currencyarry:" + currencyNamesArray.length
 						+ "   currencynames:" + currencyNames
 						+ "    currencyFullNames:" + currencyFullNames);
-				editor = ctx.getSharedPreferences(MY_PREFS_NAME, container.getContext().MODE_PRIVATE)
+				editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME, container.getContext().MODE_PRIVATE)
 						.edit();
 				editor.putString("sub4_currencyRate", "");
 				editor.commit();
@@ -753,7 +662,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 				Log.d("stats", "currencyarry:" + currencyNamesArray.length
 						+ "   currencynames:" + currencyNames
 						+ "    currencyFullNames:" + currencyFullNames);
-				editor = container.getContext().getSharedPreferences(MY_PREFS_NAME, container.getContext().MODE_PRIVATE)
+				editor = container.getContext().getSharedPreferences(MainActivityA.MY_PREFS_NAME, container.getContext().MODE_PRIVATE)
 						.edit();
 				editor.putString("sub5_currencyRate", "");
 				editor.commit();
@@ -767,36 +676,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 
 			@Override
 			public void onClick(View arg0) {
-
-				if (isNetworkAvailable()) {
-					new RefreshWithCurrency().execute();
-					// sub_1_tv.setText("-------");
-					// sub_2_tv.setText("-------");
-					// sub_3_tv.setText("-------");
-					// sub_4_tv.setText("-------");
-					// sub_5_tv.setText("-------");
-					// sub_1_currency.setText("-------");
-					// sub_2_currency.setText("-------");
-					// sub_3_currency.setText("-------");
-					// sub_4_currency.setText("-------");
-					// sub_5_currency.setText("-------");
-					// sub_1_currency_full.setText("-------");
-					// sub_2_currency_full.setText("-------");
-					// sub_3_currency_full.setText("-------");
-					// sub_4_currency_full.setText("-------");
-					// sub_5_currency_full.setText("-------");
-					lastUpdate.setText(getTimeUpdateValue());
-					refreshButton.setEnabled(false);
-
-					startAnimationRefresh();
-					timer.start();
-				} else {
-					sub_1_tv.setText("No Connection");
-					sub_2_tv.setText("No Connection");
-					sub_3_tv.setText("No Connection");
-					sub_4_tv.setText("No Connection");
-					sub_5_tv.setText("No Connection");
-				}
+				refresh();
 			}
 		});
 
@@ -830,6 +710,38 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		return view;
 	}
 
+	private void refresh() {
+		if (isNetworkAvailable()) {
+			new RefreshWithCurrency().execute();
+			// sub_1_tv.setText("-------");
+			// sub_2_tv.setText("-------");
+			// sub_3_tv.setText("-------");
+			// sub_4_tv.setText("-------");
+			// sub_5_tv.setText("-------");
+			// sub_1_currency.setText("-------");
+			// sub_2_currency.setText("-------");
+			// sub_3_currency.setText("-------");
+			// sub_4_currency.setText("-------");
+			// sub_5_currency.setText("-------");
+			// sub_1_currency_full.setText("-------");
+			// sub_2_currency_full.setText("-------");
+			// sub_3_currency_full.setText("-------");
+			// sub_4_currency_full.setText("-------");
+			// sub_5_currency_full.setText("-------");
+			lastUpdate.setText(getTimeUpdateValue());
+			refreshButton.setEnabled(false);
+
+			startAnimationRefresh();
+			timer.start();
+		} else {
+			sub_1_tv.setText("No Connection");
+			sub_2_tv.setText("No Connection");
+			sub_3_tv.setText("No Connection");
+			sub_4_tv.setText("No Connection");
+			sub_5_tv.setText("No Connection");
+		}
+	}
+	
 	TextWatcher watch = new TextWatcher() {
 		@Override
 		public void afterTextChanged(Editable arg0) {
@@ -1074,55 +986,128 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		return true;
 	}
 
-	private String makePostRequest(String from, String to) {
-
-		String toReturn = "";
-
-		try {
-			String url = "http://rate-exchange.appspot.com/currency?to=" + to
-					+ "&from=" + from;
-			Log.d("ok done url", url);
-			HttpClient httpClient = new DefaultHttpClient();
-			HttpGet httpPost = new HttpGet(url);
-
-			HttpResponse response = httpClient.execute(httpPost);
-			HttpEntity entity = response.getEntity();
-			InputStream is = entity.getContent();
-
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "UTF-8"), 8);
-			StringBuilder sb = new StringBuilder();
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-			is.close();
-
-			String result = "";
-			result = sb.toString();
-			Log.d("ok done", result);
-			toReturn = result.toString();
-			try {
-				toReturn = toReturn.substring(21);
-				toReturn = toReturn.substring(0, toReturn.indexOf(","));
-				if (toReturn.length() > 8) {
-					toReturn = toReturn.substring(0, 8);
-				}
-			} catch (Exception e) {
-				toReturn = "No Data Recieved";
-			}
-		} catch (ClientProtocolException e) {
-			// Log exception
-			toReturn = "No Data Recieved";
-		} catch (IOException e) {
-			// Log exception
-			toReturn = "No Data Recieved";
+	private void updateString() {
+		if (currencyNames.equals("")) {
+			addNewGuide.setVisibility(View.VISIBLE);
+		} else {
+			addNewGuide.setVisibility(View.GONE);
 		}
-		Log.d("ok done", toReturn);
-		return toReturn;
 
+		if (!currencyNames.equals("") && currencyNamesArray.length == 1) {
+			subView1Visible();
+			fullName1 = currencyFullNamesArray[0];
+			sub_1_abrv = currencyNamesArray[0];
+			sub_1_flagRes = currencyFlagsArray[0];
+			sub_1_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[0]));
+			addCurrencyImage.setImageResource(R.drawable.add_currency_4_5);
+			currencySlotFullImage.setImageResource(R.drawable.slot_full_1_5);
+
+		}
+		if (currencyNamesArray.length == 2) {
+			subView1Visible();
+			subView2Visible();
+			fullName1 = currencyFullNamesArray[0];
+			fullName2 = currencyFullNamesArray[1];
+			sub_1_abrv = currencyNamesArray[0];
+			sub_2_abrv = currencyNamesArray[1];
+			sub_1_flagRes = currencyFlagsArray[0];
+			sub_2_flagRes = currencyFlagsArray[1];
+			Log.d("test2", currencyFlags);
+			sub_1_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[0]));
+			sub_2_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[1]));
+			addCurrencyImage.setImageResource(R.drawable.add_currency_3_5);
+			currencySlotFullImage.setImageResource(R.drawable.slot_full_2_5);
+		}
+		if (currencyNamesArray.length == 3) {
+			subView1Visible();
+			subView2Visible();
+			subView3Visible();
+			sub_1_abrv = currencyNamesArray[0];
+			sub_2_abrv = currencyNamesArray[1];
+			sub_3_abrv = currencyNamesArray[2];
+			fullName1 = currencyFullNamesArray[0];
+			fullName2 = currencyFullNamesArray[1];
+			fullName3 = currencyFullNamesArray[2];
+			sub_1_flagRes = currencyFlagsArray[0];
+			sub_2_flagRes = currencyFlagsArray[1];
+			sub_3_flagRes = currencyFlagsArray[2];
+			sub_1_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[0]));
+			sub_2_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[1]));
+			sub_3_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[2]));
+			addCurrencyImage.setImageResource(R.drawable.add_currency_2_5);
+			currencySlotFullImage.setImageResource(R.drawable.slot_full_3_5);
+		}
+		if (currencyNamesArray.length == 4) {
+			subView1Visible();
+			subView2Visible();
+			subView3Visible();
+			subView4Visible();
+			fullName1 = currencyFullNamesArray[0];
+			fullName2 = currencyFullNamesArray[1];
+			fullName3 = currencyFullNamesArray[2];
+			fullName4 = currencyFullNamesArray[3];
+			sub_1_abrv = currencyNamesArray[0];
+			sub_2_abrv = currencyNamesArray[1];
+			sub_3_abrv = currencyNamesArray[2];
+			sub_4_abrv = currencyNamesArray[3];
+			sub_1_flagRes = currencyFlagsArray[0];
+			sub_2_flagRes = currencyFlagsArray[1];
+			sub_3_flagRes = currencyFlagsArray[2];
+			sub_4_flagRes = currencyFlagsArray[3];
+			sub_1_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[0]));
+			sub_2_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[1]));
+			sub_3_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[2]));
+			sub_4_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[3]));
+			addCurrencyImage.setImageResource(R.drawable.add_currency_1_5);
+			currencySlotFullImage.setImageResource(R.drawable.slot_full_4_5);
+		}
+		if (currencyNamesArray.length == 5) {
+			subView1Visible();
+			subView2Visible();
+			subView3Visible();
+			subView4Visible();
+			subView5Visible();
+			fullName1 = currencyFullNamesArray[0];
+			fullName2 = currencyFullNamesArray[1];
+			fullName3 = currencyFullNamesArray[2];
+			fullName4 = currencyFullNamesArray[3];
+			fullName5 = currencyFullNamesArray[4];
+			sub_1_abrv = currencyNamesArray[0];
+			sub_2_abrv = currencyNamesArray[1];
+			sub_3_abrv = currencyNamesArray[2];
+			sub_4_abrv = currencyNamesArray[3];
+			sub_5_abrv = currencyNamesArray[4];
+			sub_1_flagRes = currencyFlagsArray[0];
+			sub_2_flagRes = currencyFlagsArray[1];
+			sub_3_flagRes = currencyFlagsArray[2];
+			sub_4_flagRes = currencyFlagsArray[3];
+			sub_5_flagRes = currencyFlagsArray[4];
+			sub_1_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[0]));
+			sub_2_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[1]));
+			sub_3_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[2]));
+			sub_4_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[3]));
+			sub_5_image
+					.setImageResource(Integer.valueOf(currencyFlagsArray[4]));
+			addCurrencyImage.setImageResource(R.drawable.add_currency_0_5);
+			currencySlotFullImage.setImageResource(R.drawable.slot_full_5_5);
+
+		}
 	}
-
+	
 	class RefreshWithCurrency extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -1132,31 +1117,30 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 					+ sub_1_abrv);
 
 			if (!currencyNames.equals("") && currencyNamesArray.length == 1) {
-				sub1 = makePostRequest(fromCurrencyNames, sub_1_abrv);
+				sub1 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_1_abrv);
 
 			}
 			if (currencyNamesArray.length == 2) {
-				sub1 = makePostRequest(fromCurrencyNames, sub_1_abrv);
-				sub2 = makePostRequest(fromCurrencyNames, sub_2_abrv);
+				sub1 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_1_abrv);
+				sub2 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_2_abrv);
 			}
 			if (currencyNamesArray.length == 3) {
-				sub1 = makePostRequest(fromCurrencyNames, sub_1_abrv);
-				sub2 = makePostRequest(fromCurrencyNames, sub_2_abrv);
-				sub3 = makePostRequest(fromCurrencyNames, sub_3_abrv);
-
+				sub1 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_1_abrv);
+				sub2 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_2_abrv);
+				sub3 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_3_abrv);
 			}
 			if (currencyNamesArray.length == 4) {
-				sub1 = makePostRequest(fromCurrencyNames, sub_1_abrv);
-				sub2 = makePostRequest(fromCurrencyNames, sub_2_abrv);
-				sub3 = makePostRequest(fromCurrencyNames, sub_3_abrv);
-				sub4 = makePostRequest(fromCurrencyNames, sub_4_abrv);
+				sub1 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_1_abrv);
+				sub2 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_2_abrv);
+				sub3 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_3_abrv);
+				sub4 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_4_abrv);
 			}
 			if (currencyNamesArray.length == 5) {
-				sub1 = makePostRequest(fromCurrencyNames, sub_1_abrv);
-				sub2 = makePostRequest(fromCurrencyNames, sub_2_abrv);
-				sub3 = makePostRequest(fromCurrencyNames, sub_3_abrv);
-				sub4 = makePostRequest(fromCurrencyNames, sub_4_abrv);
-				sub5 = makePostRequest(fromCurrencyNames, sub_5_abrv);
+				sub1 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_1_abrv);
+				sub2 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_2_abrv);
+				sub3 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_3_abrv);
+				sub4 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_4_abrv);
+				sub5 = WebserviceUtil.apiCurrencyConverter(fromCurrencyNames, sub_5_abrv);
 			}
 
 			MainActivityA.getInstance().runOnUiThread(new Runnable() {
@@ -1172,7 +1156,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 								+ sub1 + " " + sub_1_abrv);
 						sub_1_currency_full.setText(fullName1);
 
-						editor = ctx.getSharedPreferences(MY_PREFS_NAME,
+						editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
 								ctx.MODE_PRIVATE).edit();
 						editor.putString("sub1_currencyRate", sub1 + "," + "1 "
 								+ fromCurrencyNames + " = " + sub1 + " "
@@ -1190,7 +1174,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 						sub_1_currency_full.setText(fullName1);
 						sub_2_currency_full.setText(fullName2);
 
-						editor = ctx.getSharedPreferences(MY_PREFS_NAME,
+						editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
 								ctx.MODE_PRIVATE).edit();
 						editor.putString("sub1_currencyRate", sub1 + "," + "1 "
 								+ fromCurrencyNames + " = " + sub1 + " "
@@ -1215,7 +1199,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 						sub_2_currency_full.setText(fullName2);
 						sub_3_currency_full.setText(fullName3);
 
-						editor = ctx.getSharedPreferences(MY_PREFS_NAME,
+						editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
 								ctx.MODE_PRIVATE).edit();
 						editor.putString("sub1_currencyRate", sub1 + "," + "1 "
 								+ fromCurrencyNames + " = " + sub1 + " "
@@ -1246,7 +1230,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 						sub_2_currency_full.setText(fullName2);
 						sub_3_currency_full.setText(fullName3);
 						sub_4_currency_full.setText(fullName4);
-						editor = ctx.getSharedPreferences(MY_PREFS_NAME,
+						editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
 								ctx.MODE_PRIVATE).edit();
 						editor.putString("sub1_currencyRate", sub1 + "," + "1 "
 								+ fromCurrencyNames + " = " + sub1 + " "
@@ -1286,7 +1270,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 						sub_4_currency_full.setText(fullName4);
 						sub_5_currency_full.setText(fullName5);
 
-						editor = ctx.getSharedPreferences(MY_PREFS_NAME,
+						editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
 								ctx.MODE_PRIVATE).edit();
 						editor.putString("sub1_currencyRate", sub1 + "," + "1 "
 								+ fromCurrencyNames + " = " + sub1 + " "
@@ -1368,6 +1352,251 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		}
 	}
 
+	private class MyClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			switchMainContent(v);
+		}
+		
+	}
+	
+	private final class MyLongClickListener implements OnLongClickListener {
+
+	    // called when the item is long-clicked
+		@Override
+		public boolean onLongClick(View view) {
+		
+			// create it from the object's tag
+			ClipData.Item item = new ClipData.Item((CharSequence)view.getTag());
+
+	        String[] mimeTypes = { ClipDescription.MIMETYPE_TEXT_PLAIN };
+	        ClipData data = new ClipData(view.getTag().toString(), mimeTypes, item);
+	        DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+	   
+	        view.startDrag( data, //data to be dragged
+	        				shadowBuilder, //drag shadow
+	        				view, //local data about the drag and drop operation
+	        				0   //no needed flags
+	        			  );
+	        
+	        
+	        view.setVisibility(View.INVISIBLE);
+	        return true;
+		}	
+	}
+
+	private String getContentCurrencyFullString(View view) {
+		  return currencyFullNamesArray[Integer.parseInt((String)view.getTag())];
+	}
+	
+	private String getCurrencyFlagsString(View view) {
+		  return currencyFlagsArray[Integer.parseInt((String)view.getTag())];
+	}
+	
+	private String getCurrencyNamesString(View view) {
+		  return currencyNamesArray[Integer.parseInt((String)view.getTag())];
+	}
+	
+	private void switchMainContent(View view) {
+		String tempFromCurrencyNames = fromCurrencyNames;
+		  String tempFromCurrencyFlags = fromCurrencyFlags;
+		  String tempFromCurrencyNamesFull = fromCurrencyNamesFull;
+		  
+		  fromCurrencyNames = getCurrencyNamesString(view);
+		  fromCurrencyFlags = getCurrencyFlagsString(view);
+		  fromCurrencyNamesFull	= getContentCurrencyFullString(view);
+		  
+		  int index = Integer.parseInt((String)view.getTag());
+		  currencyNamesArray[index] = tempFromCurrencyNames;
+		  currencyFlagsArray[index] = tempFromCurrencyFlags;
+		  currencyFullNamesArray[index] = tempFromCurrencyNamesFull;
+		  syncConverterList();
+		  
+		  updateString();
+		  
+		  TextView nameSub = (TextView) view.findViewWithTag("subName");
+		  nameSub.setText(tempFromCurrencyNames);
+		  ImageView imgSub = (ImageView) view.findViewWithTag("subImg");
+		  imgSub.setImageResource(Integer.parseInt(tempFromCurrencyFlags));
+		  TextView fullSub = (TextView) view.findViewWithTag("subFull");
+		  fullSub.setText(tempFromCurrencyNamesFull);
+		  
+		  ImageView imgContent = (ImageView) contentMain.findViewById(R.id.imgContent);
+		  imgContent.setImageResource(Integer.parseInt(fromCurrencyFlags));
+		  TextView fullContent = (TextView) contentMain.findViewById(R.id.content_currency_full);
+		  fullContent.setText(fromCurrencyNamesFull);
+		  
+		  currencyFullNamesArray.getClass();
+		  editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
+					ctx.MODE_PRIVATE).edit();
+		  editor.putString("fromCurrencyNames",
+				  fromCurrencyNames);
+		  editor.putString("fromCurrencyFlags",
+				  fromCurrencyFlags);
+		  editor.putString("fromCurrencyNamesFull",
+				  fromCurrencyNamesFull);
+		  editor.commit();
+		  
+		  refresh();
+	}
+	
+	public class MyDragListener implements OnDragListener {
+		Drawable normalShape = getResources().getDrawable(R.drawable.cc_content_bg_copyy);
+		Drawable targetShape = getResources().getDrawable(R.drawable.target_shape);
+
+		@Override
+		public boolean onDrag(View v, DragEvent event) {
+	  
+			// Handles each of the expected events
+		    switch (event.getAction()) {
+		    
+		    //signal for the start of a drag and drop operation.
+		    case DragEvent.ACTION_DRAG_STARTED:
+		        // do nothing
+		        break;
+		        
+		    //the drag point has entered the bounding box of the View
+		    case DragEvent.ACTION_DRAG_ENTERED:
+		    	if (v != etContent) {
+			    	if (v == sub_1_rl || v == sub_2_rl || v == sub_3_rl
+			    			|| v == sub_4_rl || v == sub_5_rl || v == contentMain) {
+			    		v.setBackground(targetShape);	//change the shape of the view
+			    	}
+		    	}
+		        break;
+		        
+		    //the user has moved the drag shadow outside the bounding box of the View
+		    case DragEvent.ACTION_DRAG_EXITED:
+		    	if (v != etContent) {
+			    	if (v == sub_1_rl || v == sub_2_rl || v == sub_3_rl
+	    					|| v == sub_4_rl || v == sub_5_rl || v == contentMain) {
+			    		v.setBackground(normalShape);	//change the shape of the view back to normal
+			    	}
+		    	}
+		        break;
+		        
+		    //drag shadow has been released,the drag point is within the bounding box of the View
+		    case DragEvent.ACTION_DROP:
+		        // if the view is the bottomlinear, we accept the drag item
+		    	  View view = (View) event.getLocalState();
+		    	  if(v == contentMain || v == etContent) {
+		    		  
+		    		  switchMainContent(view);
+		    		  
+		    		  contentMain.setBackground(normalShape);
+		    		  view.setVisibility(View.VISIBLE);
+		    	  } else if (v == rl_sub_list.getChildAt(0)) {
+		    		  ViewGroup viewgroup = (ViewGroup) view.getParent();
+		    		  viewgroup.removeView(view);
+		    		  
+		    		  viewgroup.addView(view,0);
+		    		  switchPlace(Integer.parseInt((String)view.getTag()), 0);
+		    		  view.setTag("0");
+		    		  view.setVisibility(View.VISIBLE);
+		    	  } else if (v == rl_sub_list.getChildAt(1)) {
+		    		  ViewGroup viewgroup = (ViewGroup) view.getParent();
+		    		  viewgroup.removeView(view);
+		    		  
+		    		  viewgroup.addView(view,1);
+		    		  switchPlace(Integer.parseInt((String)view.getTag()), 1);
+		    		  view.setTag("1");
+		    		  view.setVisibility(View.VISIBLE);
+		    	  } else if (v == rl_sub_list.getChildAt(2)) {
+		    		  ViewGroup viewgroup = (ViewGroup) view.getParent();
+		    		  viewgroup.removeView(view);
+		    		  
+		    		  viewgroup.addView(view);
+		    		  switchPlace(Integer.parseInt((String)view.getTag()), 2);
+		    		  view.setTag("2");
+		    		  view.setVisibility(View.VISIBLE);
+		    	  } else if (v == rl_sub_list.getChildAt(3)) {
+		    		  ViewGroup viewgroup = (ViewGroup) view.getParent();
+		    		  viewgroup.removeView(view);
+		    		  
+		    		  viewgroup.addView(view);
+		    		  switchPlace(Integer.parseInt((String)view.getTag()), 3);
+		    		  view.setTag("3");
+		    		  view.setVisibility(View.VISIBLE);
+		    	  } else if (v == rl_sub_list.getChildAt(4)) {
+		    		  
+		    		  ViewGroup viewgroup = (ViewGroup) view.getParent();
+		    		  viewgroup.removeView(view);
+		    		  
+		    		  viewgroup.addView(view);
+		    		  switchPlace(Integer.parseInt((String)view.getTag()), 4);
+		    		  view.setTag("4");
+		    		  view.setVisibility(View.VISIBLE);
+		    	  } else {
+		    		  view.setVisibility(View.VISIBLE);
+		    		  break;
+		    	   }
+		    	  break;
+		    	  
+		    //the drag and drop operation has concluded.
+		    case DragEvent.ACTION_DRAG_ENDED:
+		    	if (v == sub_1_rl || v == sub_2_rl || v == sub_3_rl
+    					|| v == sub_4_rl || v == sub_5_rl || v == contentMain) {
+		    		v.setBackground(normalShape);	//go back to normal shape
+		    	}
+		    default:
+		        break;
+		    }
+		    
+		    
+		    return true;
+		}
+	}
+	
+	private void switchPlace(int pos1, int pos2) {
+		String temp = currencyNamesArray[pos1];
+		currencyNamesArray[pos1] = currencyNamesArray[pos2];
+		currencyNamesArray[pos2] = temp;
+		
+		temp = currencyFlagsArray[pos1];
+		currencyFlagsArray[pos1] = currencyFlagsArray[pos2];
+		currencyFlagsArray[pos2] = temp;
+		
+		temp = currencyFullNamesArray[pos1];
+		currencyFullNamesArray[pos1] = currencyFullNamesArray[pos2];
+		currencyFullNamesArray[pos2] = temp;
+		
+		syncConverterList();
+	}
+	
+	public void syncConverterList() {
+		StringBuilder currencyNamesBuilder = new StringBuilder();
+		StringBuilder currencyFlagsBuilder = new StringBuilder();
+		StringBuilder currencyFullNamesBuilder = new StringBuilder();
+		for (int index = 0; index < currencyNamesArray.length; index++) {
+			currencyNamesBuilder.append(currencyNamesArray[index]);
+			currencyNamesBuilder.append(",");
+			
+			currencyFlagsBuilder.append(currencyFlagsArray[index]);
+			currencyFlagsBuilder.append(",");
+			
+			currencyFullNamesBuilder.append(currencyFullNamesArray[index]);
+			currencyFullNamesBuilder.append(",");
+		}
+		if (currencyNamesArray.length > 0) {
+			currencyNamesBuilder.deleteCharAt(currencyNamesBuilder.length() - 1);
+			currencyFlagsBuilder.deleteCharAt(currencyFlagsBuilder.length() - 1);
+			currencyFullNamesBuilder.deleteCharAt(currencyFullNamesBuilder.length() - 1);
+		}
+		
+		editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
+				ctx.MODE_PRIVATE).edit();
+		editor.putString("currencyNames", currencyNamesBuilder.toString());
+		editor.putString("flags", currencyFlagsBuilder.toString());
+		editor.putString("currencyFullNames",
+				currencyFullNamesBuilder.toString());
+		editor.commit();
+		
+		currencyNames = currencyNamesBuilder.toString();
+		currencyFlags = currencyFlagsBuilder.toString();
+		currencyFullNames = currencyFullNamesBuilder.toString();
+	}
+	
 	public String getTimeUpdateValue() {
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Date date = new Date();
@@ -1548,7 +1777,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 	}
 
 	public void commitValuesAfterDelete() {
-		editor = ctx.getSharedPreferences(MY_PREFS_NAME, ctx.MODE_PRIVATE).edit();
+		editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME, ctx.MODE_PRIVATE).edit();
 		editor.putString("currencyNames", currencyNames);
 		editor.putString("flags", currencyFlags);
 		editor.putString("currencyFullNames", currencyFullNames);

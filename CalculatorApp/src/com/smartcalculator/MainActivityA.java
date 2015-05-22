@@ -81,6 +81,10 @@ public class MainActivityA extends SherlockFragmentActivity {
 	}
 	
 	public void showHealthResultsFragment(String bmi, String bmr, String bodyFat, String Gender) {
+		getIntent().putExtra("BMI", bmi);
+		getIntent().putExtra("BMR", bmr);
+		getIntent().putExtra("BodyFat", bodyFat);
+		getIntent().putExtra("Gender", Gender);
 		selectItem(80, true);
 	}
 	

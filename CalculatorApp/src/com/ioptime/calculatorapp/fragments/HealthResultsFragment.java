@@ -48,7 +48,6 @@ public class HealthResultsFragment extends SherlockFragment implements Upgradeab
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-	ImageView menuIcon;
 	Vibrator vibe;
 
 	RelativeLayout rl_upgrade;
@@ -163,7 +162,6 @@ public class HealthResultsFragment extends SherlockFragment implements Upgradeab
 		rl_upgrade.setVisibility(View.GONE);
 		upgradePopUp = 0;
 
-		menuIcon = (ImageView) view.findViewById(R.id.menuicon);
 		imageBMI = (ImageView) view.findViewById(R.id.result_BMI);
 		imageBodyFat = (ImageView) view.findViewById(R.id.result_BODYFAT);
 		b = MainActivityA.getInstance().getIntent().getExtras();
@@ -270,7 +268,6 @@ public class HealthResultsFragment extends SherlockFragment implements Upgradeab
 		Canvas canvas = null;
 		facebookshare.setVisibility(View.INVISIBLE);
 		poweredby.setVisibility(View.VISIBLE);
-		menuIcon.setVisibility(View.INVISIBLE);
 		Bitmap data = Bitmap.createBitmap(viewChild.getWidth(),
 				viewChild.getHeight(), Bitmap.Config.ARGB_8888);
 		Bitmap returnedBitmap = Bitmap.createBitmap(viewChild.getWidth(),
@@ -289,7 +286,6 @@ public class HealthResultsFragment extends SherlockFragment implements Upgradeab
 		c1.drawBitmap(data, 0, 0, null);
 		facebookshare.setVisibility(View.VISIBLE);
 		poweredby.setVisibility(View.INVISIBLE);
-		menuIcon.setVisibility(View.VISIBLE);
 		shareOnFB(returnedBitmap);
 	}
 

@@ -431,7 +431,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		currencyNamesArray = currencyNames.split(",");
 		currencyFlagsArray = currencyFlags.split(",");
 		currencyFullNamesArray = currencyFullNames.split(",");
-		updateString();
+		updateGuiValue();
 		circleBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -986,7 +986,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		return true;
 	}
 
-	private void updateString() {
+	private void updateGuiValue() {
 		if (currencyNames.equals("")) {
 			addNewGuide.setVisibility(View.VISIBLE);
 		} else {
@@ -995,6 +995,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 
 		if (!currencyNames.equals("") && currencyNamesArray.length == 1) {
 			subView1Visible();
+			
 			fullName1 = currencyFullNamesArray[0];
 			sub_1_abrv = currencyNamesArray[0];
 			sub_1_flagRes = currencyFlagsArray[0];
@@ -1149,202 +1150,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 				public void run() {
 					a.cancel();
 
-					if (!currencyNames.equals("")
-							&& currencyNamesArray.length == 1) {
-						sub_1_tv.setText(sub1);
-						sub_1_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub1 + " " + sub_1_abrv);
-						sub_1_currency_full.setText(fullName1);
-
-						editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
-								ctx.MODE_PRIVATE).edit();
-						editor.putString("sub1_currencyRate", sub1 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub1 + " "
-								+ sub_1_abrv + "," + fullName1);
-						editor.commit();
-
-					}
-					if (currencyNamesArray.length == 2) {
-						sub_1_tv.setText(sub1);
-						sub_2_tv.setText(sub2);
-						sub_1_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub1 + " " + sub_1_abrv);
-						sub_2_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub2 + " " + sub_2_abrv);
-						sub_1_currency_full.setText(fullName1);
-						sub_2_currency_full.setText(fullName2);
-
-						editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
-								ctx.MODE_PRIVATE).edit();
-						editor.putString("sub1_currencyRate", sub1 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub1 + " "
-								+ sub_1_abrv + "," + fullName1);
-						editor.putString("sub2_currencyRate", sub2 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub2 + " "
-								+ sub_2_abrv + "," + fullName2);
-						editor.commit();
-
-					}
-					if (currencyNamesArray.length == 3) {
-						sub_1_tv.setText(sub1);
-						sub_2_tv.setText(sub2);
-						sub_3_tv.setText(sub3);
-						sub_1_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub1 + " " + sub_1_abrv);
-						sub_2_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub2 + " " + sub_2_abrv);
-						sub_3_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub3 + " " + sub_3_abrv);
-						sub_1_currency_full.setText(fullName1);
-						sub_2_currency_full.setText(fullName2);
-						sub_3_currency_full.setText(fullName3);
-
-						editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
-								ctx.MODE_PRIVATE).edit();
-						editor.putString("sub1_currencyRate", sub1 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub1 + " "
-								+ sub_1_abrv + "," + fullName1);
-						editor.putString("sub2_currencyRate", sub2 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub2 + " "
-								+ sub_2_abrv + "," + fullName2);
-						editor.putString("sub3_currencyRate", sub3 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub3 + " "
-								+ sub_3_abrv + "," + fullName3);
-						editor.commit();
-					}
-					if (currencyNamesArray.length == 4) {
-						sub_1_tv.setText(sub1);
-						sub_2_tv.setText(sub2);
-						sub_3_tv.setText(sub3);
-						sub_4_tv.setText(sub4);
-						sub_1_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub1 + " " + sub_1_abrv);
-						sub_2_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub2 + " " + sub_2_abrv);
-						sub_3_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub3 + " " + sub_3_abrv);
-						sub_4_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub4 + " " + sub_4_abrv);
-
-						sub_1_currency_full.setText(fullName1);
-						sub_2_currency_full.setText(fullName2);
-						sub_3_currency_full.setText(fullName3);
-						sub_4_currency_full.setText(fullName4);
-						editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
-								ctx.MODE_PRIVATE).edit();
-						editor.putString("sub1_currencyRate", sub1 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub1 + " "
-								+ sub_1_abrv + "," + fullName1);
-						editor.putString("sub2_currencyRate", sub2 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub2 + " "
-								+ sub_2_abrv + "," + fullName2);
-						editor.putString("sub3_currencyRate", sub3 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub3 + " "
-								+ sub_3_abrv + "," + fullName3);
-						editor.putString("sub4_currencyRate", sub4 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub4 + " "
-								+ sub_4_abrv + "," + fullName4);
-						editor.commit();
-
-					}
-					if (currencyNamesArray.length == 5) {
-						sub_1_tv.setText(sub1);
-						sub_2_tv.setText(sub2);
-						sub_3_tv.setText(sub3);
-						sub_4_tv.setText(sub4);
-						sub_5_tv.setText(sub5);
-						sub_1_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub1 + " " + sub_1_abrv);
-						sub_2_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub2 + " " + sub_2_abrv);
-						sub_3_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub3 + " " + sub_3_abrv);
-						sub_4_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub4 + " " + sub_4_abrv);
-						sub_5_currency.setText("1 " + fromCurrencyNames + " = "
-								+ sub5 + " " + sub_5_abrv);
-
-						sub_1_currency_full.setText(fullName1);
-						sub_2_currency_full.setText(fullName2);
-						sub_3_currency_full.setText(fullName3);
-						sub_4_currency_full.setText(fullName4);
-						sub_5_currency_full.setText(fullName5);
-
-						editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
-								ctx.MODE_PRIVATE).edit();
-						editor.putString("sub1_currencyRate", sub1 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub1 + " "
-								+ sub_1_abrv + "," + fullName1);
-						editor.putString("sub2_currencyRate", sub2 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub2 + " "
-								+ sub_2_abrv + "," + fullName2);
-						editor.putString("sub3_currencyRate", sub3 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub3 + " "
-								+ sub_3_abrv + "," + fullName3);
-						editor.putString("sub4_currencyRate", sub4 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub4 + " "
-								+ sub_4_abrv + "," + fullName4);
-						editor.putString("sub5_currencyRate", sub5 + "," + "1 "
-								+ fromCurrencyNames + " = " + sub5 + " "
-								+ sub_5_abrv + "," + fullName5);
-						editor.commit();
-					}
-					try {
-						etContent.setText("1.00");
-						if (!currencyNames.equals("")
-								&& currencyNamesArray.length == 1) {
-							sub_val_1 = Float.valueOf(sub1);
-						}
-						if (currencyNamesArray.length == 2) {
-							sub_val_1 = Float.valueOf(sub1);
-							sub_val_2 = Float.valueOf(sub2);
-						}
-						if (currencyNamesArray.length == 3) {
-							sub_val_1 = Float.valueOf(sub1);
-							sub_val_2 = Float.valueOf(sub2);
-							sub_val_3 = Float.valueOf(sub3);
-						}
-						if (currencyNamesArray.length == 4) {
-							sub_val_1 = Float.valueOf(sub1);
-							sub_val_2 = Float.valueOf(sub2);
-							sub_val_3 = Float.valueOf(sub3);
-							sub_val_4 = Float.valueOf(sub4);
-						}
-						if (currencyNamesArray.length == 5) {
-							sub_val_1 = Float.valueOf(sub1);
-							sub_val_2 = Float.valueOf(sub2);
-							sub_val_3 = Float.valueOf(sub3);
-							sub_val_4 = Float.valueOf(sub4);
-							sub_val_5 = Float.valueOf(sub5);
-						}
-					} catch (Exception e) {
-						if (!currencyNames.equals("")
-								&& currencyNamesArray.length == 1) {
-							sub_1_tv.setText("Service Down");
-						}
-						if (currencyNamesArray.length == 2) {
-							sub_1_tv.setText("Service Down");
-							sub_2_tv.setText("Service Down");
-						}
-						if (currencyNamesArray.length == 3) {
-							sub_1_tv.setText("Service Down");
-							sub_2_tv.setText("Service Down");
-							sub_3_tv.setText("Service Down");
-						}
-						if (currencyNamesArray.length == 4) {
-							sub_1_tv.setText("Service Down");
-							sub_2_tv.setText("Service Down");
-							sub_3_tv.setText("Service Down");
-							sub_4_tv.setText("Service Down");
-						}
-						if (currencyNamesArray.length == 5) {
-							sub_1_tv.setText("Service Down");
-							sub_2_tv.setText("Service Down");
-							sub_3_tv.setText("Service Down");
-							sub_4_tv.setText("Service Down");
-							sub_5_tv.setText("Service Down");
-						}
-					}
+					syncGui();
 
 				}
 			});
@@ -1352,6 +1158,242 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		}
 	}
 
+	private void syncGui() {
+		syncGuiWithoutName();
+		if (!currencyNames.equals("")
+				&& currencyNamesArray.length == 1) {
+			sub_1_tv.setText(sub1);
+
+			editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
+					ctx.MODE_PRIVATE).edit();
+			editor.putString("sub1_currencyRate", sub1 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub1 + " "
+					+ sub_1_abrv + "," + fullName1);
+			editor.commit();
+
+		}
+		if (currencyNamesArray.length == 2) {
+			sub_1_tv.setText(sub1);
+			sub_2_tv.setText(sub2);
+
+			editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
+					ctx.MODE_PRIVATE).edit();
+			editor.putString("sub1_currencyRate", sub1 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub1 + " "
+					+ sub_1_abrv + "," + fullName1);
+			editor.putString("sub2_currencyRate", sub2 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub2 + " "
+					+ sub_2_abrv + "," + fullName2);
+			editor.commit();
+
+		}
+		if (currencyNamesArray.length == 3) {
+			sub_1_tv.setText(sub1);
+			sub_2_tv.setText(sub2);
+			sub_3_tv.setText(sub3);
+
+			editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
+					ctx.MODE_PRIVATE).edit();
+			editor.putString("sub1_currencyRate", sub1 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub1 + " "
+					+ sub_1_abrv + "," + fullName1);
+			editor.putString("sub2_currencyRate", sub2 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub2 + " "
+					+ sub_2_abrv + "," + fullName2);
+			editor.putString("sub3_currencyRate", sub3 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub3 + " "
+					+ sub_3_abrv + "," + fullName3);
+			editor.commit();
+		}
+		if (currencyNamesArray.length == 4) {
+			sub_1_tv.setText(sub1);
+			sub_2_tv.setText(sub2);
+			sub_3_tv.setText(sub3);
+			sub_4_tv.setText(sub4);
+			
+			editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
+					ctx.MODE_PRIVATE).edit();
+			editor.putString("sub1_currencyRate", sub1 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub1 + " "
+					+ sub_1_abrv + "," + fullName1);
+			editor.putString("sub2_currencyRate", sub2 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub2 + " "
+					+ sub_2_abrv + "," + fullName2);
+			editor.putString("sub3_currencyRate", sub3 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub3 + " "
+					+ sub_3_abrv + "," + fullName3);
+			editor.putString("sub4_currencyRate", sub4 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub4 + " "
+					+ sub_4_abrv + "," + fullName4);
+			editor.commit();
+
+		}
+		if (currencyNamesArray.length == 5) {
+			sub_1_tv.setText(sub1);
+			sub_2_tv.setText(sub2);
+			sub_3_tv.setText(sub3);
+			sub_4_tv.setText(sub4);
+			sub_5_tv.setText(sub5);
+
+			editor = ctx.getSharedPreferences(MainActivityA.MY_PREFS_NAME,
+					ctx.MODE_PRIVATE).edit();
+			editor.putString("sub1_currencyRate", sub1 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub1 + " "
+					+ sub_1_abrv + "," + fullName1);
+			editor.putString("sub2_currencyRate", sub2 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub2 + " "
+					+ sub_2_abrv + "," + fullName2);
+			editor.putString("sub3_currencyRate", sub3 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub3 + " "
+					+ sub_3_abrv + "," + fullName3);
+			editor.putString("sub4_currencyRate", sub4 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub4 + " "
+					+ sub_4_abrv + "," + fullName4);
+			editor.putString("sub5_currencyRate", sub5 + "," + "1 "
+					+ fromCurrencyNames + " = " + sub5 + " "
+					+ sub_5_abrv + "," + fullName5);
+			editor.commit();
+		}
+		try {
+			etContent.setText("1.00");
+			if (!currencyNames.equals("")
+					&& currencyNamesArray.length == 1) {
+				sub_val_1 = Float.valueOf(sub1);
+			}
+			if (currencyNamesArray.length == 2) {
+				sub_val_1 = Float.valueOf(sub1);
+				sub_val_2 = Float.valueOf(sub2);
+			}
+			if (currencyNamesArray.length == 3) {
+				sub_val_1 = Float.valueOf(sub1);
+				sub_val_2 = Float.valueOf(sub2);
+				sub_val_3 = Float.valueOf(sub3);
+			}
+			if (currencyNamesArray.length == 4) {
+				sub_val_1 = Float.valueOf(sub1);
+				sub_val_2 = Float.valueOf(sub2);
+				sub_val_3 = Float.valueOf(sub3);
+				sub_val_4 = Float.valueOf(sub4);
+			}
+			if (currencyNamesArray.length == 5) {
+				sub_val_1 = Float.valueOf(sub1);
+				sub_val_2 = Float.valueOf(sub2);
+				sub_val_3 = Float.valueOf(sub3);
+				sub_val_4 = Float.valueOf(sub4);
+				sub_val_5 = Float.valueOf(sub5);
+			}
+		} catch (Exception e) {
+			if (!currencyNames.equals("")
+					&& currencyNamesArray.length == 1) {
+				sub_1_tv.setText("Service Down");
+			}
+			if (currencyNamesArray.length == 2) {
+				sub_1_tv.setText("Service Down");
+				sub_2_tv.setText("Service Down");
+			}
+			if (currencyNamesArray.length == 3) {
+				sub_1_tv.setText("Service Down");
+				sub_2_tv.setText("Service Down");
+				sub_3_tv.setText("Service Down");
+			}
+			if (currencyNamesArray.length == 4) {
+				sub_1_tv.setText("Service Down");
+				sub_2_tv.setText("Service Down");
+				sub_3_tv.setText("Service Down");
+				sub_4_tv.setText("Service Down");
+			}
+			if (currencyNamesArray.length == 5) {
+				sub_1_tv.setText("Service Down");
+				sub_2_tv.setText("Service Down");
+				sub_3_tv.setText("Service Down");
+				sub_4_tv.setText("Service Down");
+				sub_5_tv.setText("Service Down");
+			}
+		}
+	}
+	
+	private void syncGuiWithoutName() {
+		if (!currencyNames.equals("")
+				&& currencyNamesArray.length == 1) {
+			sub_1_image.setImageResource(Integer.parseInt(sub_1_flagRes));
+			sub_1_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub1 + " " + sub_1_abrv);
+			sub_1_currency_full.setText(fullName1);
+
+		}
+		if (currencyNamesArray.length == 2) {
+			sub_1_image.setImageResource(Integer.parseInt(sub_1_flagRes));
+			sub_2_image.setImageResource(Integer.parseInt(sub_2_flagRes));
+			sub_1_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub1 + " " + sub_1_abrv);
+			sub_2_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub2 + " " + sub_2_abrv);
+			sub_1_currency_full.setText(fullName1);
+			sub_2_currency_full.setText(fullName2);
+
+		}
+		if (currencyNamesArray.length == 3) {
+			sub_1_image.setImageResource(Integer.parseInt(sub_1_flagRes));
+			sub_2_image.setImageResource(Integer.parseInt(sub_2_flagRes));
+			sub_3_image.setImageResource(Integer.parseInt(sub_3_flagRes));
+			sub_1_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub1 + " " + sub_1_abrv);
+			sub_2_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub2 + " " + sub_2_abrv);
+			sub_3_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub3 + " " + sub_3_abrv);
+			sub_1_currency_full.setText(fullName1);
+			sub_2_currency_full.setText(fullName2);
+			sub_3_currency_full.setText(fullName3);
+
+		}
+		if (currencyNamesArray.length == 4) {
+			sub_1_image.setImageResource(Integer.parseInt(sub_1_flagRes));
+			sub_2_image.setImageResource(Integer.parseInt(sub_2_flagRes));
+			sub_3_image.setImageResource(Integer.parseInt(sub_3_flagRes));
+			sub_4_image.setImageResource(Integer.parseInt(sub_4_flagRes));
+			sub_1_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub1 + " " + sub_1_abrv);
+			sub_2_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub2 + " " + sub_2_abrv);
+			sub_3_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub3 + " " + sub_3_abrv);
+			sub_4_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub4 + " " + sub_4_abrv);
+
+			sub_1_currency_full.setText(fullName1);
+			sub_2_currency_full.setText(fullName2);
+			sub_3_currency_full.setText(fullName3);
+			sub_4_currency_full.setText(fullName4);
+
+		}
+		if (currencyNamesArray.length == 5) {
+			sub_1_image.setImageResource(Integer.parseInt(sub_1_flagRes));
+			sub_2_image.setImageResource(Integer.parseInt(sub_2_flagRes));
+			sub_3_image.setImageResource(Integer.parseInt(sub_3_flagRes));
+			sub_4_image.setImageResource(Integer.parseInt(sub_4_flagRes));
+			sub_5_image.setImageResource(Integer.parseInt(sub_5_flagRes));
+			sub_1_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub1 + " " + sub_1_abrv);
+			sub_2_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub2 + " " + sub_2_abrv);
+			sub_3_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub3 + " " + sub_3_abrv);
+			sub_4_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub4 + " " + sub_4_abrv);
+			sub_5_currency.setText("1 " + fromCurrencyNames + " = "
+					+ sub5 + " " + sub_5_abrv);
+
+			sub_1_currency_full.setText(fullName1);
+			sub_2_currency_full.setText(fullName2);
+			sub_3_currency_full.setText(fullName3);
+			sub_4_currency_full.setText(fullName4);
+			sub_5_currency_full.setText(fullName5);
+
+		}
+		
+	}
+	
 	private class MyClickListener implements OnClickListener {
 
 		@Override
@@ -1413,7 +1455,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		  currencyFullNamesArray[index] = tempFromCurrencyNamesFull;
 		  syncConverterList();
 		  
-		  updateString();
+		  updateGuiValue();
 		  
 		  TextView nameSub = (TextView) view.findViewWithTag("subName");
 		  nameSub.setText(tempFromCurrencyNames);
@@ -1480,6 +1522,7 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		    case DragEvent.ACTION_DROP:
 		        // if the view is the bottomlinear, we accept the drag item
 		    	  View view = (View) event.getLocalState();
+		    	  int viewDraggingindex = Integer.parseInt((String)view.getTag());
 		    	  if(v == contentMain || v == etContent) {
 		    		  
 		    		  switchMainContent(view);
@@ -1487,45 +1530,29 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		    		  contentMain.setBackground(normalShape);
 		    		  view.setVisibility(View.VISIBLE);
 		    	  } else if (v == rl_sub_list.getChildAt(0)) {
-		    		  ViewGroup viewgroup = (ViewGroup) view.getParent();
-		    		  viewgroup.removeView(view);
-		    		  
-		    		  viewgroup.addView(view,0);
-		    		  switchPlace(Integer.parseInt((String)view.getTag()), 0);
-		    		  view.setTag("0");
+		    		  switchPlace(viewDraggingindex, 0);
+		    		  switchCurrencyTv(view, v);
+		    		  syncGuiWithoutName();
 		    		  view.setVisibility(View.VISIBLE);
 		    	  } else if (v == rl_sub_list.getChildAt(1)) {
-		    		  ViewGroup viewgroup = (ViewGroup) view.getParent();
-		    		  viewgroup.removeView(view);
-		    		  
-		    		  viewgroup.addView(view,1);
-		    		  switchPlace(Integer.parseInt((String)view.getTag()), 1);
-		    		  view.setTag("1");
+		    		  switchPlace(viewDraggingindex, 1);
+		    		  switchCurrencyTv(view, v);
+		    		  syncGuiWithoutName();
 		    		  view.setVisibility(View.VISIBLE);
 		    	  } else if (v == rl_sub_list.getChildAt(2)) {
-		    		  ViewGroup viewgroup = (ViewGroup) view.getParent();
-		    		  viewgroup.removeView(view);
-		    		  
-		    		  viewgroup.addView(view);
-		    		  switchPlace(Integer.parseInt((String)view.getTag()), 2);
-		    		  view.setTag("2");
+		    		  switchPlace(viewDraggingindex, 2);
+		    		  switchCurrencyTv(view, v);
+		    		  syncGuiWithoutName();
 		    		  view.setVisibility(View.VISIBLE);
 		    	  } else if (v == rl_sub_list.getChildAt(3)) {
-		    		  ViewGroup viewgroup = (ViewGroup) view.getParent();
-		    		  viewgroup.removeView(view);
-		    		  
-		    		  viewgroup.addView(view);
-		    		  switchPlace(Integer.parseInt((String)view.getTag()), 3);
-		    		  view.setTag("3");
+		    		  switchPlace(viewDraggingindex, 3);
+		    		  switchCurrencyTv(view, v);
+		    		  syncGuiWithoutName();
 		    		  view.setVisibility(View.VISIBLE);
 		    	  } else if (v == rl_sub_list.getChildAt(4)) {
-		    		  
-		    		  ViewGroup viewgroup = (ViewGroup) view.getParent();
-		    		  viewgroup.removeView(view);
-		    		  
-		    		  viewgroup.addView(view);
-		    		  switchPlace(Integer.parseInt((String)view.getTag()), 4);
-		    		  view.setTag("4");
+		    		  switchPlace(viewDraggingindex, 4);
+		    		  switchCurrencyTv(view, v);
+		    		  syncGuiWithoutName();
 		    		  view.setVisibility(View.VISIBLE);
 		    	  } else {
 		    		  view.setVisibility(View.VISIBLE);
@@ -1548,6 +1575,14 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		}
 	}
 	
+	private void switchCurrencyTv(View view1, View view2) {
+		TextView textView1 = (TextView) view1.findViewWithTag("subName");
+		TextView textView2 = (TextView) view2.findViewWithTag("subName");
+		String temp = textView1.getText().toString();
+		textView1.setText(textView2.getText());
+		textView2.setText(temp);
+	}
+	
 	private void switchPlace(int pos1, int pos2) {
 		String temp = currencyNamesArray[pos1];
 		currencyNamesArray[pos1] = currencyNamesArray[pos2];
@@ -1562,6 +1597,9 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 		currencyFullNamesArray[pos2] = temp;
 		
 		syncConverterList();
+		
+		updateGuiValue();
+
 	}
 	
 	public void syncConverterList() {

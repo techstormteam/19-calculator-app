@@ -293,8 +293,8 @@ Upgradeable {
 		unit_name_farenheit.setText("Farenheit");
 		
 		symbols_kelvin.setText("K");
-		symbols_celsius.setText("�C");
-		symbols_farenheit.setText("�F");
+		symbols_celsius.setText("°C");
+		symbols_farenheit.setText("°F");
 
 		defaultConfig();
 		uc_edittext.addTextChangedListener(watch);

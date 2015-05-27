@@ -229,6 +229,7 @@ public class SelectFormCountryFragment extends SherlockFragment implements Upgra
 				Context.VIBRATOR_SERVICE);
 
 		list = (ListView) view.findViewById(R.id.lv);
+		arraylist.clear();
 		for (int i = 0; i < currency.size(); i++) {
 			CurrencyFlags wp = new CurrencyFlags(currency.get(i), flag[i],
 					false);

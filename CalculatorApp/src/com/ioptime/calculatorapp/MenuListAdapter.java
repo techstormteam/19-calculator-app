@@ -16,14 +16,12 @@ public class MenuListAdapter extends BaseAdapter {
 	Context context;
 	String[] mTitleStr;
 	int[] mTitle;
-	int[] mTitleClicked;
 	LayoutInflater inflater;
 
-	public MenuListAdapter(Context context, String[] titleStr, int[] title, int[] titleClicked) {
+	public MenuListAdapter(Context context, String[] titleStr, int[] title) {
 		this.context = context;
 		this.mTitleStr = titleStr;
 		this.mTitle = title;
-		this.mTitleClicked = titleClicked;
 	}
 
 	@Override

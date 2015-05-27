@@ -49,7 +49,6 @@ public class MainActivityA extends SherlockFragmentActivity {
 	MenuListAdapter mMenuAdapter;
 	String[] titleStr;
 	int[] title;
-	int[] titleClicked;
 	
 	SharedPreferences prefs;
 	
@@ -183,9 +182,6 @@ public class MainActivityA extends SherlockFragmentActivity {
 		title = new int[] { R.drawable.menuleft1, R.drawable.menuleft2, R.drawable.menuleft3, 
 				R.drawable.menuleft4, R.drawable.menuleft5, R.drawable.menuleft6, R.drawable.menuleft7 };
 		
-		titleClicked = new int[] { R.drawable.menu1_p, R.drawable.menu2_p, R.drawable.menu3_p, 
-				R.drawable.menu4_p, R.drawable.menu5_p, R.drawable.menu6_p, R.drawable.menu7_p };
-
 		// Locate DrawerLayout in drawer_main.xml
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -198,7 +194,7 @@ public class MainActivityA extends SherlockFragmentActivity {
 				GravityCompat.START);
 
 		// Pass string arrays to MenuListAdapter
-		mMenuAdapter = new MenuListAdapter(MainActivityA.this, titleStr, title, titleClicked);
+		mMenuAdapter = new MenuListAdapter(MainActivityA.this, titleStr, title);
 
 		// Set the MenuListAdapter to the ListView
 		mDrawerList.setAdapter(mMenuAdapter);

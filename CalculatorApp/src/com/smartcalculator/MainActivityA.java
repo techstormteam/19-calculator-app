@@ -18,7 +18,6 @@ import com.ioptime.calculatorapp.MenuListAdapter;
 import com.ioptime.calculatorapp.fragments.AboutFragment;
 import com.ioptime.calculatorapp.fragments.BasicCalculatorFragment;
 import com.ioptime.calculatorapp.fragments.CurrencyConverterFragment;
-import com.ioptime.calculatorapp.fragments.CurrencyConverterFragment.MyDragListener;
 import com.ioptime.calculatorapp.fragments.FitnessCalculatorFragment;
 import com.ioptime.calculatorapp.fragments.HealthResultsFragment;
 import com.ioptime.calculatorapp.fragments.SelectCountriesListFragment;

@@ -777,7 +777,7 @@ Upgradeable {
 		} else if (flagUnit.equals(FLAG_FARENHEIT)) {
 			farenheitValue = BigDecimal.valueOf(Float.valueOf(value));
 			kelvinValue = BigDecimal.valueOf((Float.valueOf(value) + 459.67) * 5 / 9);
-			celsiusValue = BigDecimal.valueOf(Float.valueOf(value) - 32 / 1.8);
+			celsiusValue = BigDecimal.valueOf((Float.valueOf(value) - 32) * 5 / 9);
 		}
 		
 		

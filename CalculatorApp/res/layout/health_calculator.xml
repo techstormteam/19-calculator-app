@@ -24,14 +24,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fitness_heading"
-            android:layout_centerHorizontal="true" >
+            android:layout_centerHorizontal="true">
 
             <ImageView
                 android:id="@+id/metric_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/fitness_heading"
-                android:layout_marginLeft="30dip"
+                android:layout_marginLeft="0dp"
                 android:layout_marginTop="30dip"
                 android:src="@drawable/metric_switch" />
 
@@ -39,8 +39,8 @@
                 android:id="@+id/female_selected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dip"
-                android:layout_marginTop="30dip"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="30dp"
                 android:layout_toRightOf="@+id/metric_switch"
                 android:src="@drawable/female_selected" />
 
@@ -48,8 +48,8 @@
                 android:id="@+id/male_unselected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dip"
-                android:layout_marginTop="30dip"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="30dp"
                 android:layout_toRightOf="@+id/female_selected"
                 android:src="@drawable/male_unselected" />
         </RelativeLayout>

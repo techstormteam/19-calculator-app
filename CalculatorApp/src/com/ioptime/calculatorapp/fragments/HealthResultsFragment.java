@@ -24,6 +24,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -38,6 +39,7 @@ public class HealthResultsFragment extends SherlockFragment implements Upgradeab
 	TextView tvBMI;
 	TextView tvBodyFat;
 	LinearLayout funtionPad;
+	ScrollView resultHeading;
 	ImageView imageBMI;
 	ImageView imageBodyFat;
 	public static final String EXTRA_TITLE = "com.devspark.sidenavigation.sample.extra.MTGOBJECT";
@@ -80,18 +82,15 @@ public class HealthResultsFragment extends SherlockFragment implements Upgradeab
 			@Override
 			public void onAnimationStart(Animation arg0) {
 				rl_upgrade.setVisibility(View.VISIBLE);
-				// TODO Auto-generated method stub
 			}
 
 			@Override
 			public void onAnimationRepeat(Animation arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void onAnimationEnd(Animation arg0) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -101,23 +100,21 @@ public class HealthResultsFragment extends SherlockFragment implements Upgradeab
 
 			@Override
 			public void onAnimationStart(Animation arg0) {
-				// TODO Auto-generated method stub
 			}
 
 			@Override
 			public void onAnimationRepeat(Animation arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void onAnimationEnd(Animation arg0) {
-				// TODO Auto-generated method stub
 				rl_upgrade.setVisibility(View.GONE);
 
 			}
 		});
 		funtionPad = (LinearLayout) view.findViewById(R.id.functionPad);
+		resultHeading = (ScrollView) view.findViewById(R.id.result_scrollview);
 		facebookshare = (ImageView) view.findViewById(R.id.result_FacebookShare);
 		poweredby = (ImageView) view.findViewById(R.id.result_powered_by);
 		rl_upgrade = (RelativeLayout) view.findViewById(R.id.rl_upgrade);
@@ -265,6 +262,7 @@ public class HealthResultsFragment extends SherlockFragment implements Upgradeab
 
 	public void createImage(View view) {
 		View viewChild = view;
+		resultHeading.fullScroll(ScrollView.FOCUS_UP);
 		Canvas canvas = null;
 		facebookshare.setVisibility(View.INVISIBLE);
 		poweredby.setVisibility(View.VISIBLE);

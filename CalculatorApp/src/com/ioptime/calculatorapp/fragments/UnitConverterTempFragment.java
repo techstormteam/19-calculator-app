@@ -41,6 +41,12 @@ Upgradeable {
 	Context ctx;
 	ListView lv;
 
+	private final static String FLAG_CELSIUS = "C";
+	private final static String FLAG_KELVIN = "K";
+	private final static String FLAG_FARENHEIT = "F";
+	
+	String flagUnit = FLAG_CELSIUS; // C, K, F
+	
 	LinearLayout funtionPad;
 	EditText uc_edittext;
 	LinearLayout ll_celsius;
@@ -683,10 +689,7 @@ Upgradeable {
 	}
 
 	public void celciusToOther() {
-		conversions_kelvin.setText("274.15");
-		conversions_celsius.setText("1");
-		conversions_farenheit.setText("33.8");
-		storeValueToString();
+		flagUnit = FLAG_CELSIUS;
 		setValuesAccoridingToEdittext();
 
 	}
@@ -694,20 +697,14 @@ Upgradeable {
 	
 
 	public void kelvinToOther() {
-		conversions_kelvin.setText("1");
-		conversions_celsius.setText("-272.15");
-		conversions_farenheit.setText("-457.87");
-		storeValueToString();
+		flagUnit = FLAG_KELVIN;
 		setValuesAccoridingToEdittext();
 	}
 
 	
 
 	public void farenheitToOther() {
-		conversions_kelvin.setText("255.928");
-		conversions_celsius.setText("-17.2222");
-		conversions_farenheit.setText("1");
-		storeValueToString();
+		flagUnit = FLAG_FARENHEIT;
 		setValuesAccoridingToEdittext();
 
 	}
@@ -763,10 +760,28 @@ Upgradeable {
 	}
 
 	public void editTextValueMultiplier(String value) {
+		BigDecimal kelvinValue = BigDecimal.ZERO;
+		BigDecimal celsiusValue = BigDecimal.ZERO;
+		BigDecimal farenheitValue = BigDecimal.ZERO;
 		
-		BigDecimal value2 = BigDecimal.valueOf((Float.valueOf(uc_edittext
-				.getText().toString()) * Float.valueOf(value_kelvin)));
-		String number2 = value2.toString();
+		if (flagUnit.equals(FLAG_CELSIUS)) {
+			celsiusValue = BigDecimal.valueOf(Float.valueOf(value));
+			kelvinValue = BigDecimal.valueOf((Float.valueOf(value) + 273.15f));
+			farenheitValue = BigDecimal.valueOf((Float.valueOf(value) * 1.8 + 32));
+			
+		} else if (flagUnit.equals(FLAG_KELVIN)) {
+			kelvinValue = BigDecimal.valueOf(Float.valueOf(value));
+			celsiusValue = BigDecimal.valueOf(Float.valueOf(value) - 273.15f);
+			farenheitValue = BigDecimal.valueOf(((Float.valueOf(value) - 273.15) * 1.8) + 32);
+			
+		} else if (flagUnit.equals(FLAG_FARENHEIT)) {
+			farenheitValue = BigDecimal.valueOf(Float.valueOf(value));
+			kelvinValue = BigDecimal.valueOf((Float.valueOf(value) + 459.67) * 5 / 9);
+			celsiusValue = BigDecimal.valueOf(Float.valueOf(value) - 32 / 1.8);
+		}
+		
+		
+		String number2 = kelvinValue.toString();
 		double amount2 = Double.parseDouble(number2);
 		DecimalFormat formatter2 = new DecimalFormat("#,###.00");
 		String val2 = String.valueOf(amount2);
@@ -784,9 +799,8 @@ Upgradeable {
 
 		
 		
-		BigDecimal value6 = BigDecimal.valueOf((Float.valueOf(uc_edittext
-				.getText().toString()) * Float.valueOf(value_celsius)));
-		String number6 = value6.toString();
+		
+		String number6 = celsiusValue.toString();
 		double amount6 = Double.parseDouble(number6);
 		DecimalFormat formatter6 = new DecimalFormat("#,###.00");
 		String val6 = String.valueOf(amount6);
@@ -803,9 +817,8 @@ Upgradeable {
 		}
 
 
-		BigDecimal value11 = BigDecimal.valueOf((Float.valueOf(uc_edittext
-				.getText().toString()) * Float.valueOf(value_farenheit)));
-		String number11 = value11.toString();
+		
+		String number11 = farenheitValue.toString();
 		double amount11 = Double.parseDouble(number11);
 		String val11 = String.valueOf(amount11);
 		if (val11.contains("E")) {

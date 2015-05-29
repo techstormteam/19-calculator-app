@@ -19,13 +19,14 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/heading_fitnessresult_calc" />
 
+
         <ScrollView
             android:id="@+id/result_scrollview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/result_heading"
             android:layout_centerHorizontal="true" >
-
+        
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
@@ -41,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/result_BMI"
-                    android:layout_marginTop="30dip"
+                    android:layout_marginTop="8dip"
                     android:src="@drawable/result_bmr" />
 
                 <ImageView
@@ -49,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/result_BMR"
-                    android:layout_marginTop="30dip"
+                    android:layout_marginTop="8dip"
                     android:src="@drawable/result_bodyfat" />
 
                 <ImageView
@@ -59,7 +60,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_below="@+id/result_BODYFAT"
                     android:layout_centerHorizontal="true"
-                    android:paddingTop="40dip"
+                    android:paddingBottom="5dip"
                     android:src="@drawable/facebook_share" />
 
                 <ImageView
@@ -69,7 +70,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_below="@+id/result_BODYFAT"
                     android:layout_centerHorizontal="true"
-                    android:paddingTop="40dip"
+                    android:paddingBottom="5dip"
                     android:src="@drawable/fitness_powered_by"
                     android:visibility="invisible" />
 
@@ -118,8 +119,7 @@
                     android:textColor="#c3dcf2"
                     android:textSize="30dp" />
             </RelativeLayout>
-        </ScrollView>
-
+		</ScrollView>
         <RelativeLayout
             android:id="@+id/rl_upgrade_parent"
             android:layout_width="fill_parent"

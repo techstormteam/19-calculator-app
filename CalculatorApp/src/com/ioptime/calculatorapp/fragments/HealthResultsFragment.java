@@ -114,7 +114,6 @@ public class HealthResultsFragment extends SherlockFragment implements Upgradeab
 			}
 		});
 		funtionPad = (LinearLayout) view.findViewById(R.id.functionPad);
-		resultHeading = (ScrollView) view.findViewById(R.id.result_scrollview);
 		facebookshare = (ImageView) view.findViewById(R.id.result_FacebookShare);
 		poweredby = (ImageView) view.findViewById(R.id.result_powered_by);
 		rl_upgrade = (RelativeLayout) view.findViewById(R.id.rl_upgrade);
@@ -262,7 +261,6 @@ public class HealthResultsFragment extends SherlockFragment implements Upgradeab
 
 	public void createImage(View view) {
 		View viewChild = view;
-		resultHeading.fullScroll(ScrollView.FOCUS_UP);
 		Canvas canvas = null;
 		facebookshare.setVisibility(View.INVISIBLE);
 		poweredby.setVisibility(View.VISIBLE);

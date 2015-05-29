@@ -53,26 +53,7 @@
                     android:layout_marginTop="8dip"
                     android:src="@drawable/result_bodyfat" />
 
-                <ImageView
-                    android:id="@+id/result_FacebookShare"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_below="@+id/result_BODYFAT"
-                    android:layout_centerHorizontal="true"
-                    android:paddingBottom="5dip"
-                    android:src="@drawable/facebook_share" />
-
-                <ImageView
-                    android:id="@+id/result_powered_by"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_below="@+id/result_BODYFAT"
-                    android:layout_centerHorizontal="true"
-                    android:paddingBottom="5dip"
-                    android:src="@drawable/fitness_powered_by"
-                    android:visibility="invisible" />
+                
 
                 <TextView
                     android:id="@+id/tv_BMI"
@@ -120,6 +101,25 @@
                     android:textSize="30dp" />
             </RelativeLayout>
 		</ScrollView>
+		<ImageView
+                    android:id="@+id/result_FacebookShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:paddingBottom="5dip"
+                    android:src="@drawable/facebook_share" />
+
+                <ImageView
+                    android:id="@+id/result_powered_by"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:paddingBottom="5dip"
+                    android:src="@drawable/fitness_powered_by"
+                    android:visibility="invisible" />
+        
         <RelativeLayout
             android:id="@+id/rl_upgrade_parent"
             android:layout_width="fill_parent"

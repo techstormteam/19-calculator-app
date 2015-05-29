@@ -905,8 +905,8 @@ public class CurrencyConverterFragment extends SherlockFragment implements Upgra
 					}
 				} catch (Exception e) {
 					// TODO: handle exception
-					Toast.makeText(ctx, "Wrong Input",
-							Toast.LENGTH_LONG).show();
+//					Toast.makeText(ctx, "Wrong Input",
+//							Toast.LENGTH_LONG).show();
 				}
 			}
 		}

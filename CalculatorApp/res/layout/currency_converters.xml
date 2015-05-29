@@ -161,10 +161,10 @@
                 android:src="@drawable/cc_separator" />
 
             <ScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/separator"
-                android:paddingBottom="70dip" >
+                android:layout_marginBottom="70dip" >
 
                 <LinearLayout
                     android:id="@+id/rl_sub_list"

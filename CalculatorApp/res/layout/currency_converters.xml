@@ -164,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/separator"
-                android:paddingBottom="65dip" >
+                android:paddingBottom="70dip" >
 
                 <LinearLayout
                     android:id="@+id/rl_sub_list"

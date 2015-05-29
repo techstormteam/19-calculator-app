@@ -16,16 +16,17 @@
             android:layout_height="wrap_content" >
 
             <ImageView
+                android:id="@+id/title_heading"
 	            android:layout_width="match_parent"
-	            android:layout_height="60dp"
+	            android:layout_height="wrap_content"
 	            android:src="@drawable/about_heading"
-	            android:scaleType="fitXY" />
+	            android:scaleType="centerInside" />
             
             <ImageView
 	            android:id="@+id/heading"
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
-	            android:layout_marginTop="60dp"
+	            android:layout_below="@+id/title_heading"
 	            android:layout_marginBottom="100dp"
 	            android:src="@drawable/about_screen"
 	            android:scaleType="centerInside" />
